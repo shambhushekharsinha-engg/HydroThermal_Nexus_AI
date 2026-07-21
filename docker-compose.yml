@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+  nexus-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hydrothermal_nexus_ai_v2
+    image: hydrothermal-nexus-ai:2.0.0
+
+    ports:
+      - "8501:8501"   # Streamlit UI
+      - "8001:8001"   # FastAPI backend
+
+    volumes:
+      # Persist SQLite databases across container restarts
+      - nexus_data:/app/data
+      - ./nexus_audit.db:/app/nexus_audit.db
+      - ./nexus_storage.db:/app/nexus_storage.db
+      - ./nexus_auth.db:/app/nexus_auth.db
+
+    environment:
+      - NEXUS_API_SECRET=${NEXUS_API_SECRET:-NexusAPI_Internal_2026}
+      - PYTHONUNBUFFERED=1
+      - STREAMLIT_SERVER_HEADLESS=true
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    restart: unless-stopped
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1024M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+volumes:
+  nexus_data:
+    driver: local
