@@ -23,9 +23,9 @@ RUN useradd -m -u 1000 -s /bin/bash nexususer
 WORKDIR /app
 
 # Install Python dependencies (cache layer)
-COPY requirements-streamlit.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements-streamlit.txt
+    && pip install --no-cache-dir -r requirements.txt
 
 # Copy application source
 COPY . .
