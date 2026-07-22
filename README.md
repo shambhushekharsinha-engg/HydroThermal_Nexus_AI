@@ -21,6 +21,7 @@
 | 🖥️ **Interactive Cockpit** | [![Streamlit](https://img.shields.io/badge/STREAMLIT%20FRONTEND-Live%20Cockpit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white&labelColor=0d1117)](https://hydrothermal-nexus-ai.streamlit.app/) | [**hydrothermal-nexus-ai.streamlit.app**](https://hydrothermal-nexus-ai.streamlit.app/)<br/>*Full 10-tab command center with live onboarding sandbox* |
 | ⚙️ **REST Microservice** | [![FastAPI](https://img.shields.io/badge/FASTAPI%20BACKEND-hydrothermal--nexus--ai.vercel.app-00f0ff?style=for-the-badge&logo=vercel&logoColor=white&labelColor=0d1117)](https://hydrothermal-nexus-ai.vercel.app) | [**hydrothermal-nexus-ai.vercel.app**](https://hydrothermal-nexus-ai.vercel.app)<br/>*High-performance serverless backend REST API* |
 | 📖 **OpenAPI / Swagger** | [![Swagger](https://img.shields.io/badge/SWAGGER%20DOCS-/docs-009688?style=for-the-badge&logo=swagger&logoColor=white&labelColor=0d1117)](https://hydrothermal-nexus-ai.vercel.app/docs) | [**hydrothermal-nexus-ai.vercel.app/docs**](https://hydrothermal-nexus-ai.vercel.app/docs)<br/>*Interactive API schema & endpoint tester* |
+| 📹 **YouTube Demo Video** | [![YouTube](https://img.shields.io/badge/YOUTUBE-Watch%20Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white&labelColor=0d1117)](https://youtu.be/SCfMjIOMsUY) | [**youtu.be/SCfMjIOMsUY**](https://youtu.be/SCfMjIOMsUY)<br/>*High-definition 1-minute system walkthrough with audio* |
 
 <br/>
 
@@ -42,13 +43,27 @@
 ## 📽️ Full System Walkthrough & Audio Demonstration
 
 > [!TIP]
-> **Video File**: `Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4` (~15 MB)  
-> Below is the embedded high-definition operational demo video with full audio commentary.
+> **YouTube Video Link**: [**Watch HydroThermal Nexus-AI Demo on YouTube**](https://youtu.be/SCfMjIOMsUY)  
+> **Local MP4 Asset**: `Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4` (~15 MB)
 
 <div align="center">
-  <video src="Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4" controls="controls" width="100%" poster="Project Demo/frontend/Main_Command_Center_Dashboard.png" style="max-height:600px; border-radius:10px; border: 1px solid #30363d;">
-    Your browser does not support HTML5 video playback. You can download or view the <a href="Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4">direct video file here</a>.
-  </video>
+  <a href="https://youtu.be/SCfMjIOMsUY" target="_blank">
+    <img src="https://img.youtube.com/vi/SCfMjIOMsUY/maxresdefault.jpg" alt="HydroThermal Nexus-AI YouTube Demo Video" width="100%" style="max-height:550px; border-radius:12px; border: 1px solid #30363d; object-fit: cover;" />
+  </a>
+  <br/>
+  <sub>▶️ <i>Click the banner above to watch the full HD demo video on YouTube: <b><a href="https://youtu.be/SCfMjIOMsUY">https://youtu.be/SCfMjIOMsUY</a></b></i></sub>
+</div>
+
+<br/>
+
+<div align="center">
+  <details>
+    <summary><b>📺 Or Play Embedded Repository Video File Directly</b></summary>
+    <br/>
+    <video src="Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4" controls="controls" width="100%" poster="Project Demo/frontend/Main_Command_Center_Dashboard.png" style="max-height:500px; border-radius:10px; border: 1px solid #30363d;">
+      Your browser does not support HTML5 video playback. You can download or view the <a href="Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4">direct video file here</a>.
+    </video>
+  </details>
 </div>
 
 <br/>
