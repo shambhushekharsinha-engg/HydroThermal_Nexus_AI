@@ -144,52 +144,85 @@ Modern hydrothermal facilities (data centres, industrial campuses, hospital comp
 
 > All screenshots captured from the live Streamlit dashboard at `app.py`
 
-### 🔰 Welcome, Onboarding & Interactive Sandbox (Tab 0)
-
+#### 🔰 Welcome Sandbox & Command Center HUD
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="assets/onboarding_sandbox.png" alt="Onboarding & Sandbox" width="100%"/>
+      <img src="Project Demo/frontend/Welcome_and_Interactive_Sandbox.png" alt="Onboarding & Sandbox" width="100%"/>
       <br/><sub><b>Onboarding & Sandbox Tab</b></sub>
       <br/><sub>Concept cards, guided missions, and one-click role switcher</sub>
     </td>
     <td align="center" width="50%">
-      <img src="assets/command_center.png" alt="Command Center" width="100%"/>
+      <img src="Project Demo/frontend/Main_Command_Center_Dashboard.png" alt="Command Center" width="100%"/>
       <br/><sub><b>Command Center HUD</b></sub>
       <br/><sub>Real-time health score ring, active alerts, and live sensor sparklines</sub>
     </td>
   </tr>
 </table>
 
----
-
-### 📈 Sensor Telemetry & 3D Digital Twin
-
+#### 📈 Sensor Telemetry & 3D Digital Twin
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="assets/telemetry_stream.png" alt="Telemetry Stream" width="100%"/>
+      <img src="Project Demo/frontend/Telemetry_and_Analytics_Console.png" alt="Telemetry Stream" width="100%"/>
       <br/><sub><b>Live Telemetry & Anomaly Injection Console</b></sub>
       <br/><sub>Dynamic data streaming charts and anomaly injection controls</sub>
     </td>
     <td align="center" width="50%">
-      <img src="assets/digital_twin.png" alt="Digital Twin Map" width="100%"/>
+      <img src="Project Demo/frontend/GeoSpatial_Digital_Twin.png" alt="Digital Twin Map" width="100%"/>
       <br/><sub><b>Geospatial 3D Digital Twin Map</b></sub>
       <br/><sub>PyDeck visualization of facility nodes with status cards</sub>
     </td>
   </tr>
 </table>
 
----
+#### 🤖 Diagnostics & AI Assistant Chatbot
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="Project Demo/frontend/RCA_Diagnostic_Engine.png" alt="RCA Mitigation Engine" width="100%"/>
+      <br/><sub><b>RCA Diagnostics & Mitigation Center</b></sub>
+      <br/><sub>AI failure vector mapping, step-by-step mitigation paths, and branded PDF generation</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="Project Demo/frontend/AI_Assistant_Chat_Interface.png" alt="AI Assistant" width="100%"/>
+      <br/><sub><b>AI Assistant Chat Interface</b></sub>
+      <br/><sub>Domain-aware chatbot with state integration and fast chat suggestion chips</sub>
+    </td>
+  </tr>
+</table>
 
-### 🤖 Diagnostics & Automated Mitigation
+#### 🌱 ESG Carbon Ledger & Security Audits
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="Project Demo/frontend/ESG_Carbon_and_Sustainability_Dashboard.png" alt="ESG Carbon Dashboard" width="100%"/>
+      <br/><sub><b>ESG Carbon & Sustainability Dashboard</b></sub>
+      <br/><sub>Carbon credits, water conservation metrics, and financial calculator</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="Project Demo/frontend/Immutable_Audit_Ledger.png" alt="Audit Ledger" width="100%"/>
+      <br/><sub><b>Immutable Audit & Compliance Ledger</b></sub>
+      <br/><sub>Admin controls, CSV export, and security action logs</sub>
+    </td>
+  </tr>
+</table>
+
+### ⚙️ Backend Screenshots
+
+> Screenshots captured from the live FastAPI REST microservice Swagger UI documentation at `/docs`
 
 <table>
   <tr>
-    <td align="center" colspan="2">
-      <img src="assets/rca_engine.png" alt="RCA Mitigation Engine" width="80%"/>
-      <br/><sub><b>RCA Diagnostics & Mitigation Center</b></sub>
-      <br/><sub>AI failure vector mapping, step-by-step mitigation paths, and branded PDF generation</sub>
+    <td align="center" width="50%">
+      <img src="Project Demo/backend/FastAPI_Backend_Endpoints_Swagger.png" alt="FastAPI Endpoints Swagger" width="100%"/>
+      <br/><sub><b>FastAPI REST Backend Endpoints</b></sub>
+      <br/><sub>Exposes endpoints for telemetry streams, incident tracking, audit trails, and ESG updates</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="Project Demo/backend/FastAPI_Data_Schemas_Swagger.png" alt="FastAPI Data Schemas" width="100%"/>
+      <br/><sub><b>FastAPI Data Schemas (Swagger OAS 3.1)</b></sub>
+      <br/><sub>Strict request/response Pydantic models mapping data transfer objects</sub>
     </td>
   </tr>
 </table>
@@ -324,26 +357,57 @@ HydroThermal_Nexus_AI/
 
 ## 👨‍💻 Developer Profile
 
-<table>
+<div align="center">
+
+<table align="center">
   <tr>
-    <td align="center" width="30%">
-      <img src="https://github.com/shambhushekharsinha-engg.png" alt="Shambhu Shekhar Sinha" width="150px" style="border-radius: 50%;"/>
-      <br/>
-      <br/>
-      <b>Shambhu Shekhar Sinha</b>
-    </td>
-    <td valign="top">
-      <h4>B.Tech Computer Science & Engineering (AI & ML)</h4>
-      <h5>Greater Noida Institute of Technology</h5>
-      <p>Specializing in industrial IoT, operational AI, real-time telemetry systems, and security-centric software engineering.</p>
-      <ul>
-        <li><b>GitHub:</b> <a href="https://github.com/shambhushekharsinha-engg">shambhushekharsinha-engg</a></li>
-        <li><b>LinkedIn:</b> <a href="https://linkedin.com/in/shambhu-shekhar-sinha-636498341">Shambhu Shekhar Sinha</a></li>
-        <li><b>Email:</b> <a href="mailto:shambhushekharsinha@gmail.com">shambhushekharsinha@gmail.com</a></li>
-      </ul>
+    <td align="center" width="100%">
+      <table>
+        <tr>
+          <td>👤 <b>Name</b></td>
+          <td>Shambhu Shekhar Sinha</td>
+        </tr>
+        <tr>
+          <td>🎓 <b>Degree</b></td>
+          <td>B.Tech — Computer Science & Engineering (AI & ML)</td>
+        </tr>
+        <tr>
+          <td>🏫 <b>College</b></td>
+          <td>Greater Noida Institute of Technology <b>(GNIOT)</b></td>
+        </tr>
+        <tr>
+          <td>🏛️ <b>University</b></td>
+          <td>Dr. APJ Abdul Kalam Technological University, Lucknow</td>
+        </tr>
+        <tr>
+          <td>📍 <b>Location</b></td>
+          <td>Greater Noida, Uttar Pradesh, India</td>
+        </tr>
+        <tr>
+          <td>🐙 <b>GitHub</b></td>
+          <td><a href="https://github.com/shambhushekharsinha-engg">@shambhushekharsinha-engg</a></td>
+        </tr>
+        <tr>
+          <td>🖥️ <b>Frontend</b></td>
+          <td><a href="https://hydrothermal-nexus-ai.streamlit.app/">hydrothermal-nexus-ai.streamlit.app</a></td>
+        </tr>
+        <tr>
+          <td>⚙️ <b>Backend API</b></td>
+          <td><a href="https://hydrothermal-nexus-ai.vercel.app/docs">hydrothermal-nexus-ai.vercel.app/docs</a></td>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>
+
+<br/>
+
+<img src="https://img.shields.io/badge/B.Tech-CSE%20%7C%20AI%20%26%20ML-00d4ff?style=flat-square&labelColor=010308"/>
+<img src="https://img.shields.io/badge/GNIOT-Greater%20Noida%20Institute%20of%20Technology-10b981?style=flat-square"/>
+<img src="https://img.shields.io/badge/AKTU-Lucknow-FF4B4B?style=flat-square"/>
+<img src="https://img.shields.io/badge/GitHub-shambhushekharsinha--engg-181717?style=flat-square&logo=github"/>
+
+</div>
 
 ---
 
