@@ -89,7 +89,7 @@ in real time — with full regulatory audit capability.
 cd HydroThermal_Nexus_AI
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements-streamlit.txt
 
 # Run the app
 streamlit run app.py
@@ -209,7 +209,8 @@ HydroThermal_Nexus_AI/
 ├── .streamlit/
 │   └── config.toml          # Dark navy theme configuration
 │
-├── requirements.txt         # Python dependencies
+├── requirements.txt         # Minimal API dependencies (Vercel)
+├── requirements-streamlit.txt # Streamlit application dependencies
 ├── Dockerfile               # Production Docker image (Python 3.11)
 ├── docker-compose.yml       # Multi-service compose with volumes
 ├── SCALING_STRATEGY.md      # Cloud deployment & scaling guide
