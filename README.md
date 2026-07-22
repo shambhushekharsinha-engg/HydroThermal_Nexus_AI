@@ -1,36 +1,37 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v2.1%20PRODUCTION-00d4ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZDQxZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBkNDFmIiBkPSJNMiAxN2wxMCA1IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=010308" />
+<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v2.1%20ENTERPRISE-00f0ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZmBmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBmMGZmIiBkPSJNMiAxN2wxMCA1IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=0d1117" />
 
-# 🔷 HydroThermal Nexus-AI
-### **Enterprise-Grade AI Cockpit for Hydrothermal IoT Monitoring & ESG Auditing**
+# ⚡ HYDROTHERMAL NEXUS-AI
+### 🌌 *Next-Generation Autonomous AI Cockpit for Industrial Hydrothermal Operations & ESG Auditing*
 
 <br/>
 
-> *An industrial-grade operational cockpit for real-time hydrothermal facility monitoring, AI-driven anomaly detection (using IsolationForest and adaptive Z-score), ESG impact tracking, and automated edge mitigation response — secured end-to-end with SHA-256 session vaulting, corporate RBAC, and immutable audit logging.*
+> [!NOTE]
+> **HydroThermal Nexus-AI** is an enterprise-grade operational cockpit designed for real-time hydrothermal facility telemetry monitoring, multi-model AI anomaly detection (*IsolationForest* & adaptive *Z-Score*), automated edge mitigation response, and ESG compliance tracking — backed by immutable SHA-256 security audit logs and role-based access control (RBAC).
 
 <br/>
 
 ---
 
-### 🌐 Live Deployments
+### 🌐 Live Production Environments
 
-| Platform | Link | Description |
-|:---:|:---:|:---|
-| 🖥️ **Frontend Dashboard** | [![Streamlit](https://img.shields.io/badge/STREAMLIT%20DASHBOARD-Live%20Frontend-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white&labelColor=010308)](https://hydrothermal-nexus-ai.streamlit.app/) | Full 10-tab Streamlit dashboard — including Onboarding Sandbox |
-| ⚙️ **Backend API** | [![FastAPI](https://img.shields.io/badge/FASTAPI%20BACKEND-hydrothermal--nexus--ai.vercel.app-00f0ff?style=for-the-badge&logo=vercel&logoColor=white&labelColor=010308)](https://hydrothermal-nexus-ai.vercel.app) | FastAPI REST microservice — all data, audit & telemetry endpoints |
-| 📖 **API Docs** | [![Swagger](https://img.shields.io/badge/SWAGGER%20UI-/docs-009688?style=for-the-badge&logo=swagger&logoColor=white&labelColor=010308)](https://hydrothermal-nexus-ai.vercel.app/docs) | Interactive Swagger / OpenAPI documentation |
+| Component | Status & Badge | Access & Description |
+| :--- | :--- | :--- |
+| 🖥️ **Interactive Cockpit** | [![Streamlit](https://img.shields.io/badge/STREAMLIT%20FRONTEND-Live%20Cockpit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white&labelColor=0d1117)](https://hydrothermal-nexus-ai.streamlit.app/) | [**hydrothermal-nexus-ai.streamlit.app**](https://hydrothermal-nexus-ai.streamlit.app/)<br/>*Full 10-tab command center with live onboarding sandbox* |
+| ⚙️ **REST Microservice** | [![FastAPI](https://img.shields.io/badge/FASTAPI%20BACKEND-hydrothermal--nexus--ai.vercel.app-00f0ff?style=for-the-badge&logo=vercel&logoColor=white&labelColor=0d1117)](https://hydrothermal-nexus-ai.vercel.app) | [**hydrothermal-nexus-ai.vercel.app**](https://hydrothermal-nexus-ai.vercel.app)<br/>*High-performance serverless backend REST API* |
+| 📖 **OpenAPI / Swagger** | [![Swagger](https://img.shields.io/badge/SWAGGER%20DOCS-/docs-009688?style=for-the-badge&logo=swagger&logoColor=white&labelColor=0d1117)](https://hydrothermal-nexus-ai.vercel.app/docs) | [**hydrothermal-nexus-ai.vercel.app/docs**](https://hydrothermal-nexus-ai.vercel.app/docs)<br/>*Interactive API schema & endpoint tester* |
 
 <br/>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/FastAPI-0.111+-009688?style=flat-square&logo=fastapi&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Streamlit-1.35+-FF4B4B?style=flat-square&logo=streamlit&logoColor=white"/>
-  <img src="https://img.shields.io/badge/scikit--learn-1.3+-F7931E?style=flat-square&logo=scikitlearn&logoColor=white"/>
+  <img src="https://img.shields.io/badge/FastAPI-0.111%2B-009688?style=flat-square&logo=fastapi&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Streamlit-1.35%2B-FF4B4B?style=flat-square&logo=streamlit&logoColor=white"/>
+  <img src="https://img.shields.io/badge/scikit--learn-1.3%2B-F7931E?style=flat-square&logo=scikitlearn&logoColor=white"/>
   <img src="https://img.shields.io/badge/SQLite-Secure%20Vault-003B57?style=flat-square&logo=sqlite&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Plotly-Visualizations-3F4F75?style=flat-square&logo=plotly&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Deployed-Vercel%20%2B%20Streamlit%20Cloud-00f0ff?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Plotly-Analytics-3F4F75?style=flat-square&logo=plotly&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Deployment-Vercel%20%2B%20Streamlit%20Cloud-00f0ff?style=flat-square"/>
   <img src="https://img.shields.io/badge/License-MIT-10b981?style=flat-square"/>
 </p>
 
@@ -38,324 +39,334 @@
 
 ---
 
-## 📋 Table of Contents
+## 📽️ Full System Walkthrough & Audio Demonstration
 
-- [📋 Problem Statement](#-problem-statement)
-- [🎯 Success Metrics](#-success-metrics)
-- [🏗️ System Architecture](#️-system-architecture)
-- [✨ Core Feature Matrix](#-core-feature-matrix)
-- [🖥️ Frontend Screenshots](#️-frontend-screenshots)
-- [🚀 Quick Start Guide](#-quick-start-guide)
-- [🐳 Running with Docker](#-running-with-docker)
-- [🔐 Default Credentials](#-default-credentials)
-- [🤖 AI / ML Stack](#-ai--ml-stack)
-- [🌱 ESG Impact Model](#-esg-impact-model)
-- [🔐 Security Architecture](#-security-architecture)
-- [📂 Project Structure](#-project-structure)
-- [📜 License](#-license)
-- [👨‍💻 Developer Profile](#-developer-profile)
+> [!TIP]
+> **Video File**: `Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4` (~15 MB)  
+> Below is the embedded high-definition operational demo video with full audio commentary.
+
+<div align="center">
+  <video src="Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4" controls="controls" width="100%" poster="Project Demo/frontend/Main_Command_Center_Dashboard.png" style="max-height:600px; border-radius:10px; border: 1px solid #30363d;">
+    Your browser does not support HTML5 video playback. You can download or view the <a href="Project Demo/video/HydroThermal Nexus-AI AI-Driven Industrial Sustainability.mp4">direct video file here</a>.
+  </video>
+</div>
+
+<br/>
 
 ---
 
-## 📋 Problem Statement
+## 📌 Table of Contents
 
-Modern hydrothermal facilities (data centres, industrial campuses, hospital complexes) waste **15–30% of their water and energy resources** due to:
-
-| Challenge | Real-World Impact |
-|:---|:---|
-| **Undetected pipe ruptures** | Up to 1,450 L/hr water loss per incident |
-| **HVAC thermal exceedance** | 38+ kg CO₂e excess emissions per event |
-| **Manual monitoring lag** | Anomalies go undetected for 4–8 hours |
-| **No ESG audit trail** | Non-compliance with ISO 14001 / GHG Protocol |
-| **Siloed alert systems** | Critical incidents missed by operations teams |
-
-**HydroThermal Nexus-AI** solves these with a fully automated, AI-powered operational cockpit that detects, diagnoses, mitigates, and reports incidents in real time — with full regulatory audit capability.
+- [⚠️ Operational Challenges & Solution](#-operational-challenges--solution)
+- [🎯 Key Performance Targets](#-key-performance-targets)
+- [🏗️ End-to-End System Architecture](#️-end-to-end-system-architecture)
+- [✨ Core Capabilities & Tab Index](#-core-capabilities--tab-index)
+- [🖼️ Visual System Showcase](#️-visual-system-showcase)
+- [⚡ Quick Start & Setup](#-quick-start--setup)
+- [🐳 Docker Containerization](#-docker-containerization)
+- [🔐 Access Roles & Default Passwords](#-access-roles--default-passwords)
+- [🤖 Intelligence & ML Stack](#-intelligence--ml-stack)
+- [🌱 ESG & Sustainability Analytics](#-esg--sustainability-analytics)
+- [🛡️ Enterprise Security Blueprint](#️-enterprise-security-blueprint)
+- [📂 Repository Directory Topology](#-repository-directory-topology)
+- [👨‍💻 Author & Engineering Profile](#-author--engineering-profile)
+- [📜 Licensing & Usage](#-licensing--usage)
 
 ---
 
-## 🎯 Success Metrics
+## ⚠️ Operational Challenges & Solution
 
-| Metric | Target | Measured By |
+Modern hydrothermal facilities — including data center liquid cooling grids, power plants, and industrial complexes — experience up to **15–30% resource leakage** caused by fragmented monitoring tools.
+
+| Operating Vulnerability | Industrial Impact | HydroThermal Nexus-AI Solution |
 | :--- | :--- | :--- |
-| **Anomaly detection latency** | < 15 minutes | Alert timestamp − sensor timestamp |
-| **Water saved per incident** | ≥ 1,000 L/hr | Valve restriction × flow rate |
-| **CO₂ prevented per event** | ≥ 30 kg CO₂e | HVAC efficiency × emission factor |
-| **ESG Score** | ≥ 80/100 | Composite of water, CO₂, energy, uptime |
-| **System health score** | ≥ 90/100 | Multi-sensor weighted average |
-| **Alert delivery latency** | < 30 seconds | Telegram API response time |
+| **Undetected Pipe Ruptures** | Losses exceeding <kbd>1,450 L/hr</kbd> per event | Real-time IsolationForest anomaly detection on pressure/flow vectors |
+| **HVAC Thermal Exceedance** | <kbd>38+ kg CO₂e</kbd> wasted per thermal spike | Automated actuation simulation & threshold-triggered mitigation |
+| **Manual Response Delays** | 4 to 8 hour anomaly diagnostic latency | Instant <kbd>< 15 min</kbd> auto-detection & Telegram dispatch |
+| **Audit Non-Compliance** | Failure to satisfy ISO 14001 / GHG Protocol | Immutable SHA-256 audit ledger tracking every action |
+| **Fragmented Alerting** | Operator fatigue & missed high-priority alerts | Multi-channel dispatch (Telegram, Email, In-App) with ACK tracking |
 
 ---
 
-## 🏗️ System Architecture
+## 🎯 Key Performance Targets
+
+| Operational Metric | Engineering Target | Measurement Standard |
+| :--- | :--- | :--- |
+| **Anomaly Detection Latency** | <kbd>< 15 minutes</kbd> | Delta between telemetry anomaly timestamp and alert trigger |
+| **Water Conservation Yield** | <kbd>≥ 1,000 L/hr</kbd> saved | Calculated via active valve throttling × flow telemetry |
+| **Carbon Avoidance Yield** | <kbd>≥ 30 kg CO₂e</kbd> / event | HVAC efficiency delta × standard grid emissions factor |
+| **Facility ESG Benchmark** | <kbd>≥ 80 / 100</kbd> score | Multi-dimensional weighted index (water, carbon, energy, uptime) |
+| **Overall System Health** | <kbd>≥ 90 / 100</kbd> index | Real-time aggregate status across all sensor nodes |
+| **Alert Dispatch Velocity** | <kbd>< 30 seconds</kbd> | Instantaneous Telegram Bot & SMTP notification throughput |
+
+---
+
+## 🏗️ End-to-End System Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│               Industrial IoT Sensors                     │
-│  [Pressure] [Thermometer] [Flow Meter] [Energy Meter]   │
-└──────────────────────┬──────────────────────────────────┘
-                       │ Telemetry Stream (6h intervals)
-          ┌────────────▼────────────┐
-          │   Streamlit UI          │
-          │   (Port 8501)           │
-          │  ┌──────────────────┐   │
-          │  │ Login / RBAC Auth│   │
-          │  │ 10 Dashboard Tabs│   │
-          │  │ Plotly Charts    │   │
-          │  │ PyDeck 3D Twin   │   │
-          │  └──────────────────┘   │
-          └──────────┬──────────────┘
-                     │ Internal API calls
-          ┌──────────▼──────────────┐    ┌─────────────────────┐
-          │   FastAPI Backend       │    │   SQLite Databases   │
-          │   (Port 8001)           │◄───│  nexus_auth.db       │
-          │   (Vercel serverless)   │    │  nexus_audit.db      │
-          │  REST Endpoints         │    │  nexus_storage.db    │
-          │  API Key Auth           │    └─────────────────────┘
-          └──────────┬──────────────┘
-          ┌──────────▼──────────────┐    ┌─────────────────────┐
-          │   AI / ML Engine        │    │   Alert Channels     │
-          │  IsolationForest Model  │    │  Telegram Bot API    │
-          │  Z-Score Detector       │    │  Email (SMTP/TLS)    │
-          │  RCA Engine             │    │  In-App Center       │
-          │  AI Chatbot (12 topics) │    └─────────────────────┘
-          └─────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                        INDUSTRIAL IoT SENSOR NETWORK                   │
+│   [ Pressure Sensors ]   [ Thermal Nodes ]   [ Flow & Energy Meters ]   │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ Telemetry Streaming (6h cadence)
+                    ┌───────────────▼───────────────┐
+                    │     Streamlit Cockpit         │
+                    │     (Port 8501)               │
+                    │  ┌─────────────────────────┐  │
+                    │  │ SHA-256 Auth & RBAC     │  │
+                    │  │ 10 Operational Tabs     │  │
+                    │  │ Plotly Analytics        │  │
+                    │  │ PyDeck 3D Digital Twin  │  │
+                    │  └─────────────────────────┘  │
+                    └───────────────┬───────────────┘
+                                    │ Internal API Dispatch
+                    ┌───────────────▼───────────────┐       ┌──────────────────────┐
+                    │    FastAPI REST Microservice  │       │  SQLite Vault Engine │
+                    │    (Port 8001 / Vercel Edge)  │◄─────►│   nexus_auth.db      │
+                    │  • CORS & Security Middleware │       │   nexus_audit.db     │
+                    │  • API Key Authentication     │       │   nexus_storage.db   │
+                    └───────────────┬───────────────┘       └──────────────────────┘
+                    ┌───────────────▼───────────────┐       ┌──────────────────────┐
+                    │    AI / ML Analytics Core     │       │   Alerting Network   │
+                    │  • IsolationForest Engine     │       │  • Telegram Bot API  │
+                    │  • Adaptive Z-Score Engine    │──────►│  • SMTP TLS Mailer   │
+                    │  • Root Cause Engine (RCA)    │       │  • In-App Center     │
+                    │  • 12-Topic AI Assistant      │       └──────────────────────┘
+                    └───────────────────────────────┘
 ```
 
 ---
 
-## ✨ Core Feature Matrix
+## ✨ Core Capabilities & Tab Index
 
-| # | Feature Tab | Key Functionality |
+> [!IMPORTANT]
+> The Streamlit interface organizes facility management into **10 dedicated operational tabs**, accessible based on active user privileges:
+
+| Tab ID | Module Name | Core Capabilities |
 | :---: | :--- | :--- |
-| **0** | **🔰 Onboarding Sandbox** | Concept guides, simulated interactive guided missions (rupture, heatwave), and one-click role switcher |
-| **1** | **🏠 Command Center** | Health ring gauge, KPI cards, live sparklines, and recent alert feed |
-| **2** | **📈 Telemetry & Analytics**| Live sensor streaming, Plotly multi-chart, and correlation heatmap |
-| **3** | **🌐 Digital Twin** | PyDeck 3D geo-spatial node map and real-time status cards |
-| **4** | **🤖 RCA Engine** | AI root cause analysis diagnostics, mitigation path, and branded PDF report download |
-| **5** | **🌱 ESG Dashboard** | CO₂/water/energy trends, ESG score timeline, and financial savings calculator |
-| **6** | **🚨 Alert Center** | Multi-channel dispatch (Telegram, Email), severity levels, and ACK system |
-| **7** | **💬 AI Assistant** | Domain-aware chatbot, 12-topic knowledge base, and quick chat suggestions |
-| **8** | **📊 Data Insights** | EDA stats, IsolationForest model training interface, and data dictionary |
-| **9** | **📜 Audit & Compliance** | Immutable audit trail ledger, CSV export, and administrative purge controls |
+| <kbd>0</kbd> | **🔰 Onboarding Sandbox** | Concept walkthroughs, interactive rupture & heatwave guided missions, and role switcher |
+| <kbd>1</kbd> | **🏠 Command Center** | Real-time health score gauge, primary KPI cards, live telemetry sparklines, active alert feeds |
+| <kbd>2</kbd> | **📈 Telemetry & Analytics** | Interactive streaming control, multi-sensor Plotly charts, anomaly injection, correlation matrix |
+| <kbd>3</kbd> | **🌐 Digital Twin** | Geospatial PyDeck 3D node map, node telemetry popups, status breakdown cards |
+| <kbd>4</kbd> | **🤖 RCA Diagnostics** | AI root cause failure vector mapping, step-by-step mitigation paths, downloadable PDF reports |
+| <kbd>5</kbd> | **🌱 ESG Dashboard** | Resource utilization trends, carbon footprint calculation, ESG timeline, financial savings estimator |
+| <kbd>6</kbd> | **🚨 Alert Center** | Telegram/Email notification dispatch, severity filtering, alert acknowledge (ACK) workflow |
+| <kbd>7</kbd> | **💬 AI Assistant** | State-aware 12-topic conversational agent, instant quick-action prompt chips |
+| <kbd>8</kbd> | **📊 Data Insights** | Exploratory data analysis, IsolationForest retraining panel, full telemetry data dictionary |
+| <kbd>9</kbd> | **📜 Audit & Compliance** | Immutable SHA-256 security audit ledger, CSV log export, administrative purge controls |
 
 ---
 
-## 🖥️ Frontend Screenshots
+## 🖼️ Visual System Showcase
 
-> All screenshots captured from the live Streamlit dashboard at `app.py`
-
-#### 🔰 Welcome Sandbox & Command Center HUD
+### 1. Interactive Onboarding & Command Center
 <table>
   <tr>
     <td align="center" width="50%">
       <img src="Project Demo/frontend/Welcome_and_Interactive_Sandbox.png" alt="Onboarding & Sandbox" width="100%"/>
-      <br/><sub><b>Onboarding & Sandbox Tab</b></sub>
-      <br/><sub>Concept cards, guided missions, and one-click role switcher</sub>
+      <br/><sub><b>🔰 Onboarding & Guided Mission Sandbox</b></sub>
     </td>
     <td align="center" width="50%">
-      <img src="Project Demo/frontend/Main_Command_Center_Dashboard.png" alt="Command Center" width="100%"/>
-      <br/><sub><b>Command Center HUD</b></sub>
-      <br/><sub>Real-time health score ring, active alerts, and live sensor sparklines</sub>
+      <img src="Project Demo/frontend/Main_Command_Center_Dashboard.png" alt="Command Center HUD" width="100%"/>
+      <br/><sub><b>🏠 Operational Command Center HUD</b></sub>
     </td>
   </tr>
 </table>
 
-#### 📈 Sensor Telemetry & 3D Digital Twin
+### 2. Telemetry Stream & 3D Geospatial Digital Twin
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="Project Demo/frontend/Telemetry_and_Analytics_Console.png" alt="Telemetry Stream" width="100%"/>
-      <br/><sub><b>Live Telemetry & Anomaly Injection Console</b></sub>
-      <br/><sub>Dynamic data streaming charts and anomaly injection controls</sub>
+      <img src="Project Demo/frontend/Telemetry_and_Analytics_Console.png" alt="Telemetry Console" width="100%"/>
+      <br/><sub><b>📈 Live Telemetry & Anomaly Control</b></sub>
     </td>
     <td align="center" width="50%">
       <img src="Project Demo/frontend/GeoSpatial_Digital_Twin.png" alt="Digital Twin Map" width="100%"/>
-      <br/><sub><b>Geospatial 3D Digital Twin Map</b></sub>
-      <br/><sub>PyDeck visualization of facility nodes with status cards</sub>
+      <br/><sub><b>🌐 3D PyDeck Geospatial Digital Twin</b></sub>
     </td>
   </tr>
 </table>
 
-#### 🤖 Diagnostics & AI Assistant Chatbot
+### 3. RCA Diagnostics & AI Assistant
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="Project Demo/frontend/RCA_Diagnostic_Engine.png" alt="RCA Mitigation Engine" width="100%"/>
-      <br/><sub><b>RCA Diagnostics & Mitigation Center</b></sub>
-      <br/><sub>AI failure vector mapping, step-by-step mitigation paths, and branded PDF generation</sub>
+      <img src="Project Demo/frontend/RCA_Diagnostic_Engine.png" alt="RCA Diagnostics" width="100%"/>
+      <br/><sub><b>🤖 RCA Failure Vector & Mitigation Engine</b></sub>
     </td>
     <td align="center" width="50%">
-      <img src="Project Demo/frontend/AI_Assistant_Chat_Interface.png" alt="AI Assistant" width="100%"/>
-      <br/><sub><b>AI Assistant Chat Interface</b></sub>
-      <br/><sub>Domain-aware chatbot with state integration and fast chat suggestion chips</sub>
+      <img src="Project Demo/frontend/AI_Assistant_Chat_Interface.png" alt="AI Chatbot" width="100%"/>
+      <br/><sub><b>💬 Domain-Aware AI Assistant</b></sub>
     </td>
   </tr>
 </table>
 
-#### 🌱 ESG Carbon Ledger & Security Audits
+### 4. ESG Carbon Ledger & Security Audits
 <table>
   <tr>
     <td align="center" width="50%">
       <img src="Project Demo/frontend/ESG_Carbon_and_Sustainability_Dashboard.png" alt="ESG Carbon Dashboard" width="100%"/>
-      <br/><sub><b>ESG Carbon & Sustainability Dashboard</b></sub>
-      <br/><sub>Carbon credits, water conservation metrics, and financial calculator</sub>
+      <br/><sub><b>🌱 ESG Sustainability & Carbon Ledger</b></sub>
     </td>
     <td align="center" width="50%">
       <img src="Project Demo/frontend/Immutable_Audit_Ledger.png" alt="Audit Ledger" width="100%"/>
-      <br/><sub><b>Immutable Audit & Compliance Ledger</b></sub>
-      <br/><sub>Admin controls, CSV export, and security action logs</sub>
+      <br/><sub><b>📜 Immutable Audit Trail Ledger</b></sub>
     </td>
   </tr>
 </table>
 
-### ⚙️ Backend Screenshots
-
-> Screenshots captured from the live FastAPI REST microservice Swagger UI documentation at `/docs`
-
+### 5. Backend REST API Microservice (FastAPI / Swagger)
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="Project Demo/backend/FastAPI_Backend_Endpoints_Swagger.png" alt="FastAPI Endpoints Swagger" width="100%"/>
-      <br/><sub><b>FastAPI REST Backend Endpoints</b></sub>
-      <br/><sub>Exposes endpoints for telemetry streams, incident tracking, audit trails, and ESG updates</sub>
+      <img src="Project Demo/backend/FastAPI_Backend_Endpoints_Swagger.png" alt="FastAPI Endpoints" width="100%"/>
+      <br/><sub><b>⚙️ REST Endpoints Specification</b></sub>
     </td>
     <td align="center" width="50%">
-      <img src="Project Demo/backend/FastAPI_Data_Schemas_Swagger.png" alt="FastAPI Data Schemas" width="100%"/>
-      <br/><sub><b>FastAPI Data Schemas (Swagger OAS 3.1)</b></sub>
-      <br/><sub>Strict request/response Pydantic models mapping data transfer objects</sub>
+      <img src="Project Demo/backend/FastAPI_Data_Schemas_Swagger.png" alt="FastAPI Schemas" width="100%"/>
+      <br/><sub><b>📋 OAS 3.1 Pydantic Data Models</b></sub>
     </td>
   </tr>
 </table>
 
 ---
 
-## 🚀 Quick Start Guide
+## ⚡ Quick Start & Setup
 
 ### Prerequisites
-- Python 3.11+
-- pip
+- <kbd>Python 3.11+</kbd>
+- <kbd>pip</kbd> package manager
 
-### Local Installation
+### Local Environment Setup
+
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/shambhushekharsinha-engg/HydroThermal_Nexus_AI.git
 cd HydroThermal_Nexus_AI
 
-# Install Streamlit and full frontend dependencies
+# 2. Install required dependencies
 pip install -r requirements.txt
 
-# Run the Streamlit cockpit locally
+# 3. Launch the Streamlit Cockpit
 streamlit run app.py
 ```
-Open **http://localhost:8501** in your browser.
+
+Access the frontend cockpit at **`http://localhost:8501`** in your browser.
 
 ---
 
-## 🐳 Running with Docker
+## 🐳 Docker Containerization
 
-Build and run both the Streamlit app and FastAPI backend services securely containerized:
+Run the Streamlit application and FastAPI backend as containerized microservices:
+
 ```bash
-# Build & start services
+# Build and run with Docker Compose
 docker-compose up --build
 ```
-- **Streamlit Cockpit**: `http://localhost:8501`
-- **FastAPI Backend (docs)**: `http://localhost:8001/docs`
+
+- **Streamlit Cockpit**: <kbd>http://localhost:8501</kbd>
+- **FastAPI REST API Docs**: <kbd>http://localhost:8001/docs</kbd>
 
 ---
 
-## 🔐 Default Credentials
+## 🔐 Access Roles & Default Passwords
 
-| Role | Username | Password | Permissions |
-|:---|:---|:---|:---|
-| **Admin** | `admin` | `Admin@Nexus2026!` | Full access — all 15 permissions |
-| **Operator** | `operator1` | `Operator@2026#` | Trigger anomalies, send alerts, download reports |
-| **Viewer** | `viewer1` | `Viewer@View123` | Read-only dashboard access |
+> [!WARNING]
+> Default credentials are provided for demo evaluation purposes. **Rotate all credentials prior to production deployment.**
 
-> ⚠️ **Change all default passwords immediately in production.**
-
----
-
-## 🤖 AI / ML Stack
-
-### 1. IsolationForest (scikit-learn)
-- **Purpose**: Unsupervised anomaly detection on 6-feature telemetry.
-- **Features**: `Electricity_kWh`, `Water_Litres`, `Pressure_PSI`, `Thermal_Temp_C`, `Outdoor_Temp_C`, `Humidity_Pct`
-- **Contamination**: 5% (configurable in UI)
-- **Output**: `IF_Anomaly` (bool) + `IF_Score` (0–100 risk score)
-
-### 2. Adaptive Z-Score Engine
-- **Purpose**: Fast per-sensor threshold detection with environmental adjustments.
-- **Humidity adjustment**: `adjusted_mean = base + (humidity × 0.15)`
-- **Temperature adjustment**: `adjusted_mean = base + max(0, temp - 30) × 85`
-- **Threshold**: Z > 3.5 → anomaly flag
-
-### 3. AI Chatbot
-- **Domain**: 12-topic knowledge base (anomaly detection, ESG, security, RBAC, sensors, reports...)
-- **State-aware**: Reads active anomaly and health score into each response.
-- **Intent detection**: Keyword + phrase fuzzy matching.
+| Role | Username | Password | Permission Scope |
+| :--- | :--- | :--- | :--- |
+| **Admin** | <kbd>admin</kbd> | <kbd>Admin@Nexus2026!</kbd> | Complete system authority across all 15 permission nodes |
+| **Operator** | <kbd>operator1</kbd> | <kbd>Operator@2026#</kbd> | Inject anomalies, trigger hardware actuation, dispatch notifications, export PDFs |
+| **Viewer** | <kbd>viewer1</kbd> | <kbd>Viewer@View123</kbd> | Read-only telemetry viewing and ESG analytics access |
 
 ---
 
-## 🌱 ESG Impact Model
+## 🤖 Intelligence & ML Stack
 
-$$ESG\ Score = (\text{water}\_score \times 0.35) + (\text{co2}\_score \times 0.35) + (\text{energy}\_score \times 0.20) + (\text{uptime}\_score \times 0.10)$$
+### 1. Unsupervised IsolationForest (`scikit-learn`)
+- **Telemetry Vector**: `[Electricity_kWh, Water_Litres, Pressure_PSI, Thermal_Temp_C, Outdoor_Temp_C, Humidity_Pct]`
+- **Contamination Parameter**: Configurable from 1% to 10% (Default: <kbd>5%</kbd>)
+- **Calculated Metric**: `IF_Score` anomaly risk probability (0 to 100)
 
-$$\text{Financial Savings (INR)} = (\text{water}\_saved\_L \times ₹0.05) + (\text{energy}\_saved\_kWh \times ₹8) + \left(\frac{\text{co2}\_saved\_kg}{1000} \times \$15 \times 83.5\right)$$
+### 2. Adaptive Z-Score Threshold Detector
+- **Dynamic Baseline**: Adjusts expected thresholds dynamically based on ambient weather data:
+  $$\text{Adjusted Mean}_{\text{temp}} = \text{Base Mean} + \max(0, \text{Outdoor Temp} - 30) \times 0.85$$
+- **Detection Trigger**: Standard score magnitude $|Z| > 3.5$ flags immediate localized anomaly.
+
+### 3. Knowledge-Augmented AI Assistant
+- **Domain Scope**: 12 operational domains (Sensors, Machine Learning, ESG, RBAC, Hardware Actuators, Security, Alerts)
+- **Live State Awareness**: Automatically injects active facility health score and active anomaly flags into conversation context.
 
 ---
 
-## 🔐 Security Architecture
+## 🌱 ESG & Sustainability Analytics
 
-| Layer | Implementation |
+The platform uses mathematical models to compute environmental impact:
+
+$$\text{ESG Score} = (\text{Water Score} \times 0.35) + (\text{CO}_2\text{ Score} \times 0.35) + (\text{Energy Score} \times 0.20) + (\text{Uptime Score} \times 0.10)$$
+
+$$\text{Financial Savings (₹)} = (\text{Water Saved (L)} \times 0.05) + (\text{Energy Saved (kWh)} \times 8.00) + \left(\frac{\text{CO}_2\text{ Saved (kg)}}{1000} \times 15 \times 83.50\right)$$
+
+---
+
+## 🛡️ Enterprise Security Blueprint
+
+| Security Vector | Implementation Detail |
 | :--- | :--- |
-| **Authentication** | SHA-256 + application salt; 5-attempt lockout |
-| **Session Management** | UUID4 tokens, 8-hour expiry, SQLite-backed |
-| **Authorization** | RBAC — 3 roles × 15 explicit permissions |
-| **Input Validation** | HTML escaping + SQL keyword stripping |
-| **Data Privacy** | PII fields auto-hashed (SHA-256) on ingestion |
-| **API Security** | FastAPI `X-API-Key` header authentication |
-| **Container Security** | Non-root Docker user (`nexususer`, UID 1000) |
+| **Password Vaulting** | SHA-256 cryptographic hash with per-app salt; 5-failed-attempt lockout policy |
+| **Session Security** | UUID4 tokens stored in thread-safe SQLite database with 8-hour expiry |
+| **Authorization** | Strict RBAC evaluating 3 distinct user roles against 15 discrete permission actions |
+| **Input Sanitization** | Dynamic HTML tag escaping & SQL injection keyword filtering on all inputs |
+| **PII Anonymization** | Automatic SHA-256 hashing of sensitive operator identifiers upon ingestion |
+| **API Gateway Auth** | FastAPI header verification using secure `<X-API-Key>` signatures |
+| **Container Hardening** | Non-privileged Docker execution context (<kbd>nexususer</kbd>, UID 1000) |
 
 ---
 
-## 📂 Project Structure
+## 📂 Repository Directory Topology
 
 ```
 HydroThermal_Nexus_AI/
-├── app.py                     # Main Streamlit app (10 tabs, auth, UI)
-├── ml_engine.py               # IsolationForest + Z-score anomaly engine
-├── ai_assistant.py            # Domain-aware AI chatbot
-├── alert_manager.py           # Multi-channel alert dispatcher
-├── data_processor.py          # CSV/XLSX ingestion + PII anonymization
-├── actuators.py               # Hardware actuation simulation
-├── rca_engine.py              # Root cause analysis engine
-├── report_generator.py        # ReportLab PDF generator
-├── config.py                  # Baseline constants & RBAC config
-├── pyproject.toml             # Vercel deployment package dependencies
+├── app.py                     # Main Streamlit cockpit application (10 tabs, auth, UI)
+├── ml_engine.py               # IsolationForest + Z-score anomaly detection algorithms
+├── ai_assistant.py            # Domain-aware 12-topic AI chatbot engine
+├── alert_manager.py           # Telegram & Email notification dispatcher
+├── data_processor.py          # Data ingestion pipeline & PII anonymization
+├── actuators.py               # Hardware actuation & mitigation logic
+├── rca_engine.py              # AI root cause diagnostics module
+├── report_generator.py        # Branded PDF report generation engine
+├── config.py                  # System thresholds, constants & RBAC matrix
+├── pyproject.toml             # Deployment metadata & dependency specification
 │
 ├── backend/
-│   ├── api.py                 # FastAPI REST endpoints (port 8001)
-│   ├── database.py            # Thread-safe SQLite access layer
-│   └── security.py            # RBAC checks, sanitization, PII masking
+│   ├── api.py                 # FastAPI REST API endpoints (Port 8001)
+│   ├── database.py            # Thread-safe SQLite database manager
+│   └── security.py            # RBAC validation, input sanitization & hash vault
 │
 ├── assets/
-│   ├── logo.png               # Custom AI-generated project logo
-│   ├── architecture.png       # System architecture diagram
-│   └── styles.css             # Glassmorphism dark theme CSS
+│   ├── logo.png               # Custom project branding asset
+│   ├── architecture.png       # System architecture workflow diagram
+│   └── styles.css             # Glassmorphism dark-navy theme CSS
+│
+├── Project Demo/
+│   ├── video/                 # Full system HD video demonstration (with audio)
+│   ├── frontend/              # High-resolution frontend dashboard screenshots
+│   └── backend/               # FastAPI Swagger documentation screenshots
 │
 ├── .streamlit/
-│   └── config.toml            # Dark navy theme configuration
+│   └── config.toml            # Streamlit visual theme configuration
 │
-├── requirements.txt           # Master Python dependencies (Streamlit Cloud)
-├── Dockerfile                 # Production Docker image (Python 3.11)
-├── docker-compose.yml         # Multi-service compose with volumes
-├── SCALING_STRATEGY.md        # Cloud deployment & scaling guide
-└── README.md                  # This file
+├── requirements.txt           # Master Python dependencies list
+├── Dockerfile                 # Multi-stage production container configuration
+├── docker-compose.yml         # Multi-container orchestration specification
+├── SCALING_STRATEGY.md        # Cloud architecture & horizontal scaling strategy
+└── README.md                  # Comprehensive project documentation
 ```
 
 ---
 
-## 👨‍💻 Developer Profile
+## 👨‍💻 Author & Engineering Profile
 
 <div align="center">
 
@@ -364,36 +375,36 @@ HydroThermal_Nexus_AI/
     <td align="center" width="100%">
       <table>
         <tr>
-          <td>👤 <b>Name</b></td>
-          <td>Shambhu Shekhar Sinha</td>
+          <td>👤 <b>Lead Engineer</b></td>
+          <td><b>Shambhu Shekhar Sinha</b></td>
         </tr>
         <tr>
-          <td>🎓 <b>Degree</b></td>
+          <td>🎓 <b>Degree & Specialization</b></td>
           <td>B.Tech — Computer Science & Engineering (AI & ML)</td>
         </tr>
         <tr>
-          <td>🏫 <b>College</b></td>
+          <td>🏫 <b>Institution</b></td>
           <td>Greater Noida Institute of Technology <b>(GNIOT)</b></td>
         </tr>
         <tr>
-          <td>🏛️ <b>University</b></td>
-          <td>Dr. APJ Abdul Kalam Technological University, Lucknow</td>
+          <td>🏛️ <b>Affiliated University</b></td>
+          <td>Dr. APJ Abdul Kalam Technical University (AKTU), Lucknow</td>
         </tr>
         <tr>
-          <td>📍 <b>Location</b></td>
+          <td>📍 <b>Base Location</b></td>
           <td>Greater Noida, Uttar Pradesh, India</td>
         </tr>
         <tr>
-          <td>🐙 <b>GitHub</b></td>
-          <td><a href="https://github.com/shambhushekharsinha-engg">@shambhushekharsinha-engg</a></td>
+          <td>🐙 <b>GitHub Workspace</b></td>
+          <td><a href="https://github.com/shambhushekharsinha-engg"><b>@shambhushekharsinha-engg</b></a></td>
         </tr>
         <tr>
-          <td>🖥️ <b>Frontend</b></td>
-          <td><a href="https://hydrothermal-nexus-ai.streamlit.app/">hydrothermal-nexus-ai.streamlit.app</a></td>
+          <td>🖥️ <b>Production Frontend</b></td>
+          <td><a href="https://hydrothermal-nexus-ai.streamlit.app/"><b>hydrothermal-nexus-ai.streamlit.app</b></a></td>
         </tr>
         <tr>
-          <td>⚙️ <b>Backend API</b></td>
-          <td><a href="https://hydrothermal-nexus-ai.vercel.app/docs">hydrothermal-nexus-ai.vercel.app/docs</a></td>
+          <td>⚙️ <b>Production REST API</b></td>
+          <td><a href="https://hydrothermal-nexus-ai.vercel.app/docs"><b>hydrothermal-nexus-ai.vercel.app/docs</b></a></td>
         </tr>
       </table>
     </td>
@@ -402,18 +413,19 @@ HydroThermal_Nexus_AI/
 
 <br/>
 
-<img src="https://img.shields.io/badge/B.Tech-CSE%20%7C%20AI%20%26%20ML-00d4ff?style=flat-square&labelColor=010308"/>
-<img src="https://img.shields.io/badge/GNIOT-Greater%20Noida%20Institute%20of%20Technology-10b981?style=flat-square"/>
-<img src="https://img.shields.io/badge/AKTU-Lucknow-FF4B4B?style=flat-square"/>
+<img src="https://img.shields.io/badge/B.Tech-CSE%20%7C%20AI%20%26%20ML-00f0ff?style=flat-square&labelColor=0d1117"/>
+<img src="https://img.shields.io/badge/GNIOT-Greater%20Noida%20Institute%20of%20Technology-10b981?style=flat-square&labelColor=0d1117"/>
+<img src="https://img.shields.io/badge/AKTU-Lucknow-FF4B4B?style=flat-square&labelColor=0d1117"/>
 <img src="https://img.shields.io/badge/GitHub-shambhushekharsinha--engg-181717?style=flat-square&logo=github"/>
 
 </div>
 
 ---
 
-## 📄 License
-MIT License — Free for academic, commercial, and portfolio use.
+## 📜 Licensing & Usage
 
----
+Distributed under the **MIT License**. Free for academic research, commercial deployment, and portfolio presentation.
 
-*Built with ❤️ for the Innovation Journey — Showcase-Ready AI for Sustainability*
+<div align="center">
+  <sub><i>Crafted with precision for AI-Driven Industrial Engineering & Environmental Sustainability</i></sub>
+</div>
