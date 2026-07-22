@@ -6,6 +6,11 @@
 
 ![HydroThermal Nexus-AI](assets/logo.png)
 
+## 🌐 Live Deployments
+
+- **🖥️ Streamlit Frontend Dashboard**: [https://hydrothermal-nexus-ai.streamlit.app/](https://hydrothermal-nexus-ai.streamlit.app/)
+- **⚙️ FastAPI Backend API (Swagger UI Docs)**: [https://hydrothermal-nexus-ai.vercel.app/docs](https://hydrothermal-nexus-ai.vercel.app/docs)
+
 ---
 
 ## 📋 Problem Statement
@@ -215,6 +220,42 @@ HydroThermal_Nexus_AI/
 ├── SCALING_STRATEGY.md      # Cloud deployment & scaling guide
 └── README.md                # This file
 ```
+
+---
+
+## 📸 Screenshots
+
+### Onboarding & Guided Sandbox (Tab 0)
+- Explains core hydrothermal concepts, triggers simulated incidents (e.g., Pipe Rupture, HVAC Heatwave), and features a one-click role switcher (Admin, Operator, Viewer).
+![Onboarding and Sandbox](assets/onboarding_sandbox.png)
+
+### Command Center Dashboard (Tab 1)
+- Real-time facility health ring, KPI indicators for pressure, temperature, energy consumption, and active incident alerts.
+![Command Center](assets/command_center.png)
+
+### Telemetry Stream & Anomaly Injection (Tab 2)
+- Live sensor sparklines and stream toggle, showing sensor correlations and anomaly markers.
+![Telemetry Stream](assets/telemetry_stream.png)
+
+### PyDeck 3D Digital Twin Map (Tab 3)
+- Spatial map nodes showing interactive status cards and node status flags.
+![Digital Twin](assets/digital_twin.png)
+
+### Root Cause Analysis & Automated Mitigation (Tab 4)
+- AI-generated diagnostic failure vectors, step-by-step mitigation flows, and branded PDF reporting.
+![RCA Engine](assets/rca_engine.png)
+
+---
+
+## 👨‍💻 Developer
+
+**Shambhu Shekhar Sinha**  
+B.Tech Computer Science & Engineering (AI & ML)  
+*Greater Noida Institute of Technology*  
+
+- **GitHub**: [shambhushekharsinha-engg](https://github.com/shambhushekharsinha-engg)  
+- **LinkedIn**: [Shambhu Shekhar Sinha](https://linkedin.com/in/shambhu-shekhar-sinha-636498341)  
+- **Email**: [shambhushekharsinha@gmail.com](mailto:shambhushekharsinha@gmail.com)
 
 ---
 
