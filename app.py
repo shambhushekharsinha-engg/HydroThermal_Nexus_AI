@@ -322,6 +322,25 @@ def show_header():
     </div>
     """, unsafe_allow_html=True)
 
+    active_mission = st.session_state.get("active_mission", "None")
+    if active_mission != "None":
+        if active_mission == "Pipe Rupture":
+            st.markdown("""
+            <div class="glass-panel" style="padding: 0.6rem 1rem; border-left: 4px solid #FF2D55; margin-top: 0.8rem; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+              <div style="font-size: 0.82rem; color: #E2E8F0;">
+                <b style="color: #FF2D55;">🚨 Guided Mission Active:</b> <b>Pipe Rupture</b>. Navigate: <b>Command Center</b> (health drop) ➡️ <b>Telemetry & Analytics</b> (plunge charts) ➡️ <b>Digital Twin</b> (red node) ➡️ <b>RCA Engine</b> (mitigation/PDF) ➡️ <b>ESG Dashboard</b> (water saved).
+              </div>
+              <div style="font-size: 0.72rem; color: #64748B;">[Head to <b>Welcome & Sandbox</b> tab to reset/change]</div>
+            </div>""", unsafe_allow_html=True)
+        elif active_mission == "HVAC Heatwave":
+            st.markdown("""
+            <div class="glass-panel" style="padding: 0.6rem 1rem; border-left: 4px solid #FFB800; margin-top: 0.8rem; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+              <div style="font-size: 0.82rem; color: #E2E8F0;">
+                <b style="color: #FFB800;">⚠️ Guided Mission Active:</b> <b>HVAC Heatwave</b>. Navigate: <b>Command Center</b> (temp rise) ➡️ <b>Telemetry & Analytics</b> (heatmap) ➡️ <b>RCA Engine</b> (cooling grid mitigation) ➡️ <b>ESG Dashboard</b> (energy/cost saved).
+              </div>
+              <div style="font-size: 0.72rem; color: #64748B;">[Head to <b>Welcome & Sandbox</b> tab to reset/change]</div>
+            </div>""", unsafe_allow_html=True)
+
 
 # ════════════════════════════════════════════════════════════════════
 # HELPER — Plotly chart wrapper
@@ -329,6 +348,196 @@ def show_header():
 def _plotly(fig, height=320):
     fig.update_layout(**PLOTLY_LAYOUT, height=height)
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+
+# ════════════════════════════════════════════════════════════════════
+# TAB 0 — WELCOME & SANDBOX
+# ════════════════════════════════════════════════════════════════════
+def tab_sandbox():
+    st.markdown('<div class="section-title">🔰 Onboarding & Interactive Sandbox</div>', unsafe_allow_html=True)
+    st.caption("A beginner-friendly control center to understand hydrothermal energy systems, explore IoT telemetry, and run guided diagnostic scenarios.")
+
+    role = st.session_state.get("role", "Viewer")
+    username = st.session_state.get("username", "User")
+    current_mission = st.session_state.get("active_mission", "None")
+
+    # Concept cards row
+    st.markdown("### 🔍 Core Concepts of Hydrothermal Systems")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("""
+        <div class="glass-panel" style="height: 100%;">
+          <div style="font-size: 1.1rem; font-weight: 700; color: #00D4FF; margin-bottom: 0.5rem;">💧 Water loop (Hydraulic)</div>
+          <p style="font-size: 0.85rem; color: #E2E8F0; line-height: 1.5;">
+            Hydrothermal facilities use continuous water flow to absorb and transfer thermal energy. 
+            <b>Pressure (PSI)</b> and <b>Flow Meter (L/s)</b> monitor pipe health and fluid flow. Sudden drops signal pipe leaks or ruptures.
+          </p>
+        </div>""", unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div class="glass-panel" style="height: 100%;">
+          <div style="font-size: 1.1rem; font-weight: 700; color: #FF6B35; margin-bottom: 0.5rem;">🌡️ Thermal Transfer</div>
+          <p style="font-size: 0.85rem; color: #E2E8F0; line-height: 1.5;">
+            Heat from datacenters or campus HVAC systems is moved via closed loops to cooling towers.
+            <b>Thermal Temp (°C)</b> monitors loop temperatures. Excess heat indicates pump failure, blockages, or high compute load.
+          </p>
+        </div>""", unsafe_allow_html=True)
+    with col3:
+        st.markdown("""
+        <div class="glass-panel" style="height: 100%;">
+          <div style="font-size: 1.1rem; font-weight: 700; color: #00FF88; margin-bottom: 0.5rem;">🌱 ESG & Mitigation</div>
+          <p style="font-size: 0.85rem; color: #E2E8F0; line-height: 1.5;">
+            By monitoring loops with AI, we predict leaks and excessive load. Automated actions (actuation) adjust solenoid valves or throttle servers to prevent water loss and excessive carbon emissions.
+          </p>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # Interactive Simulator Row
+    col_mission, col_roles = st.columns([1.6, 1])
+
+    with col_mission:
+        st.markdown("### 💥 Guided Diagnostic Missions")
+        st.caption("Trigger an industrial emergency scenario to see how Nexus-AI reacts across the entire dashboard in real time.")
+
+        # Mission control
+        m1, m2, m3 = st.columns(3)
+        with m1:
+            if st.button("💧 Mission: Pipe Rupture", use_container_width=True, help="Trigger pressure drop & solenoid valve restriction"):
+                st.session_state["active_mission"] = "Pipe Rupture"
+                st.session_state["current_anomaly"] = "Pipe Rupture / Flow Drop"
+                st.session_state["health_score"] = 42.1
+                # Trigger alert dispatch
+                template = build_anomaly_alert("Pipe Rupture / Flow Drop", username)
+                dispatch_alert(
+                    severity=template["severity"],
+                    title=template["title"],
+                    message=template["message"],
+                    anomaly_type="Pipe Rupture / Flow Drop",
+                    username=username,
+                    role=role,
+                    telegram_token=st.session_state.get("bot_token", ""),
+                    telegram_chat=st.session_state.get("chat_id", ""),
+                    force=True,
+                )
+                st.rerun()
+        with m2:
+            if st.button("🌡️ Mission: HVAC Heatwave", use_container_width=True, help="Trigger chiller exceedance & load shedding"):
+                st.session_state["active_mission"] = "HVAC Heatwave"
+                st.session_state["current_anomaly"] = "HVAC Overheat / Thermal Spike"
+                st.session_state["health_score"] = 63.8
+                # Trigger alert dispatch
+                template = build_anomaly_alert("HVAC Overheat / Thermal Spike", username)
+                dispatch_alert(
+                    severity=template["severity"],
+                    title=template["title"],
+                    message=template["message"],
+                    anomaly_type="HVAC Overheat / Thermal Spike",
+                    username=username,
+                    role=role,
+                    telegram_token=st.session_state.get("bot_token", ""),
+                    telegram_chat=st.session_state.get("chat_id", ""),
+                    force=True,
+                )
+                st.rerun()
+        with m3:
+            if st.button("🔄 Mission: Reset System", use_container_width=True, help="Reset system to all nominal operations"):
+                st.session_state["active_mission"] = "None"
+                st.session_state["current_anomaly"] = "Nominal / Normal Operations"
+                st.session_state["health_score"] = 97.4
+                st.rerun()
+
+        # Display checklist according to active mission
+        if current_mission == "Pipe Rupture":
+            st.markdown("""
+            <div class="glass-panel alert-item critical" style="padding: 1rem; border-left: 5px solid #FF2D55;">
+              <div style="font-weight: 700; color: #FF2D55; font-size: 1rem;">🚨 MISSION ACTIVE: Pipe Rupture / Leak Response</div>
+              <div style="font-size: 0.85rem; color: #E2E8F0; margin-top: 0.5rem; line-height: 1.6;">
+                A major pressure rupture has been injected. Follow this checklist to inspect the system response:
+                <ul style="margin-top: 0.4rem; padding-left: 1.2rem;">
+                  <li><b>Step 1:</b> Inspect the <b>🏠 Command Center</b> tab. The Health Score Ring has dropped to 42.1%.</li>
+                  <li><b>Step 2:</b> Go to <b>📈 Telemetry & Analytics</b> and enable 'Live Sensor Streaming' to see the pressure and flow levels drop in the live charts.</li>
+                  <li><b>Step 3:</b> Click on the <b>🌐 Digital Twin</b> tab and observe that <i>Hydro-Node-Alpha</i> has turned bright red, indicating a failure location.</li>
+                  <li><b>Step 4:</b> Check the <b>🤖 RCA Engine</b> tab to view the AI diagnostics report indicating fluid loss. Download the PDF Incident Audit report.</li>
+                  <li><b>Step 5:</b> Visit the <b>🌱 ESG Dashboard</b> to see how throttling the solenoid valve to 20% aperture prevented <b>1,450 Liters/hour</b> of clean water from being wasted.</li>
+                  <li><b>Step 6:</b> Go to <b>💬 AI Assistant</b> and type in the prompt: <i>"How does the solenoid valve state impact water conservation?"</i> to ask the domain chatbot about it.</li>
+                </ul>
+              </div>
+            </div>""", unsafe_allow_html=True)
+        elif current_mission == "HVAC Heatwave":
+            st.markdown("""
+            <div class="glass-panel alert-item warning" style="padding: 1rem; border-left: 5px solid #FFB800;">
+              <div style="font-weight: 700; color: #FFB800; font-size: 1rem;">⚠️ MISSION ACTIVE: HVAC Thermal Spike Response</div>
+              <div style="font-size: 0.85rem; color: #E2E8F0; margin-top: 0.5rem; line-height: 1.6;">
+                A heat exchange degradation anomaly has been injected. Follow this checklist:
+                <ul style="margin-top: 0.4rem; padding-left: 1.2rem;">
+                  <li><b>Step 1:</b> Check the <b>🏠 Command Center</b>. The Thermal Loop Temp card is yellow, indicating elevated levels.</li>
+                  <li><b>Step 2:</b> Go to <b>📈 Telemetry & Analytics</b> to inspect the Heatmap. Note how outdoor temperature correlates with thermal overload.</li>
+                  <li><b>Step 3:</b> Click on the <b>🌐 Digital Twin</b> tab and note the status of the cooling tower nodes.</li>
+                  <li><b>Step 4:</b> Visit the <b>🤖 RCA Engine</b> tab. The automated mitigation report shows that auxiliary chillers were engaged and high-load servers were throttled down.</li>
+                  <li><b>Step 5:</b> Open the <b>🌱 ESG Dashboard</b> and check the financial calculator. Notice how this intervention saved <b>1,450 kWh</b> of energy and avoided carbon penalties.</li>
+                  <li><b>Step 6:</b> Go to <b>💬 AI Assistant</b> and select the chip or type a question about energy load shedding.</li>
+                </ul>
+              </div>
+            </div>""", unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="glass-panel alert-item info" style="padding: 1rem; border-left: 5px solid #00D4FF;">
+              <div style="font-weight: 700; color: #00D4FF; font-size: 1rem;">💡 Normal Operations Active</div>
+              <div style="font-size: 0.85rem; color: #E2E8F0; margin-top: 0.5rem; line-height: 1.6;">
+                All sensors are reading normal values. Select one of the missions above to begin the interactive onboarding experience!
+              </div>
+            </div>""", unsafe_allow_html=True)
+
+    with col_roles:
+        st.markdown("### 🔐 Role Sandbox (RBAC)")
+        st.caption("Change user privileges with one click to see how the cockpit adapts its access rules.")
+
+        # Sandbox Role Switcher buttons
+        active_role_badge = get_role_badge(role)
+        st.markdown(f"<div style='margin-bottom: 0.8rem;'>Active Role: {active_role_badge}</div>", unsafe_allow_html=True)
+
+        if st.button("👤 Set Active Role: Viewer", use_container_width=True, help="Read-only access, cannot trigger anomalies or download reports"):
+            st.session_state["role"] = "Viewer"
+            db.log_audit(username, "Viewer", "ROLE_SWITCH", "None", "Role switched to Viewer via Sandbox.")
+            st.rerun()
+        if st.button("🔧 Set Active Role: Operator", use_container_width=True, help="Can inject scenarios, send alerts, and inspect telemetry"):
+            st.session_state["role"] = "Operator"
+            db.log_audit(username, "Operator", "ROLE_SWITCH", "None", "Role switched to Operator via Sandbox.")
+            st.rerun()
+        if st.button("👑 Set Active Role: Admin", use_container_width=True, help="Full system control including purging audit ledgers"):
+            st.session_state["role"] = "Admin"
+            db.log_audit(username, "Admin", "ROLE_SWITCH", "None", "Role switched to Admin via Sandbox.")
+            st.rerun()
+
+        # Display permission breakdown
+        if role == "Viewer":
+            st.markdown("""
+            <div style="font-size: 0.78rem; color: #64748B; margin-top: 0.6rem; padding: 0.5rem; border: 1px dashed rgba(255,255,255,0.1); border-radius: 4px;">
+              <b>Viewer Privileges:</b><br>
+              ✅ View Dashboard & Analytics<br>
+              ❌ Trigger Scenarios (Disabled)<br>
+              ❌ Download Compliance Reports (Disabled)<br>
+              ❌ Purge System Audit Log (Disabled)
+            </div>""", unsafe_allow_html=True)
+        elif role == "Operator":
+            st.markdown("""
+            <div style="font-size: 0.78rem; color: #64748B; margin-top: 0.6rem; padding: 0.5rem; border: 1px dashed rgba(255,255,255,0.1); border-radius: 4px;">
+              <b>Operator Privileges:</b><br>
+              ✅ View Dashboard & Analytics<br>
+              ✅ Trigger Scenarios (Enabled)<br>
+              ✅ Download Compliance Reports (Enabled)<br>
+              ❌ Purge System Audit Log (Disabled)
+            </div>""", unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div style="font-size: 0.78rem; color: #64748B; margin-top: 0.6rem; padding: 0.5rem; border: 1px dashed rgba(255,255,255,0.1); border-radius: 4px;">
+              <b>Admin Privileges:</b><br>
+              ✅ View Dashboard & Analytics<br>
+              ✅ Trigger Scenarios (Enabled)<br>
+              ✅ Download Compliance Reports (Enabled)<br>
+              ✅ Purge System Audit Log (Enabled)
+            </div>""", unsafe_allow_html=True)
 
 
 # ════════════════════════════════════════════════════════════════════
@@ -1673,12 +1882,14 @@ def main():
     # Session defaults
     st.session_state.setdefault("current_anomaly", "Nominal / Normal Operations")
     st.session_state.setdefault("health_score",    97.4)
+    st.session_state.setdefault("active_mission",  "None")
 
     show_header()
     show_sidebar()
 
-    # ── 9 Navigation Tabs ──────────────────────────────────────────
+    # ── 10 Navigation Tabs ──────────────────────────────────────────
     TAB_LABELS = [
+        "🔰 Welcome & Sandbox",
         "🏠 Command Center",
         "📈 Telemetry & Analytics",
         "🌐 Digital Twin",
@@ -1692,15 +1903,16 @@ def main():
 
     tabs = st.tabs(TAB_LABELS)
 
-    with tabs[0]: tab_command_center()
-    with tabs[1]: tab_telemetry()
-    with tabs[2]: tab_digital_twin()
-    with tabs[3]: tab_rca()
-    with tabs[4]: tab_esg()
-    with tabs[5]: tab_alerts()
-    with tabs[6]: tab_ai_assistant()
-    with tabs[7]: tab_data_insights()
-    with tabs[8]: tab_audit()
+    with tabs[0]: tab_sandbox()
+    with tabs[1]: tab_command_center()
+    with tabs[2]: tab_telemetry()
+    with tabs[3]: tab_digital_twin()
+    with tabs[4]: tab_rca()
+    with tabs[5]: tab_esg()
+    with tabs[6]: tab_alerts()
+    with tabs[7]: tab_ai_assistant()
+    with tabs[8]: tab_data_insights()
+    with tabs[9]: tab_audit()
 
 
 if __name__ == "__main__":
