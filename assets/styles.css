@@ -45,8 +45,14 @@ html, body, [data-testid="stAppViewContainer"] {
   color: var(--text-primary) !important;
 }
 
-/* ── Hide Streamlit Branding ────────────────────── */
-#MainMenu, footer, header { visibility: hidden !important; }
+/* ── Hide Streamlit Branding & Menus ──────────────── */
+#MainMenu, footer { visibility: hidden !important; }
+[data-testid="stHeader"] {
+  background-color: transparent !important;
+}
+[data-testid="stHeader"] [data-testid="stHeaderActionElements"] {
+  display: none !important;
+}
 [data-testid="stDecoration"] { display: none !important; }
 
 /* ── Animated Gradient Header Banner ────────────── */
