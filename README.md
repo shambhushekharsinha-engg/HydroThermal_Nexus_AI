@@ -297,45 +297,48 @@ docker-compose up --build
 
 ---
 
-## 🤖 Intelligence & ML Stack
+## 🤖 Intelligence & ML Stack & Kaggle Benchmark Data
 
-### 1. Unsupervised IsolationForest (`scikit-learn`)
-- **Telemetry Vector**: `[Electricity_kWh, Water_Litres, Pressure_PSI, Thermal_Temp_C, Outdoor_Temp_C, Humidity_Pct]`
-- **Contamination Parameter**: Configurable from 1% to 10% (Default: <kbd>5%</kbd>)
-- **Calculated Metric**: `IF_Score` anomaly risk probability (0 to 100)
+### 1. Unsupervised IsolationForest (`scikit-learn` & `joblib`)
+- **Telemetry Vector**: `[Electricity_kWh, Water_Litres, Pressure_PSI, Thermal_Temp_C, Outdoor_Temp_C, Humidity_Pct, Vibration_mm_s]`
+- **Contamination Parameter**: Configurable (Default: <kbd>4%</kbd>)
+- **Artifact Serialization**: Trained pipeline weights saved to `models/nexus_isolation_forest.joblib` via `joblib`.
+- **Calculated Metric**: `IF_Score` anomaly risk probability (0 to 100).
 
-### 2. Adaptive Z-Score Threshold Detector
-- **Dynamic Baseline**: Adjusts expected thresholds dynamically based on ambient weather data:
-  $$\text{Adjusted Mean}_{\text{temp}} = \text{Base Mean} + \max(0, \text{Outdoor Temp} - 30) \times 0.85$$
-- **Detection Trigger**: Standard score magnitude $|Z| > 3.5$ flags immediate localized anomaly.
+### 2. Kaggle Benchmark Dataset Integration
+- **Dataset Location**: `data/hydrothermal_telemetry_historical.csv` (1,000 rows, 9 multi-sensor columns).
+- **Kaggle Standards**: Aligned with **SKAB (Skoltech Anomaly Benchmark)** & **MetroPT-3 Hydraulic Dataset** standards for industrial hydraulic loops and pump cavitation failure modes.
+- **Kaggle Ingestion**: Custom CSV ingestion adapter in `ml_engine.py` allows dropping any Kaggle time-series CSV to retrain and score models.
 
-### 3. Knowledge-Augmented AI Assistant
-- **Domain Scope**: 12 operational domains (Sensors, Machine Learning, ESG, RBAC, Hardware Actuators, Security, Alerts)
-- **Live State Awareness**: Automatically injects active facility health score and active anomaly flags into conversation context.
+### 3. Automated Training CLI & Pytest Verification
+```bash
+# Train ML model on historical Kaggle benchmark data and serialize weights to models/
+python scripts/train_model.py
+
+# Run continuous background telemetry streamer daemon
+python backend/telemetry_streamer.py
+
+# Execute full automated unit test suite
+python -m pytest tests/ -v
+```
 
 ---
 
-## 🌱 ESG & Sustainability Analytics
+## 🐳 Production Decoupled Docker Microservices
 
-The platform uses mathematical models to compute environmental impact:
+Run the Streamlit Cockpit and FastAPI REST Backend as decoupled microservices using Docker Compose and Nginx reverse proxy:
 
-$$\text{ESG Score} = (\text{Water Score} \times 0.35) + (\text{CO}_2\text{ Score} \times 0.35) + (\text{Energy Score} \times 0.20) + (\text{Uptime Score} \times 0.10)$$
+```bash
+# Copy environment configuration template
+cp .env.example .env
 
-$$\text{Financial Savings (₹)} = (\text{Water Saved (L)} \times 0.05) + (\text{Energy Saved (kWh)} \times 8.00) + \left(\frac{\text{CO}_2\text{ Saved (kg)}}{1000} \times 15 \times 83.50\right)$$
+# Build and start microservices (frontend, backend-api)
+docker-compose up -d --build
+```
 
----
-
-## 🛡️ Enterprise Security Blueprint
-
-| Security Vector | Implementation Detail |
-| :--- | :--- |
-| **Password Vaulting** | SHA-256 cryptographic hash with per-app salt; 5-failed-attempt lockout policy |
-| **Session Security** | UUID4 tokens stored in thread-safe SQLite database with 8-hour expiry |
-| **Authorization** | Strict RBAC evaluating 3 distinct user roles against 15 discrete permission actions |
-| **Input Sanitization** | Dynamic HTML tag escaping & SQL injection keyword filtering on all inputs |
-| **PII Anonymization** | Automatic SHA-256 hashing of sensitive operator identifiers upon ingestion |
-| **API Gateway Auth** | FastAPI header verification using secure `<X-API-Key>` signatures |
-| **Container Hardening** | Non-privileged Docker execution context (<kbd>nexususer</kbd>, UID 1000) |
+- **Streamlit Cockpit**: <kbd>http://localhost:8501</kbd>
+- **FastAPI REST API Docs**: <kbd>http://localhost:8001/docs</kbd>
+- **Health Check Endpoints**: <kbd>http://localhost:8001/api/health</kbd> | <kbd>http://localhost:8001/api/ml/metrics</kbd>
 
 ---
 
@@ -344,7 +347,7 @@ $$\text{Financial Savings (₹)} = (\text{Water Saved (L)} \times 0.05) + (\text
 ```
 HydroThermal_Nexus_AI/
 ├── app.py                     # Main Streamlit cockpit application (10 tabs, auth, UI)
-├── ml_engine.py               # IsolationForest + Z-score anomaly detection algorithms
+├── ml_engine.py               # IsolationForest + Z-score + joblib model persistence
 ├── ai_assistant.py            # Domain-aware 12-topic AI chatbot engine
 ├── alert_manager.py           # Telegram & Email notification dispatcher
 ├── data_processor.py          # Data ingestion pipeline & PII anonymization
@@ -353,11 +356,33 @@ HydroThermal_Nexus_AI/
 ├── report_generator.py        # Branded PDF report generation engine
 ├── config.py                  # System thresholds, constants & RBAC matrix
 ├── pyproject.toml             # Deployment metadata & dependency specification
+├── nginx.conf                 # Production Nginx reverse proxy configuration
+├── .env.example               # Environment variables configuration template
+├── SCALING_STRATEGY.md        # Kubernetes, PostgreSQL & cloud rollout blueprint
 │
 ├── backend/
 │   ├── api.py                 # FastAPI REST API endpoints (Port 8001)
-│   ├── database.py            # Thread-safe SQLite database manager
-│   └── security.py            # RBAC validation, input sanitization & hash vault
+│   ├── database.py            # Thread-safe SQLite/PostgreSQL dynamic database manager
+│   ├── security.py            # RBAC validation, input sanitization & hash vault
+│   └── telemetry_streamer.py  # Continuous IoT sensor telemetry streaming daemon
+│
+├── data/
+│   └── hydrothermal_telemetry_historical.csv # 1,000-row Kaggle SKAB benchmark dataset
+│
+├── models/
+│   └── nexus_isolation_forest.joblib        # Serialized ML model pipeline artifact
+│
+├── scripts/
+│   └── train_model.py         # Offline ML training CLI script
+│
+├── tests/
+│   ├── test_api.py            # FastAPI REST endpoint automated unit tests
+│   └── test_ml.py             # ML engine training & serialization unit tests
+│
+└── .github/workflows/
+    └── ci.yml                 # Automated GitHub Actions CI test & build workflow
+```
+
 │
 ├── assets/
 │   ├── logo.png               # Custom project branding asset

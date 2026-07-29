@@ -8,6 +8,8 @@ ML Analytics Core:
   - Predictive guidance assistant hook
 """
 
+import os
+import joblib
 import numpy as np
 import pandas as pd
 import config
@@ -26,15 +28,26 @@ except ImportError:
 class HydroThermalAnalyticsCore:
     """
     Central ML/analytics engine for the HydroThermal Nexus-AI platform.
-    Provides telemetry simulation, dual-mode anomaly detection, and
-    explainable AI guidance for operations.
+    Provides telemetry simulation, dual-mode anomaly detection, joblib model persistence,
+    and explainable AI guidance for operations.
     """
 
-    def __init__(self):
+    def __init__(self, model_path: str = None):
         self._iso_model: object   = None
         self._scaler:    object   = None
         self._trained:   bool     = False
         self._train_df:  pd.DataFrame = pd.DataFrame()
+        self._feature_cols: list = []
+        self._metrics_meta: dict = {}
+
+        # Default model location
+        if model_path is None:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            model_path = os.path.join(base_dir, "models", "nexus_isolation_forest.joblib")
+
+        if os.path.exists(model_path):
+            self.load_model(model_path)
+
 
     # ── Telemetry Simulation ──────────────────────────────────────────
     def generate_live_production_stream(self, periods: int = 60) -> pd.DataFrame:
@@ -315,7 +328,60 @@ class HydroThermalAnalyticsCore:
             "avg_risk_score":  round(float(df_scored["IF_Score"].mean()), 1),
             "max_risk_score":  round(float(df_scored["IF_Score"].max()), 1),
         }
+
+        self._feature_cols = feature_cols
+        self._metrics_meta = metrics
+        self._iso_model = iso_model
+        self._scaler = scaler
+        self._trained = True
+
         return df_scored, metrics
+
+
+    # ── Model Serialization & Artifact Persistence ─────────────────────
+    def save_model(self, model_path: str) -> bool:
+        """Serializes the trained IsolationForest model and scaler to disk."""
+        if not self._trained or self._iso_model is None:
+            return False
+
+        os.makedirs(os.path.dirname(os.path.abspath(model_path)), exist_ok=True)
+        artifact = {
+            "model": self._iso_model,
+            "scaler": self._scaler,
+            "feature_cols": self._feature_cols,
+            "metrics_meta": self._metrics_meta,
+            "trained": True,
+        }
+        joblib.dump(artifact, model_path)
+        return True
+
+    def load_model(self, model_path: str) -> bool:
+        """Loads a pre-trained model artifact from disk."""
+        if not os.path.exists(model_path):
+            return False
+
+        try:
+            artifact = joblib.load(model_path)
+            self._iso_model = artifact.get("model")
+            self._scaler = artifact.get("scaler")
+            self._feature_cols = artifact.get("feature_cols", [])
+            self._metrics_meta = artifact.get("metrics_meta", {})
+            self._trained = artifact.get("trained", True)
+            return True
+        except Exception as e:
+            print(f"[WARNING] Failed to load model artifact from {model_path}: {e}")
+            return False
+
+    def get_model_metrics(self) -> Dict:
+        """Returns metadata and metrics about the currently active model."""
+        return {
+            "trained": self._trained,
+            "model_type": "IsolationForest",
+            "feature_count": len(self._feature_cols),
+            "features": self._feature_cols,
+            "metrics": self._metrics_meta,
+            "status": "ready" if self._trained else "uninitialized"
+        }
 
     # ── Assistant Guidance (legacy hook) ─────────────────────────────
     def get_assistant_guidance(

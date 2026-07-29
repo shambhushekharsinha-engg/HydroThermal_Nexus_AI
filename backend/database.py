@@ -157,6 +157,7 @@ def initialize_all_databases():
                 thermal_temp_c REAL
             )
         """)
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_telemetry_ts ON telemetry_logs (timestamp);")
         conn.execute("""
             CREATE TABLE IF NOT EXISTS esg_metrics (
                 id             INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -168,8 +169,13 @@ def initialize_all_databases():
             )
         """)
 
+    with get_conn(DB_AUDIT) as conn:
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit_logs (timestamp);")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_alerts_ts ON alerts (timestamp);")
+
     # Run migration after table creation to add any missing columns
     _migrate_schemas()
+
 
 
 

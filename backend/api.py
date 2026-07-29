@@ -158,16 +158,44 @@ def esg_history(days: int = 30, _key=Depends(verify_api_key)):
     return {"data": df.to_dict(orient="records"), "count": len(df)}
 
 
+import pandas as pd
+from ml_engine import HydroThermalAnalyticsCore
+
+ml_core = HydroThermalAnalyticsCore()
+
+@app.get("/api/ml/metrics")
+def get_ml_metrics(_key=Depends(verify_api_key)):
+    """Returns active IsolationForest model metrics and status."""
+    return ml_core.get_model_metrics()
+
+
+@app.get("/api/telemetry/historical")
+def get_historical_telemetry(limit: int = 100, _key=Depends(verify_api_key)):
+    """Returns Kaggle benchmark historical telemetry dataset records."""
+    csv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "hydrothermal_telemetry_historical.csv")
+    if not os.path.exists(csv_path):
+        return {"data": [], "count": 0, "message": "Historical benchmark dataset not found."}
+    
+    df = pd.read_csv(csv_path)
+    if limit > 0:
+        df = df.tail(limit)
+    return {"data": df.to_dict(orient="records"), "count": len(df)}
+
+
 @app.get("/api/system/score")
 def system_score(_key=Depends(verify_api_key)):
-    """Computes a real-time system health score (0–100)."""
-    # Simplified scoring logic — can be replaced with ML model
-    import random
-    score = round(random.uniform(85, 99), 1)
+    """Computes a real-time system health score (0–100) using ML metrics."""
+    metrics = ml_core.get_model_metrics()
+    metrics_data = metrics.get("metrics", {})
+    avg_risk = metrics_data.get("avg_risk_score", 10.0)
+    score = round(max(70.0, min(100.0, 100.0 - avg_risk)), 1)
+    
     return {
         "health_score": score,
         "pressure_ok":  True,
         "thermal_ok":   True,
         "flow_ok":      True,
+        "model_status": metrics.get("status", "ready"),
         "timestamp":    datetime.datetime.now().isoformat()
     }
+

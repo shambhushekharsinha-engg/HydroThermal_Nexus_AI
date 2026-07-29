@@ -1,47 +1,70 @@
 version: '3.9'
 
 services:
-  nexus-ai:
+  # ── Streamlit Operational Cockpit Frontend ─────────────────────────
+  frontend-cockpit:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: hydrothermal_nexus_ai_v2
+    container_name: hydrothermal_nexus_cockpit
     image: hydrothermal-nexus-ai:2.0.0
-
     ports:
       - "8501:8501"   # Streamlit UI
-      - "8001:8001"   # FastAPI backend
-
     volumes:
-      # Persist SQLite databases across container restarts
       - nexus_data:/app/data
+      - ./models:/app/models
+      - ./data:/app/data
       - ./nexus_audit.db:/app/nexus_audit.db
       - ./nexus_storage.db:/app/nexus_storage.db
       - ./nexus_auth.db:/app/nexus_auth.db
-
     environment:
       - NEXUS_API_SECRET=${NEXUS_API_SECRET:-NexusAPI_Internal_2026}
       - PYTHONUNBUFFERED=1
       - STREAMLIT_SERVER_HEADLESS=true
-
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-
+      start_period: 30s
     restart: unless-stopped
-
-    # Resource limits
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 1024M
-        reservations:
-          cpus: '0.5'
-          memory: 256M
+          cpus: '1.5'
+          memory: 768M
+
+  # ── FastAPI REST Microservice Backend ──────────────────────────────
+  backend-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hydrothermal_nexus_backend
+    command: ["uvicorn", "backend.api:app", "--host", "0.0.0.0", "--port", "8001"]
+    ports:
+      - "8001:8001"   # FastAPI REST API
+    volumes:
+      - nexus_data:/app/data
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./nexus_audit.db:/app/nexus_audit.db
+      - ./nexus_storage.db:/app/nexus_storage.db
+      - ./nexus_auth.db:/app/nexus_auth.db
+    environment:
+      - NEXUS_API_SECRET=${NEXUS_API_SECRET:-NexusAPI_Internal_2026}
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
 
 volumes:
   nexus_data:
