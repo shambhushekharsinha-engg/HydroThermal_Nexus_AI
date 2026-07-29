@@ -346,29 +346,33 @@ docker-compose up -d --build
 
 ```
 HydroThermal_Nexus_AI/
-├── app.py                     # Main Streamlit cockpit application (10 tabs, auth, UI)
-├── ml_engine.py               # IsolationForest + Z-score + joblib model persistence
-├── ai_assistant.py            # Domain-aware 12-topic AI chatbot engine
-├── alert_manager.py           # Telegram & Email notification dispatcher
-├── data_processor.py          # Data ingestion pipeline & PII anonymization
-├── actuators.py               # Hardware actuation & mitigation logic
-├── rca_engine.py              # AI root cause diagnostics module
-├── report_generator.py        # Branded PDF report generation engine
-├── config.py                  # System thresholds, constants & RBAC matrix
-├── pyproject.toml             # Deployment metadata & dependency specification
+├── app.py                     # Main Streamlit cockpit application (10 operational tabs)
+├── ml_engine.py               # IsolationForest + Z-score anomaly engine + joblib persistence
+├── ai_assistant.py            # Knowledge-augmented 12-topic operational AI assistant
+├── alert_manager.py           # Telegram & Email alert notification dispatcher
+├── data_processor.py          # Data ingestion pipeline & PII hashing sanitizer
+├── actuators.py               # Automated hardware actuation & mitigation logic
+├── rca_engine.py              # Root Cause Analysis (RCA) diagnostic engine
+├── report_generator.py        # Branded PDF incident report generator
+├── config.py                  # System thresholds, constants & RBAC permission matrix
+├── pyproject.toml             # Python project dependencies & package metadata
 ├── nginx.conf                 # Production Nginx reverse proxy configuration
 ├── .env.example               # Environment variables configuration template
-├── SCALING_STRATEGY.md        # Kubernetes, PostgreSQL & cloud rollout blueprint
+├── SCALING_STRATEGY.md        # Kubernetes, PostgreSQL & multi-tenant scaling blueprint
+├── Dockerfile                 # Multi-stage production container configuration
+├── docker-compose.yml         # Decoupled microservice container orchestration
+├── requirements.txt           # Master Python dependencies list
+├── LICENSE                    # Official open-source MIT License
+├── README.md                  # System documentation & deployment guide
 │
 ├── backend/
-│   ├── api.py                 # FastAPI REST API endpoints (Port 8001)
-│   ├── database.py            # Thread-safe SQLite/PostgreSQL dynamic database manager
+│   ├── api.py                 # FastAPI REST microservice API (Port 8001)
+│   ├── database.py            # Thread-safe SQLite / PostgreSQL dynamic database layer
 │   ├── security.py            # RBAC validation, input sanitization & hash vault
 │   ├── telemetry_streamer.py  # Continuous IoT sensor telemetry streaming daemon
 │   ├── modbus_edge_simulator.py # Siemens Modbus TCP / PLC hardware edge simulator
-│   ├── mqtt_ingestion_bridge.py # MQTT broker telemetry listener & parser bridge
+│   ├── mqtt_ingestion_bridge.py # MQTT broker telemetry listener & payload parser
 │   └── multi_tenant_manager.py # Multi-tenant enterprise SaaS facility manager
-
 │
 ├── data/
 │   └── hydrothermal_telemetry_historical.csv # 1,000-row Kaggle SKAB benchmark dataset
@@ -377,36 +381,27 @@ HydroThermal_Nexus_AI/
 │   └── nexus_isolation_forest.joblib        # Serialized ML model pipeline artifact
 │
 ├── scripts/
-│   └── train_model.py         # Offline ML training CLI script
+│   └── train_model.py         # Offline ML model training CLI script
 │
 ├── tests/
-│   ├── test_api.py            # FastAPI REST endpoint automated unit tests
+│   ├── test_api.py            # FastAPI REST API automated unit tests
 │   └── test_ml.py             # ML engine training & serialization unit tests
 │
-└── .github/workflows/
-    └── ci.yml                 # Automated GitHub Actions CI test & build workflow
-```
-
-│
 ├── assets/
-│   ├── logo.png               # Custom project branding asset
-│   ├── architecture.png       # System architecture workflow diagram
-│   └── styles.css             # Glassmorphism dark-navy theme CSS
+│   ├── logo.png               # System logo & custom header branding asset
+│   ├── architecture.png       # Complete system workflow architecture diagram
+│   └── styles.css             # Glassmorphism UI dark theme styling
 │
 ├── Project Demo/
-│   ├── video/                 # Full system HD video demonstration (with audio)
-│   ├── frontend/              # High-resolution frontend dashboard screenshots
-│   └── backend/               # FastAPI Swagger documentation screenshots
+│   ├── video/                 # Full system HD demo video (with audio track)
+│   ├── frontend/              # High-resolution Streamlit cockpit screenshots
+│   └── backend/               # FastAPI Swagger OpenAPI documentation screenshots
 │
-├── .streamlit/
-│   └── config.toml            # Streamlit visual theme configuration
-│
-├── requirements.txt           # Master Python dependencies list
-├── Dockerfile                 # Multi-stage production container configuration
-├── docker-compose.yml         # Multi-container orchestration specification
-├── SCALING_STRATEGY.md        # Cloud architecture & horizontal scaling strategy
-└── README.md                  # Comprehensive project documentation
+└── .github/
+    └── workflows/
+        └── ci.yml             # GitHub Actions CI automated test & build workflow
 ```
+
 
 ---
 
