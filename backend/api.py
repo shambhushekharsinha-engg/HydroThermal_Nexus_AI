@@ -57,6 +57,10 @@ class ESGUpdate(BaseModel):
     energy_saved_kwh: float
     esg_score: float
 
+class QuickLoginRequest(BaseModel):
+    role: str = "Admin"  # Admin, Operator, Viewer
+
+
 
 # ── Helper: Simple API token check ──────────────────────────────────
 API_SECRET = os.environ.get("NEXUS_API_SECRET", "NexusAPI_Internal_2026")
@@ -81,6 +85,37 @@ def health_check():
             "alerts":    "active"
         }
     }
+
+
+@app.post("/api/auth/quick-login")
+def quick_login(payload: QuickLoginRequest):
+    """Issues an authenticated session token for demo 1-click quick login (Admin, Operator, Viewer)."""
+    role_map = {
+        "admin": ("admin", "Admin@Nexus2026!"),
+        "operator": ("operator1", "Operator@2026#"),
+        "viewer": ("viewer1", "Viewer@View123")
+    }
+    key = payload.role.lower()
+    if key not in role_map:
+        raise HTTPException(status_code=400, detail="Invalid role specified. Must be 'Admin', 'Operator', or 'Viewer'.")
+
+    target_user, target_pass = role_map[key]
+    db.initialize_all_databases()
+    user = db.validate_user(target_user, target_pass)
+    if not user:
+        raise HTTPException(status_code=401, detail="Quick login failed. Default account not found.")
+
+    token = db.create_session(user["username"], user["role"])
+    db.log_audit(user["username"], user["role"], "API_QUICK_LOGIN", "None", f"Quick login token issued for role '{user['role']}' via API.")
+
+    return {
+        "status": "authenticated",
+        "username": user["username"],
+        "role": user["role"],
+        "session_token": token,
+        "timestamp": datetime.datetime.now().isoformat()
+    }
+
 
 
 @app.get("/api/telemetry/live")

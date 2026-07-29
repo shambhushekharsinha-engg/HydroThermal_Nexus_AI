@@ -139,7 +139,33 @@ def show_login():
                     else:
                         st.error("❌ Invalid credentials or account locked. Try again.")
 
-            with st.expander("🔑 Verified Demo Credentials", expanded=True):
+            st.markdown("##### ⚡ Quick 1-Click Demo Login")
+            qcol1, qcol2, qcol3 = st.columns(3)
+            quick_user = None
+
+            with qcol1:
+                if st.button("👑 Admin", use_container_width=True, help="Quick login as Admin (Full Control)"):
+                    quick_user = db.validate_user("admin", "Admin@Nexus2026!")
+
+            with qcol2:
+                if st.button("⚙️ Operator", use_container_width=True, help="Quick login as Operator (Control & Alerts)"):
+                    quick_user = db.validate_user("operator1", "Operator@2026#")
+
+            with qcol3:
+                if st.button("👁️ Viewer", use_container_width=True, help="Quick login as Viewer (Read-only Analytics)"):
+                    quick_user = db.validate_user("viewer1", "Viewer@View123")
+
+            if quick_user:
+                token = db.create_session(quick_user["username"], quick_user["role"])
+                st.session_state["session_token"] = token
+                st.session_state["username"]      = quick_user["username"]
+                st.session_state["role"]          = quick_user["role"]
+                st.session_state["authenticated"] = True
+                db.log_audit(quick_user["username"], quick_user["role"], "QUICK_LOGIN", "None", "Quick 1-click login authenticated.")
+                st.success(f"⚡ Quick login successful as {quick_user['role']} ({quick_user['username']})!")
+                st.rerun()
+
+            with st.expander("🔑 Verified Demo Credentials", expanded=False):
                 st.markdown("""
                 | Role | Username | Password | Access Level |
                 |------|----------|----------|--------------|
@@ -147,6 +173,7 @@ def show_login():
                 | **Operator** | `operator1` | `Operator@2026#` | Control & Telemetry |
                 | **Viewer** | `viewer1` | `Viewer@View123` | Read-only Analytics |
                 """)
+
 
         # ── TAB 2: REGISTER / SIGN UP ────────────────────────────────────
         with tab_register:

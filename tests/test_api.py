@@ -98,3 +98,14 @@ def test_tenant_aggregate_endpoint():
     assert data["total_facilities"] >= 3
     assert "annual_co2_reduction_target_tons" in data
 
+
+def test_quick_login_endpoint():
+    payload = {"role": "Admin"}
+    response = client.post("/api/auth/quick-login", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "authenticated"
+    assert data["username"] == "admin"
+    assert "session_token" in data
+
+
