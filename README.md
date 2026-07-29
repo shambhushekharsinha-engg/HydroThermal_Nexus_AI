@@ -364,7 +364,11 @@ HydroThermal_Nexus_AI/
 │   ├── api.py                 # FastAPI REST API endpoints (Port 8001)
 │   ├── database.py            # Thread-safe SQLite/PostgreSQL dynamic database manager
 │   ├── security.py            # RBAC validation, input sanitization & hash vault
-│   └── telemetry_streamer.py  # Continuous IoT sensor telemetry streaming daemon
+│   ├── telemetry_streamer.py  # Continuous IoT sensor telemetry streaming daemon
+│   ├── modbus_edge_simulator.py # Siemens Modbus TCP / PLC hardware edge simulator
+│   ├── mqtt_ingestion_bridge.py # MQTT broker telemetry listener & parser bridge
+│   └── multi_tenant_manager.py # Multi-tenant enterprise SaaS facility manager
+
 │
 ├── data/
 │   └── hydrothermal_telemetry_historical.csv # 1,000-row Kaggle SKAB benchmark dataset

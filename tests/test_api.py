@@ -74,9 +74,27 @@ def test_historical_telemetry_endpoint():
     assert len(data["data"]) <= 10
 
 
-def test_system_score_endpoint():
-    response = client.get("/api/system/score", headers=AUTH_HEADERS)
+def test_modbus_status_endpoint():
+    response = client.get("/api/modbus/status", headers=AUTH_HEADERS)
     assert response.status_code == 200
     data = response.json()
-    assert "health_score" in data
-    assert 0 <= data["health_score"] <= 100
+    assert data["connected"] is True
+    assert "telemetry" in data
+
+
+def test_tenant_facilities_endpoint():
+    response = client.get("/api/tenants/facilities", headers=AUTH_HEADERS)
+    assert response.status_code == 200
+    data = response.json()
+    assert "facilities" in data
+    assert len(data["facilities"]) >= 3
+
+
+def test_tenant_aggregate_endpoint():
+    response = client.get("/api/tenants/aggregate", headers=AUTH_HEADERS)
+    assert response.status_code == 200
+    data = response.json()
+    assert "total_facilities" in data
+    assert data["total_facilities"] >= 3
+    assert "annual_co2_reduction_target_tons" in data
+

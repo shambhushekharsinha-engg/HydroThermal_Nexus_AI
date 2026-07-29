@@ -182,20 +182,30 @@ def get_historical_telemetry(limit: int = 100, _key=Depends(verify_api_key)):
     return {"data": df.to_dict(orient="records"), "count": len(df)}
 
 
-@app.get("/api/system/score")
-def system_score(_key=Depends(verify_api_key)):
-    """Computes a real-time system health score (0–100) using ML metrics."""
-    metrics = ml_core.get_model_metrics()
-    metrics_data = metrics.get("metrics", {})
-    avg_risk = metrics_data.get("avg_risk_score", 10.0)
-    score = round(max(70.0, min(100.0, 100.0 - avg_risk)), 1)
-    
-    return {
-        "health_score": score,
-        "pressure_ok":  True,
-        "thermal_ok":   True,
-        "flow_ok":      True,
-        "model_status": metrics.get("status", "ready"),
-        "timestamp":    datetime.datetime.now().isoformat()
-    }
+from backend.modbus_edge_simulator import ModbusPLCSimulator
+from backend.mqtt_ingestion_bridge import MQTTTelemetryBridge
+from backend.multi_tenant_manager import MultiTenantFacilityManager
+
+modbus_plc = ModbusPLCSimulator()
+mqtt_bridge = MQTTTelemetryBridge()
+tenant_mgr = MultiTenantFacilityManager()
+
+
+@app.get("/api/modbus/status")
+def get_modbus_status(_key=Depends(verify_api_key)):
+    """Returns Siemens Modbus TCP / PLC hardware register status."""
+    return modbus_plc.read_holding_registers()
+
+
+@app.get("/api/tenants/facilities")
+def get_tenant_facilities(_key=Depends(verify_api_key)):
+    """Returns list of registered enterprise multi-facility plants."""
+    return {"facilities": tenant_mgr.list_facilities()}
+
+
+@app.get("/api/tenants/aggregate")
+def get_tenant_aggregate(_key=Depends(verify_api_key)):
+    """Returns cross-facility sustainability metrics and carbon reduction targets."""
+    return tenant_mgr.get_enterprise_aggregate()
+
 
