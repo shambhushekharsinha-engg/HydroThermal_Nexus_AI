@@ -32,6 +32,8 @@ from ml_engine import HydroThermalAnalyticsCore
 from report_generator import EnterpriseReportEngine
 from ai_assistant import get_ai_response, QUICK_ACTIONS
 from alert_manager import dispatch_alert, build_anomaly_alert, send_telegram
+from currency_converter import CurrencyConverter
+
 
 # ── Page Config ──────────────────────────────────────────────────────
 st.set_page_config(
@@ -1150,31 +1152,57 @@ def tab_esg():
     st.markdown("---")
 
     # ── Financial Savings Calculator ──────────────────────────────────
-    st.markdown('<div class="section-title">💰 Financial Savings Calculator</div>',
+    st.markdown('<div class="section-title">💰 Multi-Currency Financial Savings Calculator</div>',
                 unsafe_allow_html=True)
-    st.caption("Adjust unit costs below to compute the real monetary value of each ESG intervention.")
+    st.caption("Select your enterprise target currency and adjust unit costs below to compute real-time monetary ESG yield.")
 
-    fc1, fc2, fc3 = st.columns(3)
+    all_currencies = CurrencyConverter.get_supported_currencies()
+    curr_keys = list(all_currencies.keys())
+
+    fc0, fc1, fc2, fc3 = st.columns([1.2, 1, 1, 1])
+    with fc0:
+        selected_curr = st.selectbox(
+            "🌐 Target Currency",
+            options=curr_keys,
+            index=curr_keys.index("INR") if "INR" in curr_keys else 0,
+            format_func=lambda c: f"{c} ({all_currencies[c]['symbol'].strip()}) — {all_currencies[c]['name']}"
+        )
+    
+    curr_info = all_currencies[selected_curr]
+    curr_sym = curr_info["symbol"]
+
     with fc1:
-        water_cost   = st.number_input("Water cost (₹ per Litre)",
-                                       min_value=0.01, max_value=10.0,
-                                       value=0.05, step=0.01, format="%.2f")
+        water_cost   = st.number_input(f"Water cost ({curr_sym.strip()} / L)",
+                                       min_value=0.01, max_value=1000.0,
+                                       value=0.05 if selected_curr == "INR" else round(0.05 / curr_info["rate_vs_usd"] * 83.5, 3),
+                                       step=0.01, format="%.3f")
     with fc2:
-        energy_cost  = st.number_input("Energy cost (₹ per kWh)",
-                                       min_value=1.0, max_value=20.0,
-                                       value=8.0, step=0.5, format="%.1f")
+        energy_cost  = st.number_input(f"Energy cost ({curr_sym.strip()} / kWh)",
+                                       min_value=0.01, max_value=5000.0,
+                                       value=8.0 if selected_curr == "INR" else round(8.0 / curr_info["rate_vs_usd"] * 83.5, 2),
+                                       step=0.5, format="%.2f")
     with fc3:
-        carbon_price = st.number_input("Carbon credit ($ per tonne CO₂e)",
-                                       min_value=1.0, max_value=200.0,
+        carbon_price = st.number_input("Carbon credit ($ / tonne CO₂e)",
+                                       min_value=1.0, max_value=500.0,
                                        value=15.0, step=1.0, format="%.1f")
 
-    # Compute savings
-    water_savings_inr  = total_water  * water_cost
-    energy_savings_inr = total_energy * energy_cost
-    carbon_savings_usd = (total_co2 / 1000.0) * carbon_price   # kg → tonne
-    usd_to_inr         = 83.5                                    # approx rate
-    carbon_savings_inr = carbon_savings_usd * usd_to_inr
-    total_savings_inr  = water_savings_inr + energy_savings_inr + carbon_savings_inr
+    # Compute multi-currency ESG savings
+    esg_calc = CurrencyConverter.calculate_esg_savings(
+        water_litres=total_water,
+        energy_kwh=total_energy,
+        co2_kg=total_co2,
+        water_cost_per_l=water_cost,
+        energy_cost_per_kwh=energy_cost,
+        carbon_price_per_tonne_usd=carbon_price,
+        input_currency=selected_curr,
+        target_currency=selected_curr,
+    )
+
+    water_sav_fmt = esg_calc["water_savings_formatted"]
+    energy_sav_fmt = esg_calc["energy_savings_formatted"]
+    carbon_sav_fmt = esg_calc["carbon_savings_formatted"]
+    total_sav_fmt = esg_calc["total_savings_formatted"]
+    total_sav_val = esg_calc["total_savings"]
 
     s1, s2, s3, s4 = st.columns(4)
     with s1:
@@ -1182,9 +1210,9 @@ def tab_esg():
         <div class="kpi-card cyan">
           <div class="kpi-icon">💧</div>
           <div class="kpi-label">Water Savings (30d)</div>
-          <div class="kpi-value" style="font-size:1.5rem;">₹{water_savings_inr:,.0f}</div>
+          <div class="kpi-value" style="font-size:1.5rem;">{water_sav_fmt}</div>
           <div style="color:#64748B;font-size:0.7rem;margin-top:2px;">
-            {total_water:,.0f} L × ₹{water_cost}
+            {total_water:,.0f} L × {curr_sym}{water_cost}
           </div>
         </div>""", unsafe_allow_html=True)
     with s2:
@@ -1192,9 +1220,9 @@ def tab_esg():
         <div class="kpi-card orange">
           <div class="kpi-icon">⚡</div>
           <div class="kpi-label">Energy Savings (30d)</div>
-          <div class="kpi-value orange" style="font-size:1.5rem;">₹{energy_savings_inr:,.0f}</div>
+          <div class="kpi-value orange" style="font-size:1.5rem;">{energy_sav_fmt}</div>
           <div style="color:#64748B;font-size:0.7rem;margin-top:2px;">
-            {total_energy:,.0f} kWh × ₹{energy_cost}
+            {total_energy:,.0f} kWh × {curr_sym}{energy_cost}
           </div>
         </div>""", unsafe_allow_html=True)
     with s3:
@@ -1202,17 +1230,17 @@ def tab_esg():
         <div class="kpi-card green">
           <div class="kpi-icon">🌿</div>
           <div class="kpi-label">Carbon Credits (30d)</div>
-          <div class="kpi-value green" style="font-size:1.5rem;">₹{carbon_savings_inr:,.0f}</div>
+          <div class="kpi-value green" style="font-size:1.5rem;">{carbon_sav_fmt}</div>
           <div style="color:#64748B;font-size:0.7rem;margin-top:2px;">
-            ${carbon_savings_usd:,.1f} @ ${carbon_price}/t
+            ${esg_calc['carbon_savings_usd']:,.1f} @ ${carbon_price}/t
           </div>
         </div>""", unsafe_allow_html=True)
     with s4:
         st.markdown(f"""
-        <div class="kpi-card {'green' if total_savings_inr>0 else 'yellow'}">
+        <div class="kpi-card {'green' if total_sav_val>0 else 'yellow'}">
           <div class="kpi-icon">🏦</div>
-          <div class="kpi-label">Total Value Unlocked</div>
-          <div class="kpi-value green" style="font-size:1.5rem;">₹{total_savings_inr:,.0f}</div>
+          <div class="kpi-label">Total Value Unlocked ({selected_curr})</div>
+          <div class="kpi-value green" style="font-size:1.5rem;">{total_sav_fmt}</div>
           <div style="color:#64748B;font-size:0.7rem;margin-top:2px;">Combined 30-day savings</div>
         </div>""", unsafe_allow_html=True)
 
@@ -1222,18 +1250,20 @@ def tab_esg():
     with bc1:
         fig_pie = go.Figure(go.Pie(
             labels=["Water Savings", "Energy Savings", "Carbon Credits"],
-            values=[water_savings_inr, energy_savings_inr, carbon_savings_inr],
+            values=[esg_calc["water_savings"], esg_calc["energy_savings"], esg_calc["carbon_savings"]],
             hole=0.55,
             marker=dict(colors=["#00D4FF", "#FF6B35", "#00FF88"],
                         line=dict(color="#0A0F1E", width=2)),
         ))
+        donut_summary = CurrencyConverter.format_currency(total_sav_val / 1000.0, selected_curr, 1) + "K"
         fig_pie.update_traces(textfont_size=11,
-                              hovertemplate="<b>%{label}</b><br>₹%{value:,.0f}<extra></extra>")
+                              hovertemplate=f"<b>%{{label}}</b><br>{curr_sym}%{{value:,.0f}}<extra></extra>")
         fig_pie.update_layout(**PLOTLY_LAYOUT, height=260,
-                              annotations=[dict(text=f"₹{total_savings_inr/1000:,.1f}K",
-                                               x=0.5, y=0.5, font_size=16,
+                              annotations=[dict(text=donut_summary,
+                                               x=0.5, y=0.5, font_size=15,
                                                font_color="#00D4FF", showarrow=False)])
         st.plotly_chart(fig_pie, use_container_width=True, config={"displayModeBar": False})
+
 
     with bc2:
         # ── Before / After Comparison ─────────────────────────────────

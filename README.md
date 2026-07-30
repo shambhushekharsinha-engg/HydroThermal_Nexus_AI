@@ -164,7 +164,7 @@ Modern hydrothermal facilities — including data center liquid cooling grids, p
 | <kbd>2</kbd> | **📈 Telemetry & Analytics** | Interactive streaming control, multi-sensor Plotly charts, anomaly injection, correlation matrix |
 | <kbd>3</kbd> | **🌐 Digital Twin** | Geospatial PyDeck 3D node map, node telemetry popups, status breakdown cards |
 | <kbd>4</kbd> | **🤖 RCA Diagnostics** | AI root cause failure vector mapping, step-by-step mitigation paths, downloadable PDF reports |
-| <kbd>5</kbd> | **🌱 ESG Dashboard** | Resource utilization trends, carbon footprint calculation, ESG timeline, financial savings estimator |
+| <kbd>5</kbd> | **🌱 ESG Dashboard** | Resource utilization trends, carbon footprint calculation, ESG timeline, multi-currency financial savings estimator (14 global currencies) |
 | <kbd>6</kbd> | **🚨 Alert Center** | Telegram/Email notification dispatch, severity filtering, alert acknowledge (ACK) workflow |
 | <kbd>7</kbd> | **💬 AI Assistant** | State-aware 12-topic conversational agent, instant quick-action prompt chips |
 | <kbd>8</kbd> | **📊 Data Insights** | Exploratory data analysis, IsolationForest retraining panel, full telemetry data dictionary |
@@ -338,7 +338,21 @@ docker-compose up -d --build
 
 - **Streamlit Cockpit**: <kbd>http://localhost:8501</kbd>
 - **FastAPI REST API Docs**: <kbd>http://localhost:8001/docs</kbd>
-- **Health Check Endpoints**: <kbd>http://localhost:8001/api/health</kbd> | <kbd>http://localhost:8001/api/ml/metrics</kbd>
+- **Health Check Endpoints**: <kbd>http://localhost:8001/api/health</kbd> | <kbd>http://localhost:8001/api/ml/metrics</kbd> | <kbd>http://localhost:8001/api/currency/rates</kbd>
+
+---
+
+## 💱 Enterprise Multi-Currency System
+
+HydroThermal Nexus-AI includes an enterprise multi-currency engine (`currency_converter.py`) allowing real-time global financial monitoring of ESG interventions across **14 major world currencies**:
+
+- **Supported Currencies**: `USD` ($), `INR` (₹), `EUR` (€), `GBP` (£), `JPY` (¥), `AED` (د.إ), `CAD` (C$), `AUD` (A$), `CHF` (CHF), `CNY` (¥), `SGD` (S$), `SAR` (SAR), `BRL` (R$), `KRW` (₩).
+- **ESG Dashboard Integration**: Interactive target currency picker dynamically updates unit resource costs, 30-day savings KPI cards (Water, Energy, Carbon Credits, Total Unlocked Value), and Plotly donut charts.
+- **REST API Endpoints**:
+  - `GET /api/currency/rates` — Fetches active exchange rates and currency definitions.
+  - `POST /api/currency/convert` — Converts any monetary amount between supported global currencies.
+  - `POST /api/currency/calculate-savings` — Returns complete multi-currency financial ESG savings breakdown.
+- **Automated Pipeline Testing**: Dedicated test suite (`tests/test_currency.py`) and API tests (`tests/test_api.py`) integrated into GitHub Actions CI pipeline.
 
 ---
 
@@ -347,7 +361,9 @@ docker-compose up -d --build
 ```
 HydroThermal_Nexus_AI/
 ├── app.py                     # Main Streamlit cockpit application (10 operational tabs)
+├── currency_converter.py      # Multi-currency engine & ESG financial conversion core
 ├── ml_engine.py               # IsolationForest + Z-score anomaly engine + joblib persistence
+
 ├── ai_assistant.py            # Knowledge-augmented 12-topic operational AI assistant
 ├── alert_manager.py           # Telegram & Email alert notification dispatcher
 ├── data_processor.py          # Data ingestion pipeline & PII hashing sanitizer
@@ -385,7 +401,9 @@ HydroThermal_Nexus_AI/
 │
 ├── tests/
 │   ├── test_api.py            # FastAPI REST API automated unit tests
+│   ├── test_currency.py       # Multi-currency converter & ESG financial unit tests
 │   └── test_ml.py             # ML engine training & serialization unit tests
+
 │
 ├── assets/
 │   ├── logo.png               # System logo & custom header branding asset

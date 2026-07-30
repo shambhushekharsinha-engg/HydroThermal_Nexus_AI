@@ -60,6 +60,21 @@ class ESGUpdate(BaseModel):
 class QuickLoginRequest(BaseModel):
     role: str = "Admin"  # Admin, Operator, Viewer
 
+class CurrencyConvertRequest(BaseModel):
+    amount: float
+    from_currency: str = "USD"
+    to_currency: str = "INR"
+
+class CalculateSavingsRequest(BaseModel):
+    water_litres: float
+    energy_kwh: float
+    co2_kg: float
+    water_cost_per_l: float = 0.05
+    energy_cost_per_kwh: float = 8.0
+    carbon_price_per_tonne_usd: float = 15.0
+    input_currency: str = "INR"
+    target_currency: str = "INR"
+
 
 
 # ── Helper: Simple API token check ──────────────────────────────────
@@ -242,5 +257,54 @@ def get_tenant_facilities(_key=Depends(verify_api_key)):
 def get_tenant_aggregate(_key=Depends(verify_api_key)):
     """Returns cross-facility sustainability metrics and carbon reduction targets."""
     return tenant_mgr.get_enterprise_aggregate()
+
+
+from currency_converter import CurrencyConverter
+
+
+@app.get("/api/currency/rates")
+def get_currency_rates(_key=Depends(verify_api_key)):
+    """Returns supported global currencies, symbols, names, and exchange rates vs USD."""
+    return {
+        "base_currency": "USD",
+        "currencies": CurrencyConverter.get_supported_currencies()
+    }
+
+
+@app.post("/api/currency/convert")
+def convert_currency(payload: CurrencyConvertRequest, _key=Depends(verify_api_key)):
+    """Converts an amount between two supported global currencies."""
+    try:
+        converted = CurrencyConverter.convert(payload.amount, payload.from_currency, payload.to_currency)
+        formatted = CurrencyConverter.format_currency(converted, payload.to_currency)
+        return {
+            "amount": payload.amount,
+            "from_currency": payload.from_currency.upper(),
+            "to_currency": payload.to_currency.upper(),
+            "converted_amount": converted,
+            "formatted": formatted
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/api/currency/calculate-savings")
+def calculate_currency_savings(payload: CalculateSavingsRequest, _key=Depends(verify_api_key)):
+    """Computes multi-currency ESG financial savings breakdown for resource preservation."""
+    try:
+        res = CurrencyConverter.calculate_esg_savings(
+            water_litres=payload.water_litres,
+            energy_kwh=payload.energy_kwh,
+            co2_kg=payload.co2_kg,
+            water_cost_per_l=payload.water_cost_per_l,
+            energy_cost_per_kwh=payload.energy_cost_per_kwh,
+            carbon_price_per_tonne_usd=payload.carbon_price_per_tonne_usd,
+            input_currency=payload.input_currency,
+            target_currency=payload.target_currency,
+        )
+        return res
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 

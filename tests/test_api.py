@@ -109,3 +109,47 @@ def test_quick_login_endpoint():
     assert "session_token" in data
 
 
+def test_currency_rates_endpoint():
+    response = client.get("/api/currency/rates", headers=AUTH_HEADERS)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["base_currency"] == "USD"
+    assert "currencies" in data
+    assert "INR" in data["currencies"]
+    assert "EUR" in data["currencies"]
+    assert "GBP" in data["currencies"]
+    assert "JPY" in data["currencies"]
+
+
+def test_currency_convert_endpoint():
+    payload = {"amount": 100.0, "from_currency": "USD", "to_currency": "EUR"}
+    response = client.post("/api/currency/convert", json=payload, headers=AUTH_HEADERS)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["amount"] == 100.0
+    assert data["from_currency"] == "USD"
+    assert data["to_currency"] == "EUR"
+    assert data["converted_amount"] == 92.0
+    assert "€" in data["formatted"]
+
+
+def test_currency_calculate_savings_endpoint():
+    payload = {
+        "water_litres": 2000.0,
+        "energy_kwh": 1000.0,
+        "co2_kg": 500.0,
+        "water_cost_per_l": 0.05,
+        "energy_cost_per_kwh": 8.0,
+        "carbon_price_per_tonne_usd": 15.0,
+        "input_currency": "INR",
+        "target_currency": "USD"
+    }
+    response = client.post("/api/currency/calculate-savings", json=payload, headers=AUTH_HEADERS)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["target_currency"] == "USD"
+    assert data["total_savings"] > 0
+    assert "total_savings_formatted" in data
+
+
+
