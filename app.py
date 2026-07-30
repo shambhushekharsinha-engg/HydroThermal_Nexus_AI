@@ -21,6 +21,9 @@ import threading
 import base64
 import os
 import sys
+import json
+
+from streamlit.runtime.scriptrunner_utils import script_run_context
 
 # ── Local imports ────────────────────────────────────────────────────
 from backend import database as db
@@ -59,7 +62,7 @@ def _start_api():
     except Exception:
         pass
 
-if "api_thread_started" not in st.session_state:
+if script_run_context.get_script_run_ctx() is not None and "api_thread_started" not in st.session_state:
     t = threading.Thread(target=_start_api, daemon=True)
     t.start()
     st.session_state.api_thread_started = True
@@ -380,6 +383,26 @@ def show_header():
 def _plotly(fig, height=320):
     fig.update_layout(**PLOTLY_LAYOUT, height=height)
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+
+def _get_rca_metrics(anomaly: str) -> dict:
+    defaults = {
+        "Pipe Rupture / Flow Drop": {
+            "vibration_mm_s": 5.4,
+            "bearing_temp_c": 74.2,
+            "pressure_psi": 24.5,
+        },
+        "HVAC Overheat / Thermal Spike": {
+            "vibration_mm_s": 4.2,
+            "bearing_temp_c": 104.8,
+            "pressure_psi": 44.0,
+        },
+    }
+    return defaults.get(anomaly, {
+        "vibration_mm_s": 2.4,
+        "bearing_temp_c": 68.4,
+        "pressure_psi": 42.5,
+    })
 
 
 # ════════════════════════════════════════════════════════════════════
@@ -874,7 +897,7 @@ def tab_digital_twin():
     view = pdk.ViewState(latitude=28.6139, longitude=77.2090, zoom=15, pitch=55)
     st.pydeck_chart(pdk.Deck(
         layers=[layer], initial_view_state=view,
-        map_style="mapbox://styles/mapbox/dark-v10",
+        map_style="light",
         tooltip={"text": "📍 {node_id}\nStatus: {status}\n🌡️ {temp}°C\n💧 {flow_rate} L/m"}
     ))
 
@@ -1004,8 +1027,11 @@ def tab_rca():
         </div>""", unsafe_allow_html=True)
 
         # ── Predictive RUL Maintenance Panel ─────────────────────────
+        metrics = _get_rca_metrics(anomaly)
         rul_res = PredictiveMaintenanceEngine.calculate_rul(
-            vibration_mm_s=vibration, bearing_temp_c=thermal, pressure_psi=pressure
+            vibration_mm_s=metrics["vibration_mm_s"],
+            bearing_temp_c=metrics["bearing_temp_c"],
+            pressure_psi=metrics["pressure_psi"],
         )
         fin_risk = PredictiveMaintenanceEngine.estimate_downtime_financial_risk(rul_res["rul_hours"])
 
