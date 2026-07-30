@@ -81,11 +81,15 @@
 - [🐳 Docker Containerization](#-docker-containerization)
 - [🔐 Access Roles & Default Passwords](#-access-roles--default-passwords)
 - [🤖 Intelligence & ML Stack](#-intelligence--ml-stack)
+- [💱 Enterprise Multi-Currency System](#-enterprise-multi-currency-system)
+- [🚀 Enterprise Innovations & Production Deployment Suite](#-enterprise-innovations--production-deployment-suite)
+- [🛠️ Industrial IoT Python Client SDK](#️-industrial-iot-python-client-sdk)
 - [🌱 ESG & Sustainability Analytics](#-esg--sustainability-analytics)
 - [🛡️ Enterprise Security Blueprint](#️-enterprise-security-blueprint)
 - [📂 Repository Directory Topology](#-repository-directory-topology)
 - [👨‍💻 Author & Engineering Profile](#-author--engineering-profile)
 - [📜 Licensing & Usage](#-licensing--usage)
+
 
 ---
 
@@ -377,7 +381,42 @@ HydroThermal Nexus-AI features 5 production-grade enterprise innovations:
 
 ---
 
+## 🛠️ Industrial IoT Python Client SDK
+
+HydroThermal Nexus-AI includes an official zero-dependency Python client SDK (`nexus_sdk.py`) for edge hardware nodes:
+
+```python
+from nexus_sdk import NexusEdgeClient
+
+# Initialize client with target REST endpoint & API key
+client = NexusEdgeClient(api_url="http://localhost:8001", api_key="NexusAPI_Internal_2026")
+
+# Check API health
+health = client.get_health()
+print(f"Health Status: {health['status']}")
+
+# Push IoT telemetry snapshot
+result = client.push_telemetry(
+    electricity_kwh=2150.0,
+    water_litres=3100.0,
+    outdoor_temp_c=33.5,
+    humidity_pct=62.0,
+    pressure_psi=44.2,
+    thermal_temp_c=68.5
+)
+print(f"Telemetry Status: {result['status']}")
+
+# Calculate multi-currency ESG savings in EUR
+savings = client.calculate_esg_savings(
+    water_litres=5000, energy_kwh=2500, co2_kg=1200, target_currency="EUR"
+)
+print(f"Total Value Unlocked: {savings['total_savings_formatted']}")
+```
+
+---
+
 ## 📂 Repository Directory Topology
+
 
 ```
 HydroThermal_Nexus_AI/
