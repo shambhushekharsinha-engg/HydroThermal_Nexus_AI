@@ -356,13 +356,38 @@ HydroThermal Nexus-AI includes an enterprise multi-currency engine (`currency_co
 
 ---
 
+## 🚀 Enterprise Innovations & Production Deployment Suite
+
+HydroThermal Nexus-AI features 5 production-grade enterprise innovations:
+
+1. **Predictive RUL & Downtime Cost Engine (`predictive_maintenance.py`)**:
+   - Calculates Remaining Useful Life (RUL) in operating hours for pumps, chillers, and thermal towers based on multi-sensor degradation vectors.
+   - Computes financial exposure ($/hr) of unscheduled outages vs proactive servicing in **🤖 RCA Diagnostics** (Tab 4).
+2. **ESG Regulatory Compliance Exporters (`esg_compliance_exporter.py`)**:
+   - Standardized 1-click audit disclosures in **🌱 ESG Dashboard** (Tab 5):
+     - **GHG Protocol Scope 1 & 2** (JSON)
+     - **ISO 14001 EMS Audit Trail** (CSV)
+     - **SEBI BRSR Principle 6 Disclosure** (JSON)
+3. **Official Industrial IoT Python Client SDK (`nexus_sdk.py`)**:
+   - Lightweight, zero-dependency Python client (`NexusEdgeClient`) for IoT hardware edge nodes to stream telemetry, perform health checks, and query multi-currency ESG analytics.
+4. **API Security & Rate-Limiting Middleware (`backend/rate_limiter.py`)**:
+   - Token-bucket rate limiter middleware protecting FastAPI REST microservices from rate abuse and DDoS vectors.
+5. **Production Readiness Health Check CLI (`scripts/health_check.py`)**:
+   - Pre-deployment diagnostic CLI verifying DB schemas, ML model artifacts, currency engine, and FastAPI microservice readiness (`python scripts/health_check.py`).
+
+---
+
 ## 📂 Repository Directory Topology
 
 ```
 HydroThermal_Nexus_AI/
 ├── app.py                     # Main Streamlit cockpit application (10 operational tabs)
 ├── currency_converter.py      # Multi-currency engine & ESG financial conversion core
+├── predictive_maintenance.py  # RUL degradation forecasting & downtime financial risk engine
+├── esg_compliance_exporter.py # GHG Protocol, ISO 14001 & BRSR audit package exporter
+├── nexus_sdk.py               # Official Python Client SDK for edge IoT telemetry ingestion
 ├── ml_engine.py               # IsolationForest + Z-score anomaly engine + joblib persistence
+
 
 ├── ai_assistant.py            # Knowledge-augmented 12-topic operational AI assistant
 ├── alert_manager.py           # Telegram & Email alert notification dispatcher
@@ -385,6 +410,7 @@ HydroThermal_Nexus_AI/
 │   ├── api.py                 # FastAPI REST microservice API (Port 8001)
 │   ├── database.py            # Thread-safe SQLite / PostgreSQL dynamic database layer
 │   ├── security.py            # RBAC validation, input sanitization & hash vault
+│   ├── rate_limiter.py        # Token-bucket API rate limiter middleware
 │   ├── telemetry_streamer.py  # Continuous IoT sensor telemetry streaming daemon
 │   ├── modbus_edge_simulator.py # Siemens Modbus TCP / PLC hardware edge simulator
 │   ├── mqtt_ingestion_bridge.py # MQTT broker telemetry listener & payload parser
@@ -397,12 +423,15 @@ HydroThermal_Nexus_AI/
 │   └── nexus_isolation_forest.joblib        # Serialized ML model pipeline artifact
 │
 ├── scripts/
-│   └── train_model.py         # Offline ML model training CLI script
+│   ├── train_model.py         # Offline ML model training CLI script
+│   └── health_check.py        # System health & deployment diagnostic CLI
 │
 ├── tests/
 │   ├── test_api.py            # FastAPI REST API automated unit tests
 │   ├── test_currency.py       # Multi-currency converter & ESG financial unit tests
+│   ├── test_innovations.py    # Enterprise innovations & RUL forecasting unit tests
 │   └── test_ml.py             # ML engine training & serialization unit tests
+
 
 │
 ├── assets/

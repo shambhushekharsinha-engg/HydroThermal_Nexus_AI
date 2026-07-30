@@ -33,6 +33,9 @@ from report_generator import EnterpriseReportEngine
 from ai_assistant import get_ai_response, QUICK_ACTIONS
 from alert_manager import dispatch_alert, build_anomaly_alert, send_telegram
 from currency_converter import CurrencyConverter
+from predictive_maintenance import PredictiveMaintenanceEngine
+from esg_compliance_exporter import ESGComplianceExporter
+
 
 
 # ── Page Config ──────────────────────────────────────────────────────
@@ -999,9 +1002,27 @@ def tab_rca():
               <div style="font-size:1.6rem;font-weight:800;color:#FFB800;">₹12,400</div></div>
           </div>
         </div>""", unsafe_allow_html=True)
+
+        # ── Predictive RUL Maintenance Panel ─────────────────────────
+        rul_res = PredictiveMaintenanceEngine.calculate_rul(
+            vibration_mm_s=vibration, bearing_temp_c=thermal, pressure_psi=pressure
+        )
+        fin_risk = PredictiveMaintenanceEngine.estimate_downtime_financial_risk(rul_res["rul_hours"])
+
+        st.markdown('<div class="section-title" style="margin-top:1rem;">⏳ Predictive Remaining Useful Life (RUL) & Outage Risk</div>', unsafe_allow_html=True)
+        rc1, rc2, rc3, rc4 = st.columns(4)
+        with rc1:
+            st.metric("Health Index", f"{rul_res['health_index']} / 100")
+        with rc2:
+            st.metric("Estimated RUL", f"{rul_res['rul_hours']:,.0f} Hours")
+        with rc3:
+            st.metric("30-Day Failure Prob.", f"{fin_risk['failure_probability_30d']}%")
+        with rc4:
+            st.metric("Risk Exposure", f"${fin_risk['risk_weighted_exposure_usd']:,.0f}")
     else:
         rca_text = "SYSTEM NOMINAL: All parameters within normal thresholds."
         st.success("✅ All systems operating within normal parameters. No active failure vectors.")
+
 
     # PDF Download
     if anomaly != "Nominal / Normal Operations" and has_permission(role, "download_reports"):
@@ -1301,6 +1322,40 @@ def tab_esg():
             <b style="color:#00FF88;"> 15 min</b> (16× faster)
           </div>
         </div>""", unsafe_allow_html=True)
+
+    st.markdown("---")
+    st.markdown('<div class="section-title">📄 Regulatory ESG Compliance Audit Data Exporters</div>', unsafe_allow_html=True)
+    st.caption("Generate standardized compliance audit disclosures for environmental regulatory bodies.")
+
+    exp1, exp2, exp3 = st.columns(3)
+    with exp1:
+        ghg_json = ESGComplianceExporter.export_ghg_protocol(total_co2, total_energy)
+        st.download_button(
+            "📥 GHG Protocol Audit (JSON)",
+            data=ghg_json,
+            file_name="GHG_Protocol_Scope1_2_Disclosure.json",
+            mime="application/json",
+            use_container_width=True
+        )
+    with exp2:
+        iso_csv = ESGComplianceExporter.export_iso14001_audit_trail(total_water, total_energy, total_co2)
+        st.download_button(
+            "📥 ISO 14001 Audit Ledger (CSV)",
+            data=iso_csv,
+            file_name="ISO_14001_EMS_Audit_Trail.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+    with exp3:
+        brsr_json = json.dumps(ESGComplianceExporter.export_brsr_report(total_water, total_energy, total_co2), indent=2)
+        st.download_button(
+            "📥 BRSR Principle 6 Disclosure (JSON)",
+            data=brsr_json,
+            file_name="BRSR_Principle6_Disclosure.json",
+            mime="application/json",
+            use_container_width=True
+        )
+
 
 
 
