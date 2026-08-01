@@ -175,6 +175,7 @@ def initialize_all_databases():
 
     # Run migration after table creation to add any missing columns
     _migrate_schemas()
+    seed_default_users()
 
 
 
