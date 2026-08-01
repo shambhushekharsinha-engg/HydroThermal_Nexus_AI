@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v2.1%20ENTERPRISE-00f0ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZmBmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBmMGZmIiBkPSJNMiAxN2wxMCA1IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=0d1117" />
+<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v2.1%20ENTERPRISE-00f0ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZmBmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBmMGZmIiBkPSJNMiAxN2wxMCA1 IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=0d1117" />
 
 # ⚡ HYDROTHERMAL NEXUS-AI
 ### 🌌 *Next-Generation Autonomous AI Cockpit for Industrial Hydrothermal Operations & ESG Auditing*
@@ -70,6 +70,7 @@
 - [🔐 Access Roles & Default Credentials](#-access-roles--default-credentials)
 - [🤖 Intelligence & ML Stack](#-intelligence--ml-stack)
 - [📂 Repository Directory Topology](#-repository-directory-topology)
+- [👨‍💻 Developer Profile](#-developer-profile)
 - [📜 Licensing & Usage](#-licensing--usage)
 
 ---
@@ -349,6 +350,72 @@ HydroThermal_Nexus_AI/
     ├── backend/                # Swagger API documentation screenshots
     └── video/                  # Full HD demonstration video file (.mp4)
 ```
+
+---
+
+## 👨‍💻 Developer Profile
+
+<div align="center">
+
+<br/>
+
+<img src="https://img.shields.io/badge/Developer-Shambhu%20Shekhar%20Sinha-00f0ff?style=for-the-badge&labelColor=010308" />
+
+<br/><br/>
+
+<table>
+  <tr>
+    <td align="center" width="100%">
+      <table>
+        <tr>
+          <td>👤 <b>Name</b></td>
+          <td>Shambhu Shekhar Sinha</td>
+        </tr>
+        <tr>
+          <td>🎓 <b>Degree</b></td>
+          <td>B.Tech — Computer Science & Engineering (AI & ML)</td>
+        </tr>
+        <tr>
+          <td>🏫 <b>College</b></td>
+          <td>Greater Noida Institute of Technology <b>(GNIOT)</b></td>
+        </tr>
+        <tr>
+          <td>🏛️ <b>University</b></td>
+          <td>Dr. APJ Abdul Kalam Technical University, Lucknow</td>
+        </tr>
+        <tr>
+          <td>📍 <b>Location</b></td>
+          <td>Greater Noida, Uttar Pradesh, India</td>
+        </tr>
+        <tr>
+          <td>🐙 <b>GitHub</b></td>
+          <td><a href="https://github.com/shambhushekharsinha-engg">@shambhushekharsinha-engg</a></td>
+        </tr>
+        <tr>
+          <td>🖥️ <b>Frontend</b></td>
+          <td><a href="https://hydrothermal-nexus-ai.streamlit.app/">hydrothermal-nexus-ai.streamlit.app</a></td>
+        </tr>
+        <tr>
+          <td>⚙️ <b>Backend API</b></td>
+          <td><a href="https://hydrothermal-nexus-ai.vercel.app">hydrothermal-nexus-ai.vercel.app</a></td>
+        </tr>
+        <tr>
+          <td>📖 <b>API Docs</b></td>
+          <td><a href="https://hydrothermal-nexus-ai.vercel.app/docs">hydrothermal-nexus-ai.vercel.app/docs</a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<br/>
+
+<img src="https://img.shields.io/badge/B.Tech-CSE%20%7C%20AI%20%26%20ML-00f0ff?style=flat-square&labelColor=010308"/>
+<img src="https://img.shields.io/badge/GNIOT-Greater%20Noida%20Institute%20of%20Technology-10b981?style=flat-square"/>
+<img src="https://img.shields.io/badge/AKTU-Lucknow-FF4B4B?style=flat-square"/>
+<img src="https://img.shields.io/badge/GitHub-shambhushekharsinha--engg-181717?style=flat-square&logo=github"/>
+
+</div>
 
 ---
 
