@@ -1,0 +1,19 @@
+.git
+.gitignore
+.github
+.pytest_cache
+.venv
+venv
+env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+.DS_Store
+Project Demo
+HydroThermal_Nexus_AI_Portfolio.pptx
+nexus_audit.db*
+nexus_auth.db*
+nexus_storage.db*
+tests/__pycache__

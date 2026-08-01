@@ -1,0 +1,250 @@
+# -*- coding: utf-8 -*-
+"""
+pages/2_Analytics.py — Telemetry, ML Anomaly Detection & RCA Engine
+Provides real-time telemetry analysis, custom Kaggle dataset IsolationForest ML training, and AI Root Cause Analysis.
+"""
+
+import os
+import datetime
+import logging
+from io import BytesIO
+from typing import Dict, Any, List
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+
+import shared_components as sc
+from backend import database as db
+from backend.security import has_permission, get_severity_badge
+from ml_engine import HydroThermalAnalyticsCore
+from rca_engine import RCAEngine
+from alert_manager import dispatch_alert, build_anomaly_alert
+
+logger: logging.Logger = logging.getLogger("HydroThermalNexus.PageAnalytics")
+
+st.set_page_config(page_title="Analytics & ML Engine — HydroThermal Nexus", page_icon="📈", layout="wide")
+
+user_info: Dict[str, str] = sc.require_auth()
+username: str = user_info["username"]
+role: str = user_info["role"]
+
+sc.show_header(title="📈 Telemetry, ML & RCA Engine", subtitle="IsolationForest Anomaly Detection & AI Root Cause Diagnostics")
+sc.show_sidebar()
+
+
+def render_telemetry_section() -> None:
+    """Render anomaly injection and telemetry charts."""
+    st.markdown('<div class="section-title">⚙️ Telemetry & Anomaly Injection Console</div>', unsafe_allow_html=True)
+
+    if has_permission(role, "trigger_anomaly"):
+        col_sel, col_btn = st.columns([3, 1])
+        with col_sel:
+            anomaly_sel = st.selectbox("Select Anomaly Scenario", [
+                "Nominal / Normal Operations",
+                "Pipe Rupture / Flow Drop",
+                "HVAC Overheat / Thermal Spike",
+            ], key="telemetry_anomaly_select")
+        with col_btn:
+            st.markdown("<div style='margin-top:1.8rem;'></div>", unsafe_allow_html=True)
+            if st.button("🚀 Trigger Scenario", key="trigger_scenario_analytics", use_container_width=True):
+                st.session_state["current_anomaly"] = anomaly_sel
+                st.session_state["health_score"] = (
+                    97.4 if anomaly_sel == "Nominal / Normal Operations"
+                    else 42.1 if anomaly_sel == "Pipe Rupture / Flow Drop"
+                    else 63.8
+                )
+                template = build_anomaly_alert(anomaly_sel, username)
+                dispatch_alert(
+                    severity=template["severity"],
+                    title=template["title"],
+                    message=template["message"],
+                    anomaly_type=anomaly_sel,
+                    username=username,
+                    role=role,
+                    telegram_token=st.session_state.get("bot_token", ""),
+                    telegram_chat=st.session_state.get("chat_id", ""),
+                    force=True,
+                )
+                if anomaly_sel == "Nominal / Normal Operations":
+                    st.success("✅ System reset to Nominal Operations.")
+                else:
+                    st.error(f"🚨 Anomaly '{anomaly_sel}' activated — Alert dispatched!")
+                st.rerun()
+    else:
+        st.info("🔒 Viewer role cannot inject anomaly scenarios.")
+
+    st.markdown("---")
+    st.markdown('<div class="section-title">🔄 Live Sensor Stream Metrics</div>', unsafe_allow_html=True)
+
+    live_toggle = st.toggle("Enable Live Sensor Streaming", key="analytics_live_toggle")
+    np.random.seed(int(datetime.datetime.now().second) if live_toggle else 42)
+
+    pressure = round(42.5 + np.random.uniform(-0.5, 0.5), 2) if live_toggle else 42.5
+    temp = round(68.4 + np.random.uniform(-0.3, 0.3), 2) if live_toggle else 68.4
+    energy = round(128.0 + np.random.uniform(-1.0, 1.0), 2) if live_toggle else 128.0
+    flow = round(120.0 + np.random.uniform(-2.0, 2.0), 2) if live_toggle else 120.0
+    humidity = round(65.0 + np.random.uniform(-1.0, 1.0), 2) if live_toggle else 65.0
+    outdoor_t = round(32.0 + np.random.uniform(-0.5, 0.5), 2) if live_toggle else 32.0
+
+    m1, m2, m3, m4, m5, m6 = st.columns(6)
+    m1.metric("Pressure", f"{pressure} PSI", "+1.2%")
+    m2.metric("Thermal", f"{temp}°C", "-0.8°C")
+    m3.metric("Energy", f"{energy} kW", "+3.1%")
+    m4.metric("Flow Rate", f"{flow} L/m", "+0.4%")
+    m5.metric("Humidity", f"{humidity}%", "-0.5%")
+    m6.metric("Outdoor Temp", f"{outdoor_t}°C", "+0.2°C")
+
+    st.markdown('<div class="section-title" style="margin-top:1rem;">📊 Telemetry Visualization</div>', unsafe_allow_html=True)
+
+    analytics = HydroThermalAnalyticsCore()
+    df = analytics.generate_live_production_stream()
+    if live_toggle:
+        db.save_telemetry(energy, flow * 25, outdoor_t, humidity, pressure, temp)
+
+    chart_type = st.radio("Chart View", ["Multi-Sensor", "Electricity", "Water Flow"], horizontal=True, key="analytics_chart_type")
+
+    if chart_type == "Multi-Sensor":
+        fig = make_subplots(rows=2, cols=1, shared_xaxes=True, subplot_titles=("Electricity (kWh)", "Water (Litres)"), vertical_spacing=0.08)
+        fig.add_trace(go.Scatter(x=df["Timestamp"], y=df["Electricity_kWh"], name="Electricity", mode="lines",
+                                 line=dict(color="#00D4FF", width=2), fill="tozeroy", fillcolor="rgba(0,212,255,0.07)"), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df["Timestamp"], y=df["Water_Litres"], name="Water", mode="lines",
+                                 line=dict(color="#FF6B35", width=2), fill="tozeroy", fillcolor="rgba(255,107,53,0.07)"), row=2, col=1)
+        fig.update_layout(**sc.PLOTLY_LAYOUT, height=380)
+        st.plotly_chart(fig, use_container_width=True)
+    elif chart_type == "Electricity":
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=df["Timestamp"], y=df["Electricity_kWh"], name="kWh", mode="lines+markers",
+                                 line=dict(color="#00D4FF", width=2), marker=dict(size=4, color="#00D4FF")))
+        fig.add_hline(y=2200, line_dash="dot", line_color="#FFB800", annotation_text="Baseline", annotation_position="right")
+        fig.update_layout(**sc.PLOTLY_LAYOUT, height=300)
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        fig = px.area(df, x="Timestamp", y="Water_Litres", color_discrete_sequence=["#FF6B35"])
+        fig.update_layout(**sc.PLOTLY_LAYOUT, height=300)
+        st.plotly_chart(fig, use_container_width=True)
+
+    with st.expander("🔬 Sensor Correlation Heatmap"):
+        corr = df[["Electricity_kWh", "Water_Litres", "Outdoor_Temp_C", "Humidity_Pct"]].corr()
+        fig_heat = px.imshow(corr, text_auto=".2f", color_continuous_scale=[[0, "#FF2D55"], [0.5, "#111827"], [1, "#00D4FF"]], aspect="auto")
+        fig_heat.update_layout(**sc.PLOTLY_LAYOUT, height=280)
+        st.plotly_chart(fig_heat, use_container_width=True)
+
+
+def render_ml_custom_training() -> None:
+    """Render Custom Dataset IsolationForest Trainer & Data Insights."""
+    st.markdown("---")
+    st.markdown('<div class="section-title">🧠 IsolationForest ML Engine & Dataset Analyzer</div>', unsafe_allow_html=True)
+    st.caption("Upload custom Kaggle CSVs or synthetic telemetry to train isolation forest models, score anomalies, and export results.")
+
+    engine = HydroThermalAnalyticsCore()
+
+    data_source = st.radio("Select Data Source", ["Synthetic Industrial Stream", "Upload Custom CSV File"], horizontal=True, key="analytics_source_radio")
+
+    if data_source == "Synthetic Industrial Stream":
+        raw_df = engine.generate_sample_kaggle_dataset()
+        source_name = "synthetic_industrial_telemetry.csv"
+    else:
+        uploaded_file = st.file_uploader("Upload Telemetry CSV", type=["csv"], key="analytics_csv_uploader")
+        if uploaded_file is not None:
+            raw_df = pd.read_csv(uploaded_file)
+            source_name = uploaded_file.name
+        else:
+            st.info("ℹ️ Upload a CSV file above or switch to Synthetic Stream.")
+            return
+
+    st.markdown("##### 🔍 Dataset Inspection")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Total Records", len(raw_df))
+    c2.metric("Total Columns", len(raw_df.columns))
+    numeric_cols: List[str] = raw_df.select_dtypes(include=[np.number]).columns.tolist()
+    c3.metric("Numeric Features", len(numeric_cols))
+
+    st.dataframe(raw_df.head(5), use_container_width=True)
+
+    if numeric_cols:
+        col_f, col_c = st.columns([3, 1])
+        with col_f:
+            selected_features = st.multiselect("Select Feature Columns for Anomaly Scoring", numeric_cols, default=numeric_cols[:min(4, len(numeric_cols))])
+        with col_c:
+            contamination = st.slider("Contamination Rate", 0.01, 0.20, 0.05, 0.01)
+
+        if selected_features and st.button("⚡ Run IsolationForest Scoring", key="run_if_button", use_container_width=True):
+            with st.spinner("Training IsolationForest model & scoring data points..."):
+                scored_df, metrics = engine.train_custom_isolation_forest(
+                    df=raw_df, feature_cols=selected_features, contamination=contamination
+                )
+
+            st.success(f"✅ Scoring Complete! Detected {metrics.get('anomalies_found', 0)} anomalies ({metrics.get('anomaly_percentage', 0.0):.1f}% of total).")
+
+            m_col1, m_col2 = st.columns(2)
+            with m_col1:
+                fig_scatter = px.scatter(
+                    scored_df, x=selected_features[0], y=selected_features[1] if len(selected_features) > 1 else selected_features[0],
+                    color=scored_df["IF_Anomaly"].map({1: "Normal", -1: "Anomaly"}),
+                    color_discrete_map={"Normal": "#00D4FF", "Anomaly": "#FF2D55"},
+                    title="Anomaly Distribution Scatter", hover_data=["IF_Score"]
+                )
+                fig_scatter.update_layout(**sc.PLOTLY_LAYOUT, height=280)
+                st.plotly_chart(fig_scatter, use_container_width=True)
+
+            with m_col2:
+                fig_hist = px.histogram(scored_df, x="IF_Score", color=scored_df["IF_Anomaly"].map({1: "Normal", -1: "Anomaly"}),
+                                        color_discrete_map={"Normal": "#00D4FF", "Anomaly": "#FF2D55"},
+                                        title="Isolation Forest Score Distribution")
+                fig_hist.update_layout(**sc.PLOTLY_LAYOUT, height=280)
+                st.plotly_chart(fig_hist, use_container_width=True)
+
+            csv_bytes = scored_df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="⬇️ Download Scored CSV (with IF_Anomaly & IF_Score)",
+                data=csv_bytes,
+                file_name=f"scored_{source_name}",
+                mime="text/csv",
+                use_container_width=True
+            )
+
+
+def render_rca_section() -> None:
+    """Render Root Cause Analysis Engine diagnostics."""
+    st.markdown("---")
+    st.markdown('<div class="section-title">🤖 AI-Driven Root Cause Analysis (RCA)</div>', unsafe_allow_html=True)
+    anomaly = st.session_state.get("current_anomaly", "Nominal / Normal Operations")
+
+    rca = RCAEngine()
+    analysis = rca.analyze_anomaly(anomaly)
+
+    if anomaly == "Pipe Rupture / Flow Drop":
+        st.error(f"🚨 **{analysis['primary_vector']}**")
+    elif anomaly == "HVAC Overheat / Thermal Spike":
+        st.warning(f"⚠️ **{analysis['primary_vector']}**")
+    else:
+        st.success(f"✅ **{analysis['primary_vector']}**")
+
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.markdown(f"""
+        <div class="glass-panel">
+          <div class="section-title">🔍 Diagnostic Findings</div>
+          <p><b>Root Cause:</b> {analysis['root_cause']}</p>
+          <p><b>Impact:</b> {analysis['impact']}</p>
+        </div>""", unsafe_allow_html=True)
+    with col_b:
+        st.markdown(f"""
+        <div class="glass-panel">
+          <div class="section-title">🛠️ Recommended Action</div>
+          <p>{analysis['recommendation']}</p>
+        </div>""", unsafe_allow_html=True)
+
+
+def main() -> None:
+    render_telemetry_section()
+    render_ml_custom_training()
+    render_rca_section()
+
+
+if __name__ == "__main__":
+    main()
