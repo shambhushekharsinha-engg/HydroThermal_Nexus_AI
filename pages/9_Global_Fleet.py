@@ -58,8 +58,19 @@ fig.update_layout(
 st.plotly_chart(fig, key="global_map", use_container_width=True)
 
 st.markdown("---")
-# Provide a robust dropdown for selecting the region
-selected_region_name = st.selectbox("📍 Select Facility Location:", facilities["Region"].tolist())
+# Ensure the selection persists across page navigation
+if "global_fleet_region" not in st.session_state:
+    st.session_state.global_fleet_region = facilities["Region"].iloc[0]
+
+region_list = facilities["Region"].tolist()
+default_idx = region_list.index(st.session_state.global_fleet_region) if st.session_state.global_fleet_region in region_list else 0
+
+selected_region_name = st.selectbox(
+    "📍 Select Facility Location:", 
+    region_list,
+    index=default_idx
+)
+st.session_state.global_fleet_region = selected_region_name
 
 # Determine the selected facility
 selected_facility = facilities[facilities["Region"] == selected_region_name].iloc[0]
