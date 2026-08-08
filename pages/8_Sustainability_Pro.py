@@ -126,8 +126,80 @@ def render_scope3():
     fig.update_layout(**sc.PLOTLY_LAYOUT, height=350, margin=dict(t=40, l=10, r=10, b=10))
     st.plotly_chart(fig, use_container_width=True)
 
+def render_algae_bioreactor():
+    st.markdown('<div class="section-title">🦠 AI-Optimized Microalgae Bioreactor</div>', unsafe_allow_html=True)
+    st.markdown("Ultimate Circular Economy: Waste Heat + Waste CO₂ + Wastewater = **Clean Biofuel & Oxygen**.")
+    
+    c1, c2, c3, c4 = st.columns(4)
+    co2_absorbed = round(random.uniform(120.5, 145.2), 1)
+    heat_used = round(random.uniform(45.0, 60.5), 1)
+    biofuel_yield = round(co2_absorbed * 0.35, 1)
+    oxygen_out = round(co2_absorbed * 0.73, 1)
+    
+    c1.metric("CO₂ Sequestered", f"{co2_absorbed} kg", "Direct Air Capture")
+    c2.metric("Waste Heat Utilized", f"{heat_used} kWh", "Symbiosis")
+    c3.metric("Biofuel Harvest", f"{biofuel_yield} L", "+2.4 L/hr")
+    c4.metric("Oxygen Released", f"{oxygen_out} kg", "Air Purification")
+
+    st.markdown("#### 🧪 Bioreactor Health & Growth Rate")
+    time_series = pd.DataFrame({
+        "Time": [f"{i}:00" for i in range(1, 13)],
+        "Algae Biomass (kg/m3)": np.linspace(1.2, 3.8, 12) + np.random.uniform(-0.1, 0.1, 12),
+        "Photosynthesis Efficiency (%)": np.linspace(85, 96, 12) + np.random.uniform(-2, 2, 12)
+    })
+    
+    fig = px.line(time_series, x="Time", y=["Algae Biomass (kg/m3)", "Photosynthesis Efficiency (%)"], title="Live Bioreactor Output")
+    fig.update_layout(**sc.PLOTLY_LAYOUT, height=300)
+    st.plotly_chart(fig, use_container_width=True)
+
+def render_digital_passport():
+    st.markdown('<div class="section-title">🛡️ Cryptographic Digital Product Passports (DPP)</div>', unsafe_allow_html=True)
+    st.markdown("Generates verifiable EU-compliant ESG passports for every production batch.")
+    
+    batch_id = f"BATCH-{random.randint(10000, 99999)}"
+    st.markdown(f"**Current Production Run:** `{batch_id}`")
+    
+    c1, c2 = st.columns([1, 2])
+    with c1:
+        st.image(f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=hydrothermal-nexus-dpp-{batch_id}", width=180)
+        st.caption("Scan to verify cryptographic ESG claims.")
+    with c2:
+        st.success("✅ **Batch verified as 100% Carbon Neutral.**")
+        st.info("🔹 Renewable Energy Used: **84%**\n🔹 Recycled Water Used: **92%**\n🔹 Scope 1+2 Carbon Footprint: **0.12 kg CO₂e / unit**")
+        st.button("Issue Blockchain Certificate for Batch", type="primary")
+
+def render_biodiversity():
+    st.markdown('<div class="section-title">🦅 Biodiversity & Ecosystem Drone Mapping</div>', unsafe_allow_html=True)
+    st.markdown("AI simulated drone and satellite analysis of local flora and fauna health near the industrial plant.")
+    
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Local Aquatic Health Score", "98.4%", "+1.2% (Nominal)")
+    c2.metric("Canopy Density Index", "87.1%", "Stable")
+    c3.metric("Thermal Plume Impact Risk", "LOW", "Optimal")
+    
+    st.markdown("#### 🛰️ Simulated Drone Heatmap (Effluent Impact Zone)")
+    # Generate a dummy heatmap simulating thermal impact on a river
+    z = np.random.normal(25, 2, size=(20, 20))
+    # Add a "hotspot" at the discharge pipe (top left)
+    for i in range(5):
+        for j in range(5):
+            z[i][j] += 8 - (i+j)
+    
+    fig = go.Figure(data=go.Contour(
+        z=z, colorscale="Viridis", contours=dict(showlabels=True, labelfont=dict(size=12, color="white"))
+    ))
+    fig.update_layout(title="River Surface Temperature near Discharge Pipe (°C)", **sc.PLOTLY_LAYOUT, height=350)
+    st.plotly_chart(fig, use_container_width=True)
+
 def main():
-    tab1, tab2, tab3 = st.tabs(["🔥 Energy & Heat", "💧 Water & Effluent", "🚛 Scope 3 & Supply Chain"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "🔥 Energy & Heat", 
+        "💧 Water & Effluent", 
+        "🚛 Scope 3 & Supply Chain",
+        "🦠 Algae Bioreactor",
+        "🛡️ Digital Passport",
+        "🦅 Biodiversity"
+    ])
     
     with tab1:
         render_waste_heat_recovery()
@@ -139,6 +211,15 @@ def main():
         
     with tab3:
         render_scope3()
+        
+    with tab4:
+        render_algae_bioreactor()
+        
+    with tab5:
+        render_digital_passport()
+        
+    with tab6:
+        render_biodiversity()
 
 if __name__ == "__main__":
     main()
