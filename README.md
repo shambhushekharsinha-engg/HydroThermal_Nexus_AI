@@ -154,6 +154,7 @@ The application is structured into **7 dedicated Streamlit pages** in the `pages
 | **⚙️ Settings & Audit** | [`pages/6_Settings.py`](file:///c:/HydroThermal_Nexus_AI/pages/6_Settings.py) | Immutable SHA-256 audit trail, RBAC permission matrix, user administration, system diagnostics |
 | **💬 AI Assistant** | [`pages/7_AI_Assistant.py`](file:///c:/HydroThermal_Nexus_AI/pages/7_AI_Assistant.py) | Domain-aware AI assistant chatbot, prompt engineering quick action chips, conversation history |
 | **🌍 Sustain-Pro** | [`pages/8_Sustainability_Pro.py`](file:///c:/HydroThermal_Nexus_AI/pages/8_Sustainability_Pro.py) | Next-Gen ESG: Microalgae Bioreactor, Digital Product Passport, Biodiversity Drone Mapping, Grid Load Shifting, Waste Heat Recovery, Tokenized Carbon Credits (GreenFi) |
+| **🗺️ Global Fleet Map** | [`pages/9_Global_Fleet.py`](file:///c:/HydroThermal_Nexus_AI/pages/9_Global_Fleet.py) | Interactive multi-site spatial map with live `on_select` region-switching and localized telemetry dashboards. |
 
 ---
 
@@ -317,7 +318,8 @@ HydroThermal_Nexus_AI/
 │   ├── 5_Reports.py            # ESG Sustainability & Regulatory Exporters
 │   ├── 6_Settings.py           # Immutable Audit Ledger & RBAC Control
 │   ├── 7_AI_Assistant.py       # Interactive AI Copilot Chatbot
-│   └── 8_Sustainability_Pro.py # Enterprise ESG: Circular Economy, DPP & GreenFi
+│   ├── 8_Sustainability_Pro.py # Enterprise ESG: Circular Economy, DPP & GreenFi
+│   └── 9_Global_Fleet.py       # Global Multi-Site Interactive Map
 │
 ├── backend/                    # REST API & Database Layer
 │   ├── api.py                  # FastAPI microservice REST server

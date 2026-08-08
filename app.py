@@ -43,34 +43,41 @@ def main() -> None:
     </div>
     """.format(user_info['username'], user_info['role']), unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
         st.markdown("""
         <div class="glass-panel" style="height: 100%;">
-          <h4 style="color: #38BDF8;">🎛️ Command Center</h4>
-          <p style="font-size: 0.85rem; color: #94A3B8;">Real-time system health score, KPI gauges, live sparklines, and guided scenario missions.</p>
+          <h4 style="color: #38BDF8;">🎛️ Command</h4>
+          <p style="font-size: 0.82rem; color: #94A3B8;">Real-time system health score, KPI gauges, and guided scenario missions.</p>
         </div>""", unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
         <div class="glass-panel" style="height: 100%;">
           <h4 style="color: #A855F7;">📈 ML Engine</h4>
-          <p style="font-size: 0.85rem; color: #94A3B8;">IsolationForest anomaly detection, custom Kaggle CSV scoring, and AI Root Cause Analysis.</p>
+          <p style="font-size: 0.82rem; color: #94A3B8;">IsolationForest anomaly detection and AI Root Cause Analysis.</p>
         </div>""", unsafe_allow_html=True)
 
     with col3:
         st.markdown("""
         <div class="glass-panel" style="height: 100%;">
           <h4 style="color: #34D399;">🌱 ESG & Reports</h4>
-          <p style="font-size: 0.85rem; color: #94A3B8;">Multi-currency financial yield calculators, carbon accounting, and regulatory compliance exporters.</p>
+          <p style="font-size: 0.82rem; color: #94A3B8;">Financial yield calculators and regulatory compliance exporters.</p>
         </div>""", unsafe_allow_html=True)
         
     with col4:
         st.markdown("""
         <div class="glass-panel" style="height: 100%;">
           <h4 style="color: #FBBF24;">🌍 Sustain-Pro</h4>
-          <p style="font-size: 0.85rem; color: #94A3B8;">Next-Gen Circular Economy, Grid Load Shifting, Waste Heat Recovery, and Scope 3 Supply Chain.</p>
+          <p style="font-size: 0.82rem; color: #94A3B8;">Next-Gen Circular Economy, GreenFi, and Scope 3 Supply Chain.</p>
+        </div>""", unsafe_allow_html=True)
+
+    with col5:
+        st.markdown("""
+        <div class="glass-panel" style="height: 100%;">
+          <h4 style="color: #EF4444;">🗺️ Global Fleet</h4>
+          <p style="font-size: 0.82rem; color: #94A3B8;">Interactive multi-site map with localized telemetry switching.</p>
         </div>""", unsafe_allow_html=True)
 
     st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
