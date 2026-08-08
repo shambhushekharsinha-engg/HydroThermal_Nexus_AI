@@ -89,7 +89,7 @@ def render_grid_load_shifting():
 
     with c2:
         fig = px.area(df, x="Hour", y="Grid Carbon Intensity (gCO2/kWh)", title="24-Hour Grid Carbon Forecast")
-        fig.add_vline(x=hours[current_hour], line_width=3, line_dash="dash", line_color="red", annotation_text="Now")
+        fig.add_vline(x=hours[current_hour], line_width=3, line_dash="dash", line_color="red")
         fig.update_layout(**sc.PLOTLY_LAYOUT, height=300)
         st.plotly_chart(fig, use_container_width=True)
 
