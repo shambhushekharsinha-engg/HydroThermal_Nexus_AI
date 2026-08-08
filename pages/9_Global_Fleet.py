@@ -24,6 +24,10 @@ facilities = pd.DataFrame([
     {"Region": "Berlin Plant (EU)", "lat": 52.5200, "lon": 13.4050, "Status": "Warning", "Health": 76.2},
     {"Region": "Tokyo Hub (APAC)", "lat": 35.6762, "lon": 139.6503, "Status": "Critical", "Health": 42.1},
     {"Region": "Mumbai Facility (IN)", "lat": 19.0760, "lon": 72.8777, "Status": "Nominal", "Health": 95.8},
+    {"Region": "Sydney Station (APAC)", "lat": -33.8688, "lon": 151.2093, "Status": "Nominal", "Health": 99.1},
+    {"Region": "Sao Paulo Plant (LATAM)", "lat": -23.5505, "lon": -46.6333, "Status": "Warning", "Health": 82.5},
+    {"Region": "Dubai Outpost (MENA)", "lat": 25.2048, "lon": 55.2708, "Status": "Nominal", "Health": 97.3},
+    {"Region": "Toronto Hub (NA)", "lat": 43.6510, "lon": -79.3470, "Status": "Nominal", "Health": 96.0}
 ])
 
 st.markdown('<div class="section-title">🌍 Select a Facility to View Local Data</div>', unsafe_allow_html=True)
@@ -38,7 +42,7 @@ fig = px.scatter_mapbox(
     color="Status",
     color_discrete_map={"Nominal": "#00FF88", "Warning": "#FFB800", "Critical": "#FF2D55"},
     size_max=15,
-    zoom=1.2,
+    zoom=1.0,
     height=400
 )
 
@@ -50,22 +54,16 @@ fig.update_layout(
     plot_bgcolor="rgba(0,0,0,0)"
 )
 
-# Render map and capture selection event
-selection = st.plotly_chart(fig, on_select="rerun", key="global_map", use_container_width=True)
+# Render map (without on_select to prevent compatibility errors)
+st.plotly_chart(fig, key="global_map", use_container_width=True)
 
-# Determine the selected region
-selected_index = None
-if selection and "selection" in selection and "points" in selection["selection"]:
-    points = selection["selection"]["points"]
-    if len(points) > 0:
-        selected_index = points[0]["pointIndex"]
+st.markdown("---")
+# Provide a robust dropdown for selecting the region
+selected_region_name = st.selectbox("📍 Select Facility Location:", facilities["Region"].tolist())
 
-# Default to Texas if no selection is made
-if selected_index is None:
-    selected_index = 0
-    st.info("💡 **Tip:** Click on any marker on the map to instantly switch regions. Currently showing default: **Texas HQ**.")
+# Determine the selected facility
+selected_facility = facilities[facilities["Region"] == selected_region_name].iloc[0]
 
-selected_facility = facilities.iloc[selected_index]
 region_name = selected_facility["Region"]
 region_status = selected_facility["Status"]
 
