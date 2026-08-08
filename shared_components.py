@@ -88,6 +88,8 @@ def bootstrap_environment() -> None:
 def show_login() -> None:
     """Render full-page login & registration card."""
     load_css()
+    # Hide sidebar on login screen
+    st.markdown("<style>[data-testid='stSidebarNav'] {display: none;} [data-testid='stSidebar'] {display: none;}</style>", unsafe_allow_html=True)
     _, col, _ = st.columns([1, 1.3, 1])
     with col:
         logo_html = (
