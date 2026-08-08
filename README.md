@@ -153,6 +153,7 @@ The application is structured into **7 dedicated Streamlit pages** in the `pages
 | **🌱 ESG Reports** | [`pages/5_Reports.py`](file:///c:/HydroThermal_Nexus_AI/pages/5_Reports.py) | Multi-currency financial calculator (14 currencies), carbon accounting, regulatory compliance exporters (GHG, ISO, BRSR) |
 | **⚙️ Settings & Audit** | [`pages/6_Settings.py`](file:///c:/HydroThermal_Nexus_AI/pages/6_Settings.py) | Immutable SHA-256 audit trail, RBAC permission matrix, user administration, system diagnostics |
 | **💬 AI Assistant** | [`pages/7_AI_Assistant.py`](file:///c:/HydroThermal_Nexus_AI/pages/7_AI_Assistant.py) | Domain-aware AI assistant chatbot, prompt engineering quick action chips, conversation history |
+| **🌍 Sustain-Pro** | [`pages/8_Sustainability_Pro.py`](file:///c:/HydroThermal_Nexus_AI/pages/8_Sustainability_Pro.py) | Next-Gen ESG: Microalgae Bioreactor, Digital Product Passport, Biodiversity Drone Mapping, Grid Load Shifting, Waste Heat Recovery, Tokenized Carbon Credits (GreenFi) |
 
 ---
 
@@ -234,6 +235,7 @@ The application is structured into **7 dedicated Streamlit pages** in the `pages
 
 | Version | Release Date | Key Enhancements & Architectural Upgrades |
 | :--- | :--- | :--- |
+| **`v2.5.0`** | **Aug 2026** | **Sustainability Pro (Enterprise ESG):** Ultra-unique features including AI Microalgae Bioreactor Simulation, Cryptographic Digital Product Passports (DPP), Biodiversity Drone Heatmaps, Waste Heat Recovery, Tokenized Carbon Credit Trading, and Scope 3 Emissions Tracking. |
 | **`v2.1.0`** | **Aug 2026** | **Streamlit Multi-Page Refactoring (`pages/`)**, Production Docker Compose (`docker-compose.prod.yml`), Pre-commit Hooks (`black`, `isort`, `flake8`), Complete Type Annotations, 44-Test Pytest Suite, OpenAPI Documentation. |
 | **`v2.0.0`** | **Jul 2026** | FastAPI REST API backend, SQLite persistent databases (`nexus_storage.db`, `nexus_audit.db`, `nexus_auth.db`), IsolationForest ML engine, Telegram bot alert integration, ESG compliance exporters. |
 | **`v1.1.0`** | **May 2026** | Multi-currency financial savings calculator (14 currencies), Plotly interactive dark theme charts, RBAC role switcher (Admin, Operator, Viewer). |
@@ -314,7 +316,8 @@ HydroThermal_Nexus_AI/
 │   ├── 4_DigitalTwin.py        # 3D PyDeck Spatial Map & Actuator Override
 │   ├── 5_Reports.py            # ESG Sustainability & Regulatory Exporters
 │   ├── 6_Settings.py           # Immutable Audit Ledger & RBAC Control
-│   └── 7_AI_Assistant.py       # Interactive AI Copilot Chatbot
+│   ├── 7_AI_Assistant.py       # Interactive AI Copilot Chatbot
+│   └── 8_Sustainability_Pro.py # Enterprise ESG: Circular Economy, DPP & GreenFi
 │
 ├── backend/                    # REST API & Database Layer
 │   ├── api.py                  # FastAPI microservice REST server

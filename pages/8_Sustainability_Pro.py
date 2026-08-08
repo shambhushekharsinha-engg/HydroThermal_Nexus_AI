@@ -191,14 +191,37 @@ def render_biodiversity():
     fig.update_layout(title="River Surface Temperature near Discharge Pipe (°C)", **sc.PLOTLY_LAYOUT, height=350)
     st.plotly_chart(fig, use_container_width=True)
 
+def render_carbon_credits():
+    st.markdown('<div class="section-title">🪙 Tokenized Carbon Credits (GreenFi)</div>', unsafe_allow_html=True)
+    st.markdown("Monetize your emissions reductions by minting verified Carbon Credits and trading them on a decentralized Green Finance (GreenFi) marketplace.")
+    
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Verified Emissions Reduction", "420.5 tCO₂e", "YTD")
+    c2.metric("Minted Carbon Tokens", "420 $C-TKN", "Ready to Trade")
+    c3.metric("Estimated Market Value", "$12,194.50", "@ $29/tCO₂e")
+    
+    st.markdown("#### 📈 Live Carbon Offset Marketplace")
+    
+    # Generate dummy market data
+    dates = pd.date_range(end=datetime.datetime.now(), periods=30, freq='D')
+    prices = np.linspace(22, 29, 30) + np.random.uniform(-1.5, 1.5, 30)
+    df_market = pd.DataFrame({"Date": dates, "Price per tCO₂e ($)": prices})
+    
+    fig = px.area(df_market, x="Date", y="Price per tCO₂e ($)", title="Carbon Credit Market Price (30-Day Trend)")
+    fig.update_layout(**sc.PLOTLY_LAYOUT, height=280)
+    st.plotly_chart(fig, use_container_width=True)
+    
+    st.button("Mint & Sell 100 $C-TKN on Marketplace", type="primary")
+
 def main():
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
         "🔥 Energy & Heat", 
         "💧 Water & Effluent", 
-        "🚛 Scope 3 & Supply Chain",
+        "🚛 Scope 3",
         "🦠 Algae Bioreactor",
         "🛡️ Digital Passport",
-        "🦅 Biodiversity"
+        "🦅 Biodiversity",
+        "🪙 Carbon Trading"
     ])
     
     with tab1:
@@ -220,6 +243,9 @@ def main():
         
     with tab6:
         render_biodiversity()
+        
+    with tab7:
+        render_carbon_credits()
 
 if __name__ == "__main__":
     main()
