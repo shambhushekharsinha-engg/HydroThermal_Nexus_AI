@@ -123,7 +123,7 @@ def render_scope3():
         values=emissions,
         title="Scope 3 Emissions Breakdown (Tonnes CO₂e)"
     )
-    fig.update_layout(**sc.PLOTLY_LAYOUT, height=350, margin=dict(t=40, l=10, r=10, b=10))
+    fig.update_layout(**sc.PLOTLY_LAYOUT, height=350)
     st.plotly_chart(fig, use_container_width=True)
 
 def render_algae_bioreactor():
