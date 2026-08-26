@@ -45,5 +45,3 @@ target-version = ['py311']
 profile = "black"
 line_length = 120
 
-[tool.vercel]
-entrypoint = "backend.api:app"
