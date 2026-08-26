@@ -1,6 +1,7 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v3.0%20ENTERPRISE-00f0ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZmBmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBmMGZmIiBkPSJNMiAxN2wxMCA1IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=0d1117" />
+<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v3.0%20EVALUATION%20READY-00f0ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZmBmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBmMGZmIiBkPSJNMiAxN2wxMCA1IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=0d1117" />
+
 
 # ⚡ HYDROTHERMAL NEXUS-AI
 ### 🌌 *Next-Generation Autonomous AI Cockpit for Industrial Hydrothermal Operations & ESG Auditing*
@@ -99,7 +100,7 @@ Modern hydrothermal facilities — including data center liquid cooling grids, p
 | **Streamlit Page Load Time** | <kbd>< 1.0 sec</kbd> | **0.58 sec** | Multi-page module render latency |
 | **Water Conservation Yield** | <kbd>≥ 1,000 L/hr</kbd> | **1,450 L/hr** | Calculated via active valve throttling × flow telemetry |
 | **Carbon Avoidance Yield** | <kbd>≥ 30 kg CO₂e</kbd> | **38 kg / event** | HVAC efficiency delta × standard grid emissions factor |
-| **Automated Test Coverage** | <kbd>100% Pass</kbd> | **44 / 44 (100%)** | Pytest unit, API, Auth & Page import test suite |
+| **Automated Test Coverage** | <kbd>100% Pass</kbd> | **42 / 42 (100%)** | Pytest unit, API, Auth & Page import test suite |
 
 ---
 
