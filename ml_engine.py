@@ -13,6 +13,7 @@ from typing import Tuple, Dict, List, Any, Optional
 import numpy as np
 import pandas as pd
 import config
+from functools import lru_cache
 
 logger: logging.Logger = logging.getLogger("HydroThermalNexus.MLEngine")
 
@@ -48,6 +49,7 @@ class HydroThermalAnalyticsCore:
         if os.path.exists(model_path):
             self.load_model(model_path)
 
+    @lru_cache(maxsize=4)
     def generate_live_production_stream(self, periods: int = 60) -> pd.DataFrame:
         """Generates realistic 60-step telemetry stream with embedded anomaly spikes."""
         np.random.seed(42)
@@ -76,6 +78,7 @@ class HydroThermalAnalyticsCore:
             "Thermal_Temp_C": thermal_temp,
         })
 
+    @lru_cache(maxsize=1)
     def get_eda_summary(self) -> pd.DataFrame:
         """Returns descriptive statistics of the telemetry stream."""
         df = self.generate_live_production_stream()
@@ -85,6 +88,7 @@ class HydroThermalAnalyticsCore:
         stats["completeness"] = 100.0
         return stats.round(2)
 
+    @lru_cache(maxsize=1)
     def get_data_dictionary(self) -> pd.DataFrame:
         """Returns data dictionary describing telemetry fields."""
         return pd.DataFrame([

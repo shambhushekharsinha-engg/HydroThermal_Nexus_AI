@@ -92,7 +92,7 @@ def verify_api_key(x_api_key: Optional[str] = Header(None)):
 
 # ── Endpoints ────────────────────────────────────────────────────────
 @app.get("/api/health")
-def health_check():
+async def health_check():
     """Returns system health status and uptime."""
     return {
         "status": "operational",

@@ -23,6 +23,10 @@ def get_conn(db_path: str):
     """Thread-safe SQLite connection context manager."""
     conn = sqlite3.connect(db_path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
+    # Boost efficiency with WAL mode and memory mapping
+    conn.execute("PRAGMA journal_mode=WAL;")
+    conn.execute("PRAGMA synchronous=NORMAL;")
+    conn.execute("PRAGMA mmap_size=30000000000;")
     try:
         yield conn
         conn.commit()
@@ -172,6 +176,9 @@ def initialize_all_databases():
     with get_conn(DB_AUDIT) as conn:
         conn.execute("CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit_logs (timestamp);")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_alerts_ts ON alerts (timestamp);")
+
+    with get_conn(DB_STORAGE) as conn:
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_esg_date ON esg_metrics (date);")
 
     # Run migration after table creation to add any missing columns
     _migrate_schemas()
@@ -325,6 +332,9 @@ def log_audit(username: str, role: str, action: str, anomaly_type: str = "None",
         )
 
 
+import streamlit as st
+
+@st.cache_data(ttl=2)
 def get_audit_logs(limit: int = 200) -> pd.DataFrame:
     with get_conn(DB_AUDIT) as conn:
         df = pd.read_sql_query(
@@ -383,6 +393,7 @@ def save_telemetry(electricity: float, water: float, outdoor_temp: float,
         )
 
 
+@st.cache_data(ttl=2)
 def get_telemetry(hours: int = 24) -> pd.DataFrame:
     cutoff = (datetime.datetime.now() - datetime.timedelta(hours=hours)).strftime("%Y-%m-%d %H:%M:%S")
     with get_conn(DB_STORAGE) as conn:
