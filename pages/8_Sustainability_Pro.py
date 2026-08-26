@@ -110,6 +110,30 @@ def render_water_quality():
     
     st.progress(1.0, text="EPA Clean Water Act Compliance: 100% (No Violations Detected)")
 
+def render_zld_optimization():
+    st.markdown('<div class="section-title">♻️ Zero Liquid Discharge (ZLD) Optimization</div>', unsafe_allow_html=True)
+    st.markdown("AI-driven closed-loop water purification tracking, optimizing chemical dosing and reverse osmosis pressures to minimize wastewater effluent.")
+    
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Freshwater Intake", "450 L/hr", "-82% vs Baseline")
+    c2.metric("Water Recovery Rate", "99.1%", "+1.2%")
+    c3.metric("Brine Solidification", "12.4 kg/hr", "Nominal")
+    
+    st.markdown("#### 🔄 ZLD Closed-Loop Efficiency")
+    stages = ["Intake", "Pre-Treatment", "Reverse Osmosis", "Evaporator", "Crystallizer", "Pure Water Reused"]
+    volumes = [100, 95, 85, 75, 70, 99.1]
+    
+    fig = go.Figure(go.Funnel(
+        y = stages,
+        x = volumes,
+        textposition = "inside",
+        textinfo = "value+percent initial",
+        opacity = 0.85,
+        marker = {"color": ["#38BDF8", "#0EA5E9", "#0284C7", "#0369A1", "#075985", "#10B981"]}
+    ))
+    fig.update_layout(**sc.PLOTLY_LAYOUT, height=350, title="Water Recovery Funnel (Liters per 100L Intake)")
+    st.plotly_chart(fig, use_container_width=True)
+
 def render_scope3():
     st.markdown('<div class="section-title">🚛 Scope 3 Emissions & Supply Chain</div>', unsafe_allow_html=True)
     st.markdown("AI-estimated upstream and downstream carbon footprint mapping.")
@@ -231,6 +255,8 @@ def main():
         
     with tab2:
         render_water_quality()
+        st.markdown("---")
+        render_zld_optimization()
         
     with tab3:
         render_scope3()

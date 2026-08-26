@@ -61,6 +61,12 @@ def main() -> None:
             if st.button(f"💬 {qa[:28]}…" if len(qa) > 28 else f"💬 {qa}", key=f"chip_page_{i}", use_container_width=True):
                 st.session_state["pending_chat_page"] = qa
 
+    st.markdown("##### 🌍 Gen-AI ESG Strategy Auto-Draft")
+    col_esg1, col_esg2 = st.columns([1, 3])
+    with col_esg1:
+        if st.button("📝 Auto-Draft ESG ISO-14001 Mitigation Plan", type="primary", use_container_width=True):
+            st.session_state["pending_chat_page"] = "Generate a comprehensive ISO-14001 ESG compliance narrative and carbon mitigation strategy based on the current system anomaly and health score."
+
     prompt = st.chat_input("Type your question regarding plant operations…")
     pending = st.session_state.pop("pending_chat_page", None)
     user_query = prompt or pending

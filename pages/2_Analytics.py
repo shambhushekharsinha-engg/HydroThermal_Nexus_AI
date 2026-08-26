@@ -240,10 +240,43 @@ def render_rca_section() -> None:
         </div>""", unsafe_allow_html=True)
 
 
+def render_pdm_section() -> None:
+    """Render Predictive Maintenance (PdM) module."""
+    st.markdown("---")
+    st.markdown('<div class="section-title">🔧 AI Predictive Maintenance (PdM) & RUL Forecasting</div>', unsafe_allow_html=True)
+    st.caption("Forecast Remaining Useful Life (RUL) and estimate financial risk of unscheduled downtime using non-linear degradation curves.")
+    
+    from predictive_maintenance import PredictiveMaintenanceEngine
+    
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        vib = st.slider("Current Vibration (mm/s)", 0.0, 15.0, 3.2, 0.1)
+    with c2:
+        temp = st.slider("Bearing Temp (°C)", 30.0, 150.0, 65.0, 1.0)
+    with c3:
+        pressure = st.slider("Header Pressure (PSI)", 20.0, 80.0, 42.5, 0.5)
+        
+    pdm = PredictiveMaintenanceEngine.calculate_rul(vib, temp, pressure)
+    risk = PredictiveMaintenanceEngine.estimate_downtime_financial_risk(pdm["rul_hours"])
+    
+    col_metrics, col_risk = st.columns([1.5, 1])
+    
+    with col_metrics:
+        st.markdown(f"#### Degradation Status: **{pdm['status']}**")
+        st.progress(pdm['rul_percentage'] / 100.0, text=f"Remaining Useful Life (RUL): {pdm['rul_percentage']}% ({pdm['rul_hours']} hours)")
+        st.info(f"**Action Code:** `{pdm['action_code']}` — {pdm['urgency']}")
+        
+    with col_risk:
+        st.markdown("#### Financial Risk Analysis")
+        st.metric("Probability of Failure (30 days)", f"{risk['failure_probability_30d']}%")
+        st.metric("Net Savings by Preventative Maintenance", f"${risk['net_savings_preventative_usd']:,.2f}", "Cost Avoided")
+
+
 def main() -> None:
     render_telemetry_section()
     render_ml_custom_training()
     render_rca_section()
+    render_pdm_section()
 
 
 if __name__ == "__main__":
