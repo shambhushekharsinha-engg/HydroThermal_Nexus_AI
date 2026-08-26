@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v2.1%20ENTERPRISE-00f0ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZmBmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBmMGZmIiBkPSJNMiAxN2wxMCA1 IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=0d1117" />
+<img src="https://img.shields.io/badge/HYDROTHERMAL%20NEXUS--AI-v3.0%20ENTERPRISE-00f0ff?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwZmBmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBmaWxsPSIjMDBmMGZmIiBkPSJNMiAxN2wxMCA1IDEwLTV2LTZMMTIgMTYgMiAxMXoiLz48L3N2Zz4=&labelColor=0d1117" />
 
 # ⚡ HYDROTHERMAL NEXUS-AI
 ### 🌌 *Next-Generation Autonomous AI Cockpit for Industrial Hydrothermal Operations & ESG Auditing*
@@ -107,12 +107,14 @@ Modern hydrothermal facilities — including data center liquid cooling grids, p
 
 To elevate HydroThermal Nexus-AI to the absolute pinnacle of industrial sustainability and operational efficiency, the following next-generation upgrades are slated for upcoming releases:
 
-| Planned Upgrade | Sustainability Impact | Technical Implementation |
-| :--- | :--- | :--- |
-| **1. Dynamic Grid Load Shifting** | **Slashes Scope 2 Emissions.** Synchronizes energy-heavy operations with peak renewable energy availability on the local grid. | Integration with live grid carbon APIs (e.g., WattTime, ENTSO-E) to dynamically throttle non-critical HVAC/pump loads when grid carbon intensity is low. |
-| **2. Zero Liquid Discharge (ZLD) Optimization** | **Drastic Water Conservation.** Achieves up to 99% water recovery in hydrothermal systems. | AI-driven closed-loop water purification tracking, optimizing chemical dosing and reverse osmosis pressures to minimize wastewater effluent. |
-| **3. AI Predictive Maintenance (PdM)** | **Resource & Material Preservation.** Prevents catastrophic failures and extends machinery lifespan, reducing industrial waste and replacement emissions. | Deploying LSTM / XGBoost models on historical telemetry to predict *Remaining Useful Life (RUL)* and *Time to Failure (TTF)* of thermal pumps and heat exchangers. |
-| **4. Gen-AI ESG Strategy Copilot** | **Automated Regulatory Compliance.** Eliminates manual reporting friction and proactively suggests carbon reduction strategies. | Integrating advanced LLMs with the internal telemetry database to auto-generate actionable ISO 14001 / GHG compliance narratives and mitigation plans. |
+| Planned Upgrade | Sustainability Impact | Technical Implementation | Status |
+| :--- | :--- | :--- | :--- |
+| **1. Dynamic Grid Load Shifting** | **Slashes Scope 2 Emissions.** Synchronizes energy-heavy operations with peak renewable energy availability on the local grid. | Integration with live grid carbon APIs (e.g., WattTime, ENTSO-E) to dynamically throttle non-critical HVAC/pump loads when grid carbon intensity is low. | 🔵 Planned |
+| **2. Zero Liquid Discharge (ZLD) Optimization** | **Drastic Water Conservation.** Achieves up to 99% water recovery in hydrothermal systems. | AI-driven closed-loop water purification tracking, optimizing chemical dosing and reverse osmosis pressures to minimize wastewater effluent. | 🔵 Planned |
+| **3. AI Predictive Maintenance (PdM)** | **Resource & Material Preservation.** Prevents catastrophic failures and extends machinery lifespan, reducing industrial waste and replacement emissions. | `PredictiveMaintenanceEngine` with RUL gauge dashboard, 3-component degradation tracking, financial risk analysis, and maintenance scheduling with audit logging. | ✅ **Implemented (v3.0)** |
+| **4. Gen-AI ESG Strategy Copilot** | **Automated Regulatory Compliance.** Eliminates manual reporting friction and proactively suggests carbon reduction strategies. | Domain-aware AI Assistant with 16 knowledge entries, 12 quick action chips, PdM guidance, Power Surge scenario knowledge, and ML explainability coverage. | ✅ **Implemented (v3.0)** |
+
+
 
 ---
 
@@ -120,54 +122,59 @@ To elevate HydroThermal Nexus-AI to the absolute pinnacle of industrial sustaina
 
 ```mermaid
 graph TD
-    A[Industrial IoT Sensors] -->|Telemetry Stream| B[FastAPI REST Microservice :8001]
+    A[Industrial IoT Sensors] -->|Telemetry Stream| B[FastAPI REST Microservice :8001 v3.0]
     A -->|Streamlit Direct Stream| C[Streamlit Multi-Page Cockpit :8501]
     
-    subgraph Frontend [Streamlit Multi-Page Cockpit]
-        C --> D[1_Dashboard.py]
-        C --> E[2_Analytics.py]
-        C --> F[3_Alerts.py]
-        C --> G[4_DigitalTwin.py]
-        C --> H[5_Reports.py]
-        C --> I[6_Settings.py]
-        C --> J[7_AI_Assistant.py]
+    subgraph Frontend ["Streamlit Multi-Page Cockpit (10 Pages)"]
+        C --> D[1_Dashboard.py: 3 Missions + Live Refresh]
+        C --> E[2_Analytics.py: ML + RCA + PDF + Explainability]
+        C --> F[3_Alerts.py: Telegram Persistent Config]
+        C --> G[4_DigitalTwin.py: 4-Node Power Surge State]
+        C --> H[5_Reports.py + 6_Settings.py]
+        C --> I[7_AI_Assistant.py: 16 Knowledge Entries]
+        C --> J[10_Predictive_Maintenance.py: RUL Dashboard]
     end
 
-    subgraph Backend Engine
-        B --> K[ML Engine: IsolationForest & Z-Score]
-        B --> L[RCA Diagnostics Engine]
+    subgraph Backend Engine ["Backend Engine (v3.0)"]
+        B --> K[ML Engine: IsolationForest + Feature Importance]
+        B --> L[RCA Engine: 3 Scenarios + Confidence + MTTR + Fault Tree]
         B --> M[Automated Mitigation & Actuators]
+        B --> N[PredictiveMaintenanceEngine: RUL + Financial Risk]
     end
 
-    subgraph Security & Storage
-        B --> N[(SQLite Storage DB)]
-        B --> O[(SQLite Audit Ledger DB)]
-        B --> P[(SQLite Auth DB)]
+    subgraph Storage ["Security & Storage"]
+        B --> O[(SQLite Storage DB + system_settings)]
+        B --> P[(SQLite Audit Ledger DB)]
+        B --> Q[(SQLite Auth DB)]
     end
 
-    subgraph Dispatch
-        M --> Q[Telegram Bot API]
-        M --> R[ESG Exporters: GHG, ISO, BRSR]
+    subgraph Dispatch ["Alert Dispatch"]
+        M --> R[Telegram Bot API: Persistent Config]
+        M --> S[ESG Exporters: GHG / ISO 14001 / BRSR]
+        M --> T[PDF Report: 4-Section Professional Layout]
     end
 ```
+
+
 
 ---
 
 ## ✨ Multi-Page Streamlit Architecture (`pages/`)
 
-The application is structured into **7 dedicated Streamlit pages** in the `pages/` directory:
+The application is structured into **10 dedicated Streamlit pages** in the `pages/` directory:
 
 | Page Module | Filename | Key Features & Responsibilities |
 | :--- | :--- | :--- |
-| **🎛️ Command Center** | [`pages/1_Dashboard.py`](file:///c:/HydroThermal_Nexus_AI/pages/1_Dashboard.py) | Plant health ring gauge, KPI cards, live sensor sparklines, guided emergency scenarios, RBAC switcher |
-| **📈 Analytics & ML** | [`pages/2_Analytics.py`](file:///c:/HydroThermal_Nexus_AI/pages/2_Analytics.py) | Telemetry streaming, custom Kaggle CSV IsolationForest trainer, score export, Root Cause Analysis |
-| **🚨 Alert Center** | [`pages/3_Alerts.py`](file:///c:/HydroThermal_Nexus_AI/pages/3_Alerts.py) | Live alert history feed, manual dispatch form, severity badges, Telegram bot notification trigger |
-| **🌐 Digital Twin** | [`pages/4_DigitalTwin.py`](file:///c:/HydroThermal_Nexus_AI/pages/4_DigitalTwin.py) | 3D PyDeck spatial facility topology map, node telemetry cards, hardware solenoid/actuator control panel |
-| **🌱 ESG Reports** | [`pages/5_Reports.py`](file:///c:/HydroThermal_Nexus_AI/pages/5_Reports.py) | Multi-currency financial calculator (14 currencies), carbon accounting, regulatory compliance exporters (GHG, ISO, BRSR) |
+| **🎛️ Command Center** | [`pages/1_Dashboard.py`](file:///c:/HydroThermal_Nexus_AI/pages/1_Dashboard.py) | Plant health ring gauge, KPI cards, live sensor sparklines, **3 guided emergency scenarios** (Pipe Rupture, HVAC Heatwave, ⚡ Power Surge), RBAC switcher, **2s live auto-refresh toggle** |
+| **📈 Analytics & ML** | [`pages/2_Analytics.py`](file:///c:/HydroThermal_Nexus_AI/pages/2_Analytics.py) | Telemetry streaming, custom CSV IsolationForest trainer, score export, **enriched RCA engine** (confidence %, MTTR, fault tree), **ML Feature Importance chart**, PDF Incident Report generator |
+| **🚨 Alert Center** | [`pages/3_Alerts.py`](file:///c:/HydroThermal_Nexus_AI/pages/3_Alerts.py) | Live alert history feed, manual dispatch form, severity badges, **persistent Telegram config** (saved to SQLite), inline test alert sender |
+| **🌐 Digital Twin** | [`pages/4_DigitalTwin.py`](file:///c:/HydroThermal_Nexus_AI/pages/4_DigitalTwin.py) | 3D PyDeck spatial facility map, **4-node topology** (Hydro-Node-Alpha, Thermal-Node-Beta, Cooling-Tower-Gamma, Grid-Relay-Delta), **Power Surge reactive node state**, hardware solenoid/actuator control panel |
+| **🌱 ESG Reports** | [`pages/5_Reports.py`](file:///c:/HydroThermal_Nexus_AI/pages/5_Reports.py) | Multi-currency financial calculator (14 currencies), carbon accounting, regulatory compliance exporters (GHG Protocol, ISO 14001 CSV, BRSR JSON) |
 | **⚙️ Settings & Audit** | [`pages/6_Settings.py`](file:///c:/HydroThermal_Nexus_AI/pages/6_Settings.py) | Immutable SHA-256 audit trail, RBAC permission matrix, user administration, system diagnostics |
-| **💬 AI Assistant** | [`pages/7_AI_Assistant.py`](file:///c:/HydroThermal_Nexus_AI/pages/7_AI_Assistant.py) | Domain-aware AI assistant chatbot, prompt engineering quick action chips, conversation history |
-| **🌍 Sustain-Pro** | [`pages/8_Sustainability_Pro.py`](file:///c:/HydroThermal_Nexus_AI/pages/8_Sustainability_Pro.py) | Next-Gen ESG: Microalgae Bioreactor, Digital Product Passport, Biodiversity Drone Mapping, Grid Load Shifting, Waste Heat Recovery, Tokenized Carbon Credits (GreenFi) |
-| **🗺️ Global Fleet Map** | [`pages/9_Global_Fleet.py`](file:///c:/HydroThermal_Nexus_AI/pages/9_Global_Fleet.py) | Interactive multi-site spatial map with live `on_select` region-switching and localized telemetry dashboards. |
+| **💬 AI Assistant** | [`pages/7_AI_Assistant.py`](file:///c:/HydroThermal_Nexus_AI/pages/7_AI_Assistant.py) | Domain-aware AI assistant, **12 quick action chips** (incl. PdM, Power Surge, Feature Importance, Schedule Maintenance), conversation history |
+| **🌍 Sustain-Pro** | [`pages/8_Sustainability_Pro.py`](file:///c:/HydroThermal_Nexus_AI/pages/8_Sustainability_Pro.py) | Microalgae Bioreactor, Digital Product Passport, Biodiversity Drone Mapping, Grid Load Shifting, Waste Heat Recovery, Tokenized Carbon Credits (GreenFi) |
+| **🗺️ Global Fleet Map** | [`pages/9_Global_Fleet.py`](file:///c:/HydroThermal_Nexus_AI/pages/9_Global_Fleet.py) | Interactive multi-site spatial map with live `on_select` region-switching and localized telemetry dashboards |
+| **🔧 Predictive Maintenance** | [`pages/10_Predictive_Maintenance.py`](file:///c:/HydroThermal_Nexus_AI/pages/10_Predictive_Maintenance.py) | **[NEW v3.0]** Full PdM dashboard — RUL gauges for 3 components (Pump A, Heat Exchanger B, Compressor C), sensor sliders, 30-day degradation trend charts, financial downtime risk panel, maintenance scheduling with audit logging |
 
 ---
 
@@ -249,11 +256,13 @@ The application is structured into **7 dedicated Streamlit pages** in the `pages
 
 | Version | Release Date | Key Enhancements & Architectural Upgrades |
 | :--- | :--- | :--- |
-| **`v2.5.0`** | **Aug 2026** | **Sustainability Pro (Enterprise ESG):** Ultra-unique features including AI Microalgae Bioreactor Simulation, Cryptographic Digital Product Passports (DPP), Biodiversity Drone Heatmaps, Waste Heat Recovery, Tokenized Carbon Credit Trading, and Scope 3 Emissions Tracking. |
-| **`v2.1.0`** | **Aug 2026** | **Streamlit Multi-Page Refactoring (`pages/`)**, Production Docker Compose (`docker-compose.prod.yml`), Pre-commit Hooks (`black`, `isort`, `flake8`), Complete Type Annotations, 44-Test Pytest Suite, OpenAPI Documentation. |
-| **`v2.0.0`** | **Jul 2026** | FastAPI REST API backend, SQLite persistent databases (`nexus_storage.db`, `nexus_audit.db`, `nexus_auth.db`), IsolationForest ML engine, Telegram bot alert integration, ESG compliance exporters. |
-| **`v1.1.0`** | **May 2026** | Multi-currency financial savings calculator (14 currencies), Plotly interactive dark theme charts, RBAC role switcher (Admin, Operator, Viewer). |
+| **`v3.0.0`** | **Aug 2026** | **🚀 Full Working Prototype Upgrade:** New `10_Predictive_Maintenance.py` page with RUL gauges for 3 components · Enriched RCA engine (29 → 200+ lines: confidence score, MTTR, fault taxonomy, 3-level fault tree) · ⚡ Power Surge / Grid Instability scenario (Dashboard + Digital Twin + Alert + RCA + AI Assistant) · ML Feature Importance chart (IsolationForest explainability) · Persistent Telegram config (SQLite-backed) · Professional 4-section PDF report rebuild · Live 2s auto-refresh on Dashboard · 4th Digital Twin node (Grid-Relay-Delta) · 5 new AI Assistant knowledge entries + 4 new quick chips · `/api/maintenance/rul` REST endpoint · RBAC expanded with `actuate_hardware` + `configure_alerts` for Operators. |
+| **`v2.5.0`** | **Aug 2026** | **Sustainability Pro (Enterprise ESG):** AI Microalgae Bioreactor Simulation, Cryptographic Digital Product Passports, Biodiversity Drone Heatmaps, Waste Heat Recovery, Tokenized Carbon Credits, and Scope 3 Emissions Tracking. |
+| **`v2.1.0`** | **Aug 2026** | Streamlit Multi-Page Refactoring (`pages/`), Production Docker Compose, Pre-commit Hooks, Complete Type Annotations, 44-Test Pytest Suite, OpenAPI Documentation. |
+| **`v2.0.0`** | **Jul 2026** | FastAPI REST API backend, SQLite persistent databases, IsolationForest ML engine, Telegram bot alert integration, ESG compliance exporters. |
+| **`v1.1.0`** | **May 2026** | Multi-currency financial savings calculator (14 currencies), Plotly interactive dark theme charts, RBAC role switcher. |
 | **`v1.0.0`** | **Jan 2026** | Initial operational telemetry simulator & Streamlit dashboard MVP. |
+
 
 ---
 

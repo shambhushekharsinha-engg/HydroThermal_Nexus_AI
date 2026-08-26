@@ -227,10 +227,90 @@ KNOWLEDGE_BASE: List[Dict] = [
             "**Step 4** — Configure Telegram alerts in **🚨 Alert Center** tab\n\n"
             "**Step 5** — Try triggering an anomaly to see the full RCA workflow\n\n"
             "**Step 6** — Check the **🌐 Digital Twin** to see geo-spatial impact\n\n"
-            "**Step 7** — Download a PDF report from the **🤖 RCA Engine** tab\n\n"
+            "**Step 7** — Download a PDF report from the **📈 Analytics / RCA Engine** tab\n\n"
+            "**Step 8** — Check **🔧 Predictive Maintenance** to see component RUL gauges\n\n"
             "💡 **Tip**: Ask me anything! I can explain any feature, interpret alerts, or guide you through the system."
         )
-    }
+    },
+    {
+        "id": "predictive_maintenance",
+        "tags": ["predictive maintenance", "pdm", "rul", "remaining useful life", "degradation", "component", "pump", "heat exchanger", "compressor", "failure", "wear"],
+        "question": "How does Predictive Maintenance work?",
+        "answer": (
+            "**Predictive Maintenance (PdM) — Remaining Useful Life Engine:**\n\n"
+            "The **🔧 Predictive Maintenance** page (Page 10) uses the `PredictiveMaintenanceEngine` to forecast component health.\n\n"
+            "**Monitored Components:**\n"
+            "- 💧 Hydro Pump A (14,200 / 40,000 hrs logged)\n"
+            "- 🌡️ Heat Exchanger B (22,000 / 40,000 hrs logged)\n"
+            "- ⚙️ Compressor C (31,500 / 40,000 hrs logged)\n\n"
+            "**RUL Calculation Model:**\n"
+            "```\nHealth Index = 100 - (deg_factor × 35)\n"
+            "deg_factor = (vib_ratio × 0.5) + (temp_ratio × 0.35) + (pressure_dev × 0.15)\n"
+            "Accelerated wear = exp(max(deg_factor - 1.0, 0) × 1.2)\n```\n\n"
+            "**Urgency Levels:**\n"
+            "- 🟢 HEALTHY (>80%) → Routine inspection only\n"
+            "- 🟡 DEGRADING (50-80%) → Schedule service within 14 days\n"
+            "- 🔴 CRITICAL (<50%) → Immediate overhaul required\n\n"
+            "**Financial Risk**: The engine estimates unplanned outage cost vs planned service cost (typically ~18% of catastrophic failure cost) — showing you the net savings from proactive maintenance."
+        )
+    },
+    {
+        "id": "power_surge",
+        "tags": ["power surge", "grid", "instability", "voltage", "ups", "load shedding", "electricity spike", "grid failure", "modbus", "plc"],
+        "question": "What happens during a Power Surge / Grid Instability event?",
+        "answer": (
+            "**Power Surge / Grid Instability Scenario:**\n\n"
+            "📋 **Root Cause**: Upstream grid feeder fault → UPS changeover lag → PLC Modbus timeout\n"
+            "📊 **Impact**: Grid voltage fluctuation ±20% for ~340ms\n\n"
+            "**Fault Cascade:**\n"
+            "1. 🔴 **Primary**: Grid voltage transient (±20%) — upstream utility fault or lightning\n"
+            "2. 🟡 **Secondary**: UPS/battery changeover lag ~200ms → PLC registers reset\n"
+            "3. 🔵 **Tertiary**: Telemetry data gap on 3 sensor nodes during restoration\n\n"
+            "**Automated Response Chain:**\n"
+            "1. ⚡ Non-critical pump loads shed to 40% capacity\n"
+            "2. 🔋 UPS battery backup engaged — discharge rate monitored\n"
+            "3. 📱 CRITICAL alert dispatched via Telegram\n"
+            "4. 🔌 Modbus nodes polled for re-synchronization\n"
+            "5. 📋 IEEE 1547 grid relay protection verified active\n\n"
+            "**Digital Twin Effect**: Grid-Relay-Delta node turns red on the 3D map.\n\n"
+            "**To simulate**: Go to **Command Center** → Click **⚡ Mission: Power Surge**"
+        )
+    },
+    {
+        "id": "feature_importance",
+        "tags": ["feature importance", "explainability", "why anomaly", "which sensor", "contribution", "isolation forest explain", "xai", "shap"],
+        "question": "Why was a data point flagged as anomalous?",
+        "answer": (
+            "**ML Explainability — Feature Importance:**\n\n"
+            "After training the IsolationForest model on the **📈 Analytics** page, a **Feature Contribution Analysis** chart is shown.\n\n"
+            "**How it works:**\n"
+            "The IsolationForest internally builds decision trees. Features used more frequently as split points in anomalous regions get **higher importance scores**.\n\n"
+            "```\nImportance = avg(feature split frequency across all trees) / total splits\n```\n\n"
+            "**Reading the chart:**\n"
+            "- 🔴 **Red bars** = Top 2 most important sensors (primary anomaly drivers)\n"
+            "- 🟡 **Yellow bars** = Secondary contributors\n"
+            "- 🔵 **Blue bars** = Minor contributors\n"
+            "- **↑ High** = Anomalous readings tend to be above normal\n"
+            "- **↓ Low** = Anomalous readings tend to be below normal\n\n"
+            "**To use**: Upload a CSV → Select features → Click 'Run IsolationForest Scoring' → Scroll to Feature Contribution Analysis section."
+        )
+    },
+    {
+        "id": "schedule_maintenance",
+        "tags": ["schedule maintenance", "book maintenance", "maintenance ticket", "how to maintain", "service component"],
+        "question": "How do I schedule component maintenance?",
+        "answer": (
+            "**Scheduling Preventive Maintenance:**\n\n"
+            "1. Navigate to **🔧 Predictive Maintenance** (Page 10 in sidebar)\n"
+            "2. Select the component tab: Hydro Pump A, Heat Exchanger B, or Compressor C\n"
+            "3. Adjust sensor sliders if needed to reflect current readings\n"
+            "4. Review the RUL Gauge and Urgency Level\n"
+            "5. Click **📅 Schedule Maintenance — [Component Name]** button\n"
+            "6. A maintenance ticket is automatically logged to the **SHA-256 Audit Ledger**\n\n"
+            "**Requires**: Field Engineer or Admin role\n\n"
+            "**Audit Entry**: All scheduled maintenance events appear in **⚙️ Settings → Audit Ledger** with action code `MAINTENANCE_SCHEDULED`."
+        )
+    },
 ]
 
 
@@ -303,6 +383,10 @@ QUICK_ACTIONS = [
     "How do I download a report?",
     "What sensors does the system monitor?",
     "How is user data secured?",
+    "How does Predictive Maintenance work?",
+    "What happens during a Power Surge?",
+    "Why was a data point flagged as anomalous?",
+    "How do I schedule component maintenance?",
 ]
 
 

@@ -241,7 +241,7 @@ def show_sidebar() -> None:
     """Render unified sidebar navigation overview, system status, and user session management."""
     with st.sidebar:
         st.markdown("### 🔷 HydroThermal Nexus")
-        st.caption("v2.1 Enterprise Operational Platform")
+        st.sidebar.caption("v3.0 Enterprise Operational Platform")
 
         st.divider()
 

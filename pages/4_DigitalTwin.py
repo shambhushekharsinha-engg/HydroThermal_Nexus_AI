@@ -35,9 +35,10 @@ def render_3d_spatial_twin() -> None:
     anomaly = st.session_state.get("current_anomaly", "Nominal / Normal Operations")
 
     nodes: List[Dict[str, Any]] = [
-        {"node_id": "Hydro-Node-Alpha", "lat": 28.6139, "lon": 77.2090, "status": "Normal", "flow_rate": 120, "temp": 42.5},
-        {"node_id": "Thermal-Node-Beta", "lat": 28.6150, "lon": 77.2110, "status": "Warning", "flow_rate": 85, "temp": 68.0},
-        {"node_id": "Cooling-Tower-Gamma", "lat": 28.6120, "lon": 77.2070, "status": "Critical", "flow_rate": 30, "temp": 89.2},
+        {"node_id": "Hydro-Node-Alpha",   "lat": 28.6139, "lon": 77.2090, "status": "Normal",   "flow_rate": 120, "temp": 42.5},
+        {"node_id": "Thermal-Node-Beta",  "lat": 28.6150, "lon": 77.2110, "status": "Warning",  "flow_rate": 85,  "temp": 68.0},
+        {"node_id": "Cooling-Tower-Gamma","lat": 28.6120, "lon": 77.2070, "status": "Critical", "flow_rate": 30,  "temp": 89.2},
+        {"node_id": "Grid-Relay-Delta",   "lat": 28.6132, "lon": 77.2098, "status": "Normal",   "flow_rate": 100, "temp": 38.0},
     ]
 
     if anomaly == "Pipe Rupture / Flow Drop":
@@ -46,6 +47,12 @@ def render_3d_spatial_twin() -> None:
     elif anomaly == "HVAC Overheat / Thermal Spike":
         nodes[1]["status"] = "Critical"
         nodes[1]["temp"] = 105.0
+    elif anomaly == "Power Surge / Grid Instability":
+        nodes[3]["status"] = "Critical"
+        nodes[3]["temp"] = 58.0
+        nodes[3]["flow_rate"] = 0
+        nodes[1]["status"] = "Warning"
+        nodes[1]["temp"] = 72.0
 
     df_nodes = pd.DataFrame(nodes)
     color_map = {
@@ -76,8 +83,8 @@ def render_3d_spatial_twin() -> None:
     ))
 
     st.markdown('<div class="section-title" style="margin-top:1rem;">📋 Node Telemetry Status Cards</div>', unsafe_allow_html=True)
-    c1, c2, c3 = st.columns(3)
-    for col, node in zip([c1, c2, c3], nodes):
+    c1, c2, c3, c4 = st.columns(4)
+    for col, node in zip([c1, c2, c3, c4], nodes):
         s = node["status"]
         c = {"Normal": "#00FF88", "Warning": "#FFB800", "Critical": "#FF2D55"}.get(s, "#aaa")
         with col:

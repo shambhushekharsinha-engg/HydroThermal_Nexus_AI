@@ -25,6 +25,70 @@ sc.show_header(title="🚨 Industrial Alert Center", subtitle="Real-Time Telemet
 sc.show_sidebar()
 
 
+def render_telegram_config() -> None:
+    """Render persistent Telegram gateway configuration — saved to SQLite."""
+    if not has_permission(role, "configure_alerts"):
+        return
+
+    with st.expander("📲 Telegram Alert Gateway Configuration", expanded=False):
+        st.caption("Bot token and Chat ID are **persisted to database** — they survive page refreshes.")
+
+        # Load saved values from DB
+        saved_token = db.get_setting("telegram_bot_token", "")
+        saved_chat  = db.get_setting("telegram_chat_id", "")
+
+        # Pre-populate session_state from DB on first load
+        if not st.session_state.get("bot_token") and saved_token:
+            st.session_state["bot_token"] = saved_token
+        if not st.session_state.get("chat_id") and saved_chat:
+            st.session_state["chat_id"] = saved_chat
+
+        col_t, col_c = st.columns(2)
+        with col_t:
+            new_token = st.text_input(
+                "🤖 Telegram Bot Token",
+                value=st.session_state.get("bot_token", saved_token),
+                type="password",
+                placeholder="123456:ABC-DEF...",
+                key="alert_bot_token_input"
+            )
+        with col_c:
+            new_chat = st.text_input(
+                "💬 Telegram Chat ID",
+                value=st.session_state.get("chat_id", saved_chat),
+                placeholder="-100123456789",
+                key="alert_chat_id_input"
+            )
+
+        col_save, col_test = st.columns(2)
+        with col_save:
+            if st.button("💾 Save Telegram Config", use_container_width=True, key="btn_save_telegram"):
+                if new_token and new_chat:
+                    db.save_setting("telegram_bot_token", new_token)
+                    db.save_setting("telegram_chat_id", new_chat)
+                    st.session_state["bot_token"] = new_token
+                    st.session_state["chat_id"] = new_chat
+                    db.log_audit(username, role, "TELEGRAM_CONFIG_SAVED", "None", "Telegram gateway credentials updated.")
+                    st.success("✅ Telegram credentials saved to database — persistent across refreshes.")
+                    logger.info("Telegram config saved by %s", username)
+                else:
+                    st.warning("⚠️ Please provide both Bot Token and Chat ID.")
+
+        with col_test:
+            if st.button("🧪 Send Test Alert", use_container_width=True, key="btn_test_telegram"):
+                token = st.session_state.get("bot_token", "")
+                chat  = st.session_state.get("chat_id", "")
+                if token and chat:
+                    from alert_manager import send_telegram
+                    ok, msg = send_telegram(token, chat, "🧪 *HydroThermal Nexus-AI* — Test alert delivered successfully!")
+                    if ok:
+                        st.success(f"✅ Test message delivered: {msg}")
+                    else:
+                        st.error(f"❌ Telegram delivery failed: {msg}")
+                else:
+                    st.error("❌ Configure and save Bot Token + Chat ID first.")
+
+
 def render_alert_metrics() -> None:
     """Render top alert KPI cards."""
     alerts_df = db.get_alerts(limit=100)
@@ -130,6 +194,7 @@ def render_alert_history() -> None:
 
 
 def main() -> None:
+    render_telegram_config()
     render_alert_metrics()
     st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
     render_manual_dispatch()

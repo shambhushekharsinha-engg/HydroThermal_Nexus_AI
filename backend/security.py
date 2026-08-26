@@ -17,13 +17,15 @@ ROLE_PERMISSIONS: Dict[str, list] = {
         "view_rca", "view_esg", "view_alerts", "view_audit",
         "trigger_anomaly", "configure_alerts", "clear_audit",
         "manage_users", "download_reports", "send_telegram",
-        "acknowledge_alert", "view_ai_assistant", "export_data"
+        "acknowledge_alert", "view_ai_assistant", "export_data",
+        "actuate_hardware",
     ],
     "Operator": [
         "view_dashboard", "view_telemetry", "view_digital_twin",
         "view_rca", "view_esg", "view_alerts", "view_audit",
         "trigger_anomaly", "download_reports", "send_telegram",
-        "acknowledge_alert", "view_ai_assistant"
+        "acknowledge_alert", "view_ai_assistant",
+        "actuate_hardware", "configure_alerts",
     ],
     "Viewer": [
         "view_dashboard", "view_telemetry", "view_digital_twin",

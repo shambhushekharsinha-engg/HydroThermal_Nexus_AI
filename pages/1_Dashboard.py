@@ -6,6 +6,7 @@ Renders key performance indicators, live sensor sparklines, health gauge ring, a
 
 import datetime
 import logging
+import time
 from typing import Dict, Any
 
 import streamlit as st
@@ -180,7 +181,7 @@ def render_guided_sandbox() -> None:
 
     with col_mission:
         st.markdown("##### 💥 Trigger Diagnostic Missions")
-        m1, m2, m3 = st.columns(3)
+        m1, m2, m3, m4 = st.columns(4)
         with m1:
             if st.button("💧 Mission: Pipe Rupture", use_container_width=True):
                 st.session_state["active_mission"] = "Pipe Rupture"
@@ -222,6 +223,26 @@ def render_guided_sandbox() -> None:
                 st.rerun()
 
         with m3:
+            if st.button("⚡ Mission: Power Surge", use_container_width=True):
+                st.session_state["active_mission"] = "Power Surge"
+                st.session_state["current_anomaly"] = "Power Surge / Grid Instability"
+                st.session_state["health_score"] = 55.0
+                template = build_anomaly_alert("Power Surge / Grid Instability", username)
+                dispatch_alert(
+                    severity=template["severity"],
+                    title=template["title"],
+                    message=template["message"],
+                    anomaly_type="Power Surge / Grid Instability",
+                    username=username,
+                    role=role,
+                    telegram_token=st.session_state.get("bot_token", ""),
+                    telegram_chat=st.session_state.get("chat_id", ""),
+                    force=True,
+                )
+                logger.info("Triggered mission: Power Surge by user %s", username)
+                st.rerun()
+
+        with m4:
             if st.button("🔄 Mission: Reset System", use_container_width=True):
                 st.session_state["active_mission"] = "None"
                 st.session_state["current_anomaly"] = "Nominal / Normal Operations"
@@ -233,6 +254,8 @@ def render_guided_sandbox() -> None:
             st.warning("🚨 MISSION ACTIVE: Pipe Rupture / Leak Response. Inspect Telemetry and RCA Engine pages for details.")
         elif current_mission == "HVAC Heatwave":
             st.warning("⚠️ MISSION ACTIVE: HVAC Thermal Spike Response. Auxiliary chillers engaged.")
+        elif current_mission == "Power Surge":
+            st.error("⚡ MISSION ACTIVE: Power Surge / Grid Instability. Load shedding active — UPS battery engaged.")
         else:
             st.info("💡 Nominal Operations Active. Select a mission above to run guided diagnostics.")
 
@@ -255,11 +278,27 @@ def render_guided_sandbox() -> None:
 
 def main() -> None:
     score: float = float(st.session_state.get("health_score", 97.4))
+
+    # ── Live Refresh Toggle ───────────────────────────────────────────
+    with st.sidebar:
+        st.divider()
+        st.markdown("#### ⚡ Live Sensor Feed")
+        live_refresh = st.toggle("🔄 Enable 2s Auto-Refresh", value=False, key="live_refresh_toggle")
+        if live_refresh:
+            st.caption("🟢 Live mode active — sparklines updating every 2s")
+        else:
+            st.caption("⚪ Live mode off — manual refresh")
+
     render_kpi_cards(score)
     st.markdown("<div style='margin-top:1rem;'></div>", unsafe_allow_html=True)
     render_health_ring_and_alerts(score)
     render_sparklines()
     render_guided_sandbox()
+
+    # Auto-refresh after all components rendered
+    if live_refresh:
+        time.sleep(2)
+        st.rerun()
 
 
 if __name__ == "__main__":

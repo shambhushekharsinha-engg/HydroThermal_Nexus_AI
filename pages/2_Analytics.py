@@ -207,22 +207,72 @@ def render_ml_custom_training() -> None:
                 use_container_width=True
             )
 
+            # ── Feature Importance / Explainability ────────────────────
+            st.markdown("---")
+            st.markdown('<div class="section-title">🔍 Anomaly Explainability — Feature Contribution Analysis</div>', unsafe_allow_html=True)
+            st.caption("Which sensors contributed most to the IsolationForest anomaly score? Higher % = greater contribution to anomalous readings.")
+
+            fi_df = engine.get_feature_importance(scored_df)
+            if not fi_df.empty:
+                fi_col1, fi_col2 = st.columns([2, 1])
+                with fi_col1:
+                    colors_fi = ["#FF2D55" if i < 2 else "#FFB800" if i < 4 else "#00D4FF"
+                                 for i in range(len(fi_df))]
+                    fig_fi = go.Figure(go.Bar(
+                        x=fi_df["Importance"],
+                        y=fi_df["Feature"],
+                        orientation="h",
+                        marker_color=colors_fi,
+                        text=[f"{v:.1f}%" for v in fi_df["Importance"]],
+                        textposition="inside",
+                    ))
+                    fig_fi.update_layout(
+                        **sc.PLOTLY_LAYOUT,
+                        height=max(250, len(fi_df) * 38),
+                        title="Feature Importance (% contribution to anomaly score)",
+                        xaxis_title="Importance (%)",
+                        yaxis_title="",
+                        showlegend=False,
+                    )
+                    st.plotly_chart(fig_fi, use_container_width=True)
+
+                with fi_col2:
+                    st.markdown("#### 📋 Feature Details")
+                    display_df = fi_df[["Feature", "Importance", "Direction", "Category"]].copy()
+                    display_df["Importance"] = display_df["Importance"].apply(lambda x: f"{x:.1f}%")
+                    st.dataframe(display_df, use_container_width=True, hide_index=True)
+                    st.caption("**Direction**: ↑ High = anomalies show higher values · ↓ Low = anomalies show lower values")
+            else:
+                st.info("ℹ️ Feature importance not available — train a custom model above first.")
+
 
 def render_rca_section() -> None:
     """Render Root Cause Analysis Engine diagnostics."""
     st.markdown("---")
     st.markdown('<div class="section-title">🤖 AI-Driven Root Cause Analysis (RCA)</div>', unsafe_allow_html=True)
     anomaly = st.session_state.get("current_anomaly", "Nominal / Normal Operations")
+    health  = float(st.session_state.get("health_score", 97.4))
 
     rca = RCAEngine()
-    analysis = rca.analyze_anomaly(anomaly)
+    analysis = rca.analyze_anomaly(anomaly, health_score=health)
 
-    if anomaly == "Pipe Rupture / Flow Drop":
-        st.error(f"🚨 **{analysis['primary_vector']}**")
-    elif anomaly == "HVAC Overheat / Thermal Spike":
-        st.warning(f"⚠️ **{analysis['primary_vector']}**")
+    # Status banner
+    sev = analysis.get("severity", "INFO")
+    if sev == "CRITICAL":
+        st.error(f"🚨 {analysis['primary_vector']}")
+    elif sev == "WARNING":
+        st.warning(f"⚠️ {analysis['primary_vector']}")
     else:
-        st.success(f"✅ **{analysis['primary_vector']}**")
+        st.success(f"✅ {analysis['primary_vector']}")
+
+    # Confidence + MTTR metrics row
+    conf = analysis.get("confidence_pct", 0)
+    mttr = analysis.get("mttr", {})
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Diagnostic Confidence", f"{conf:.1f}%")
+    m2.metric("Fault Category", analysis.get("fault_category", "—"))
+    m3.metric("MTTR Estimate", f"{mttr.get('mttr_hours', 0):.1f} hrs")
+    m4.metric("Est. Downtime Cost", f"${mttr.get('estimated_downtime_cost_usd', 0):,.0f} USD")
 
     col_a, col_b = st.columns(2)
     with col_a:
@@ -231,6 +281,7 @@ def render_rca_section() -> None:
           <div class="section-title">🔍 Diagnostic Findings</div>
           <p><b>Root Cause:</b> {analysis['root_cause']}</p>
           <p><b>Impact:</b> {analysis['impact']}</p>
+          <p><b>Category:</b> {analysis.get('fault_category_desc', '—')}</p>
         </div>""", unsafe_allow_html=True)
     with col_b:
         st.markdown(f"""
@@ -238,6 +289,55 @@ def render_rca_section() -> None:
           <div class="section-title">🛠️ Recommended Action</div>
           <p>{analysis['recommendation']}</p>
         </div>""", unsafe_allow_html=True)
+
+    # Fault tree
+    fault_tree = analysis.get("fault_tree", [])
+    if fault_tree and anomaly != "Nominal / Normal Operations":
+        st.markdown("#### 🌳 Fault Cascade Tree")
+        for node in fault_tree:
+            color = {"Primary": "#FF2D55", "Secondary": "#FFB800", "Tertiary": "#00D4FF"}.get(node["level"], "#64748B")
+            st.markdown(
+                f'<div style="border-left:3px solid {color};padding:6px 12px;margin:4px 0;">'
+                f'<span style="color:{color};font-weight:600;">[{node["level"]}]</span> '
+                f'<b>{node["node"]}</b> — <span style="color:#94A3B8;">{node["cause"]}</span></div>',
+                unsafe_allow_html=True
+            )
+
+    # PDF Report
+    if has_permission(role, "download_reports"):
+        st.markdown("---")
+        if st.button("📄 Download Full PDF Incident Report", key="btn_download_pdf", use_container_width=True, type="primary"):
+            from report_generator import EnterpriseReportEngine
+            from backend.database import get_esg_history
+            import numpy as np
+            esg_df = get_esg_history(days=30)
+            co2  = float(esg_df["co2_saved_kg"].sum())    if not esg_df.empty and "co2_saved_kg" in esg_df.columns else 420.0
+            water = float(esg_df["water_saved_l"].sum())   if not esg_df.empty and "water_saved_l" in esg_df.columns else 18500.0
+            energy = float(esg_df["energy_saved_kwh"].sum()) if not esg_df.empty and "energy_saved_kwh" in esg_df.columns else 3200.0
+            score  = float(esg_df["esg_score"].mean())     if not esg_df.empty and "esg_score" in esg_df.columns else 88.5
+            pdf_bytes = EnterpriseReportEngine.compile_pdf_report(
+                facility_name="HydroThermal Nexus Plant Node-01",
+                water_saved=f"{water:,.0f} Litres",
+                energy_saved=f"{energy:,.1f} kWh",
+                network_status="ONLINE",
+                anomaly_type=anomaly,
+                triggered_by=username,
+                role=role,
+                co2_saved_kg=co2,
+                water_saved_l=water,
+                energy_saved_kwh=energy,
+                esg_score=score,
+                rca_result=analysis,
+            )
+            st.download_button(
+                label="📥 Download PDF Report",
+                data=pdf_bytes,
+                file_name=f"NexusAI_Incident_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
+
+
 
 
 def render_pdm_section() -> None:

@@ -172,6 +172,14 @@ def initialize_all_databases():
                 esg_score      REAL DEFAULT 0.0
             )
         """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS system_settings (
+                key   TEXT PRIMARY KEY,
+                value TEXT,
+                updated_at TEXT
+            )
+        """)
+
 
     with get_conn(DB_AUDIT) as conn:
         conn.execute("CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit_logs (timestamp);")
@@ -431,3 +439,30 @@ def get_esg_history(days: int = 30) -> pd.DataFrame:
             conn, params=(cutoff,)
         )
     return df
+
+
+# ──────────────────────────────────────────────
+# SYSTEM SETTINGS (persistent key-value store)
+# ──────────────────────────────────────────────
+def save_setting(key: str, value: str) -> None:
+    """Upserts a system setting into the persistent key-value store."""
+    ts = datetime.datetime.now().isoformat()
+    with get_conn(DB_STORAGE) as conn:
+        conn.execute(
+            "INSERT INTO system_settings (key, value, updated_at) VALUES (?,?,?) "
+            "ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at",
+            (key, value, ts)
+        )
+
+
+def get_setting(key: str, default: str = "") -> str:
+    """Retrieves a system setting by key. Returns default if not found."""
+    try:
+        with get_conn(DB_STORAGE) as conn:
+            row = conn.execute(
+                "SELECT value FROM system_settings WHERE key=?", (key,)
+            ).fetchone()
+        return row["value"] if row else default
+    except Exception:
+        return default
+

@@ -187,6 +187,18 @@ def build_anomaly_alert(anomaly_type: str, username: str) -> Dict[str, str]:
                 "Schedule preventive maintenance for fan motor relay."
             )
         },
+        "Power Surge / Grid Instability": {
+            "severity": "CRITICAL",
+            "title":    "Power Surge — Grid Voltage Transient Detected",
+            "message":  (
+                "Grid voltage fluctuation of ±20% detected on main feeder line.\n"
+                "UPS changeover lag: ~200ms — Modbus PLC nodes reset.\n"
+                "Automated action: Non-critical pump loads shed to 40% capacity.\n"
+                "Load shedding active — UPS battery backup engaged.\n"
+                f"Operator: {username}\n"
+                "Contact utility provider and verify IEEE 1547 relay protection."
+            )
+        },
         "Nominal / Normal Operations": {
             "severity": "INFO",
             "title":    "System Reset — Normal Operations",

@@ -268,6 +268,81 @@ class HydroThermalAnalyticsCore:
             "status": "ready" if self._trained else "uninitialized"
         }
 
+    def get_feature_importance(self, df_scored: pd.DataFrame) -> pd.DataFrame:
+        """
+        Computes feature importance for anomaly detection using IsolationForest's
+        internal estimator tree depth structure. Higher importance = greater
+        contribution to anomaly score. Works only after training.
+
+        Returns:
+            pd.DataFrame with columns: Feature, Importance, Direction, Category
+        """
+        if not self._trained or self._iso_model is None or not self._feature_cols:
+            return pd.DataFrame(columns=["Feature", "Importance", "Direction", "Category"])
+
+        try:
+            import warnings
+            feature_cols = self._feature_cols
+
+            # Use mean path length from each tree as proxy for feature importance
+            # Features that produce shorter paths in anomalous regions = more important
+            n_features = len(feature_cols)
+            importances = np.zeros(n_features)
+
+            for estimator in self._iso_model.estimators_:
+                tree = estimator.tree_
+                # Count how often each feature is used as a split node
+                feature_usage = np.zeros(n_features)
+                for node_feature in tree.feature:
+                    if 0 <= node_feature < n_features:
+                        feature_usage[node_feature] += 1
+                total = max(feature_usage.sum(), 1)
+                importances += feature_usage / total
+
+            importances /= len(self._iso_model.estimators_)
+
+            # Normalize to sum = 1
+            total_imp = importances.sum()
+            if total_imp > 0:
+                importances = importances / total_imp
+
+            # Compute direction: is the mean of anomalous points above or below normal mean?
+            directions = []
+            categories = []
+            anomalous_mask = df_scored["IF_Anomaly"] == True if "IF_Anomaly" in df_scored.columns else pd.Series([False] * len(df_scored))
+
+            sensor_categories = {
+                "Pressure_PSI": "Hydraulic", "Water_Litres": "Hydraulic",
+                "Thermal_Temp_C": "Thermal", "Outdoor_Temp_C": "Thermal",
+                "Electricity_kWh": "Energy", "Humidity_Pct": "Environmental",
+                "Vibration_mm_s": "Mechanical", "Bearing_Temp_C": "Thermal",
+                "Rotational_RPM": "Mechanical", "Lubricant_Flow_L_min": "Hydraulic",
+                "Power_kW": "Energy",
+            }
+
+            for feat in feature_cols:
+                if feat in df_scored.columns and anomalous_mask.sum() > 0:
+                    anom_mean = df_scored.loc[anomalous_mask, feat].mean()
+                    normal_mean = df_scored.loc[~anomalous_mask, feat].mean() if (~anomalous_mask).sum() > 0 else anom_mean
+                    directions.append("↑ High" if anom_mean > normal_mean else "↓ Low")
+                else:
+                    directions.append("—")
+                categories.append(sensor_categories.get(feat, "General"))
+
+            result = pd.DataFrame({
+                "Feature": feature_cols,
+                "Importance": np.round(importances * 100, 2),
+                "Direction": directions,
+                "Category": categories,
+            }).sort_values("Importance", ascending=False).reset_index(drop=True)
+
+            logger.info("Feature importance computed for %d features.", len(feature_cols))
+            return result
+
+        except Exception as e:
+            logger.warning("Feature importance computation failed: %s", e)
+            return pd.DataFrame(columns=["Feature", "Importance", "Direction", "Category"])
+
     def generate_sample_kaggle_dataset(self) -> pd.DataFrame:
         """Generates sample turbine sensor dataset."""
         np.random.seed(123)

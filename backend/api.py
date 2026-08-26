@@ -19,8 +19,8 @@ from backend import database as db
 
 app = FastAPI(
     title="HydroThermal Nexus-AI API",
-    version="2.0.0",
-    description="REST backend for industrial telemetry, anomaly detection, and ESG metrics."
+    version="3.0.0",
+    description="REST backend for industrial telemetry, anomaly detection, ESG metrics, and predictive maintenance."
 )
 
 from backend.rate_limiter import RateLimiterMiddleware
@@ -97,13 +97,35 @@ async def health_check():
     return {
         "status": "operational",
         "timestamp": datetime.datetime.now().isoformat(),
-        "version": "2.0.0",
+        "version": "3.0.0",
         "services": {
-            "database":  "connected",
-            "telemetry": "streaming",
-            "alerts":    "active"
+            "database":             "connected",
+            "telemetry":            "streaming",
+            "alerts":               "active",
+            "predictive_maintenance": "ready",
         }
     }
+
+
+@app.get("/api/maintenance/rul")
+def get_rul_status(_key=Depends(verify_api_key)):
+    """Returns Remaining Useful Life (RUL) status for all monitored components."""
+    from predictive_maintenance import PredictiveMaintenanceEngine
+    components = {
+        "Hydro Pump A":       {"vib": 2.8, "temp": 62.0, "psi": 42.0, "hours": 14200, "lifespan": 40000},
+        "Heat Exchanger B":   {"vib": 1.9, "temp": 74.0, "psi": 44.0, "hours": 22000, "lifespan": 40000},
+        "Compressor C":       {"vib": 3.7, "temp": 79.0, "psi": 39.0, "hours": 31500, "lifespan": 40000},
+    }
+    results = {}
+    for name, cfg in components.items():
+        rul = PredictiveMaintenanceEngine.calculate_rul(
+            vibration_mm_s=cfg["vib"], bearing_temp_c=cfg["temp"], pressure_psi=cfg["psi"],
+            operating_hours_logged=cfg["hours"], design_lifespan_hours=cfg["lifespan"]
+        )
+        fin = PredictiveMaintenanceEngine.estimate_downtime_financial_risk(rul["rul_hours"])
+        results[name] = {**rul, "financial_risk": fin}
+    return {"components": results, "timestamp": datetime.datetime.now().isoformat()}
+
 
 
 @app.post("/api/auth/quick-login")
