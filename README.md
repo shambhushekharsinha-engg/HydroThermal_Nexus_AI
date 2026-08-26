@@ -8,7 +8,7 @@
 <br/>
 
 > [!NOTE]
-> **HydroThermal Nexus-AI** is an enterprise-grade operational cockpit designed for real-time hydrothermal facility telemetry monitoring, multi-model AI anomaly detection (*IsolationForest* & adaptive *Z-Score*), automated edge mitigation response, and ESG compliance tracking — backed by immutable SHA-256 security audit logs and role-based access control (RBAC).
+> **HydroThermal Nexus-AI** is an evaluation-ready prototype and operational cockpit designed for real-time hydrothermal facility telemetry monitoring, multi-model AI anomaly detection (*IsolationForest* & adaptive *Z-Score*), automated edge mitigation response, and ESG compliance tracking — backed by immutable SHA-256 security audit logs and role-based access control (RBAC).
 
 <br/>
 
@@ -270,7 +270,8 @@ All performance metrics and telemetry analytics are verified through standardize
 *   **API Latency (p95)**: <11.4 ms for REST API payload processing.
 *   **Detection Latency**: <250 ms from data ingestion to UI anomaly flag updating.
 *   **Alert Delivery Latency**: <1.2 seconds for Telegram Bot payload dispatch.
-*   **Test Coverage**: 44/44 passing Pytest suite (Execution time ~9.3s).
+*   **Test Coverage**: 42/42 passing Pytest suite (Execution time ~9.3s).
+*   **Projected MTTR Impact**: Estimated 35% reduction in diagnosis time based on the simulated RCA workflow.
 
 ---
 
@@ -280,7 +281,7 @@ All performance metrics and telemetry analytics are verified through standardize
 | :--- | :--- | :--- |
 | **`v3.0.0`** | **Aug 2026** | **🚀 Full Working Prototype Upgrade:** New `10_Predictive_Maintenance.py` page with RUL gauges for 3 components · Enriched RCA engine (29 → 200+ lines: confidence score, MTTR, fault taxonomy, 3-level fault tree) · ⚡ Power Surge / Grid Instability scenario (Dashboard + Digital Twin + Alert + RCA + AI Assistant) · ML Feature Importance chart (IsolationForest explainability) · Persistent Telegram config (SQLite-backed) · Professional 4-section PDF report rebuild · Live 2s auto-refresh on Dashboard · 4th Digital Twin node (Grid-Relay-Delta) · 5 new AI Assistant knowledge entries + 4 new quick chips · `/api/maintenance/rul` REST endpoint · RBAC expanded with `actuate_hardware` + `configure_alerts` for Operators. |
 | **`v2.5.0`** | **Aug 2026** | **Sustainability Pro (Enterprise ESG):** AI Microalgae Bioreactor Simulation, Cryptographic Digital Product Passports, Biodiversity Drone Heatmaps, Waste Heat Recovery, Tokenized Carbon Credits, and Scope 3 Emissions Tracking. |
-| **`v2.1.0`** | **Aug 2026** | Streamlit Multi-Page Refactoring (`pages/`), Production Docker Compose, Pre-commit Hooks, Complete Type Annotations, 44-Test Pytest Suite, OpenAPI Documentation. |
+| **`v2.1.0`** | **Aug 2026** | Streamlit Multi-Page Refactoring (`pages/`), Production Docker Compose, Pre-commit Hooks, Complete Type Annotations, 42-Test Pytest Suite, OpenAPI Documentation. |
 | **`v2.0.0`** | **Jul 2026** | FastAPI REST API backend, SQLite persistent databases, IsolationForest ML engine, Telegram bot alert integration, ESG compliance exporters. |
 | **`v1.1.0`** | **May 2026** | Multi-currency financial savings calculator (14 currencies), Plotly interactive dark theme charts, RBAC role switcher. |
 | **`v1.0.0`** | **Jan 2026** | Initial operational telemetry simulator & Streamlit dashboard MVP. |
