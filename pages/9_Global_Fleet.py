@@ -33,7 +33,7 @@ facilities = pd.DataFrame([
 st.markdown('<div class="section-title">🌍 Select a Facility to View Local Data</div>', unsafe_allow_html=True)
 
 # Generate the interactive Mapbox scatter plot
-fig = px.scatter_mapbox(
+fig = px.scatter_map(
     facilities,
     lat="lat",
     lon="lon",
@@ -48,7 +48,7 @@ fig = px.scatter_mapbox(
 
 fig.update_traces(marker=dict(size=14))
 fig.update_layout(
-    mapbox_style="carto-darkmatter",
+    map_style="carto-darkmatter",
     margin={"r": 0, "t": 0, "l": 0, "b": 0},
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)"
