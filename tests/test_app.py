@@ -23,7 +23,8 @@ class DummyStreamlit:
             "username": "admin",
             "session_token": "test_token_123",
             "current_anomaly": "Nominal / Normal Operations",
-            "health_score": 97.4
+            "health_score": 97.4,
+            "active_facility": "texas_hq",  # pre-set so facility picker is bypassed
         }
         self.sidebar = self
 
@@ -67,6 +68,37 @@ class DummyStreamlit:
 
     def divider(self, *args, **kwargs):
         return None
+
+    def text_input(self, *args, **kwargs):
+        return ""
+
+    def selectbox(self, *args, **kwargs):
+        options = args[1] if len(args) > 1 else kwargs.get("options", [])
+        return options[kwargs.get("index", 0)] if options else None
+
+    def toggle(self, *args, **kwargs):
+        return False
+
+    def stop(self):
+        return None
+
+    def rerun(self):
+        return None
+
+    def tabs(self, labels):
+        return [DummyStreamlit() for _ in labels]
+
+    def form(self, *args, **kwargs):
+        return self
+
+    def form_submit_button(self, *args, **kwargs):
+        return False
+
+    def plotly_chart(self, *args, **kwargs):
+        return None
+
+    def get(self, key, default=None):
+        return self.session_state.get(key, default)
 
 
 def test_app_main_executes_without_error(monkeypatch):

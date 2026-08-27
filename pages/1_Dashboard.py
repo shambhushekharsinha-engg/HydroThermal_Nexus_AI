@@ -28,39 +28,48 @@ user_info: Dict[str, str] = sc.require_auth()
 username: str = user_info["username"]
 role: str = user_info["role"]
 
-sc.show_header(title="🎛️ Command Center & Diagnostic Cockpit", subtitle="Live Telemetry, System Health & Scenario Missions")
+fac = sc.get_active_facility()
+sc.show_header(
+    title=f"🎛️ Command Center — {fac['flag']} {fac['name']}",
+    subtitle=f"{fac['city']}, {fac['country']} · {fac['timezone']} · Health: {fac['health']}%"
+)
 sc.show_sidebar()
 
 
 def render_kpi_cards(score: float) -> None:
     """Render top KPI metrics row."""
+    fac = sc.get_active_facility()
+    pressure = fac["pressure"]
+    temp = fac["temp"]
+    energy = fac["energy_kw"]
+
     k1, k2, k3, k4 = st.columns(4)
     with k1:
-        st.markdown("""
+        st.markdown(f"""
         <div class="kpi-card cyan">
           <div class="kpi-icon">💧</div>
           <div class="kpi-label">Hydraulic Pressure</div>
-          <div class="kpi-value">42.5</div>
+          <div class="kpi-value">{pressure}</div>
           <div style="color:#64748B;font-size:0.72rem;margin-top:2px;">PSI</div>
           <div class="kpi-delta up">▲ +1.2% vs baseline</div>
         </div>""", unsafe_allow_html=True)
 
     with k2:
-        st.markdown("""
+        st.markdown(f"""
         <div class="kpi-card orange">
           <div class="kpi-icon">🌡️</div>
           <div class="kpi-label">Thermal Loop Temp</div>
-          <div class="kpi-value orange">68.4</div>
+          <div class="kpi-value orange">{temp}</div>
           <div style="color:#64748B;font-size:0.72rem;margin-top:2px;">°C</div>
           <div class="kpi-delta down">▼ -0.8°C from last cycle</div>
         </div>""", unsafe_allow_html=True)
 
     with k3:
-        st.markdown("""
+        st.markdown(f"""
         <div class="kpi-card green">
           <div class="kpi-icon">⚡</div>
           <div class="kpi-label">Energy Consumption</div>
-          <div class="kpi-value green">128</div>
+          <div class="kpi-value green">{energy}</div>
           <div style="color:#64748B;font-size:0.72rem;margin-top:2px;">kW</div>
           <div class="kpi-delta up">▲ +3.1% load increase</div>
         </div>""", unsafe_allow_html=True)
@@ -79,6 +88,7 @@ def render_kpi_cards(score: float) -> None:
             {score_status}
           </div>
         </div>""", unsafe_allow_html=True)
+
 
 
 def render_health_ring_and_alerts(score: float) -> None:
