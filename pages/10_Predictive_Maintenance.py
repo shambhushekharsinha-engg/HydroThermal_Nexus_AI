@@ -103,7 +103,8 @@ def render_rul_gauge(comp_name: str, rul_result: Dict[str, Any], color: str) -> 
             "threshold": {"line": {"color": "#FF2D55", "width": 2}, "thickness": 0.75, "value": 50},
         }
     ))
-    fig.update_layout(**sc.PLOTLY_LAYOUT, height=240, margin=dict(l=10, r=10, t=50, b=10))
+    fig.update_layout(sc.PLOTLY_LAYOUT)
+    fig.update_layout(height=240, margin=dict(l=10, r=10, t=50, b=10))
     return fig
 
 
@@ -135,7 +136,7 @@ def render_degradation_trend(comp_name: str, comp_cfg: Dict, rul_result: Dict) -
     # Add threshold bands
     fig.add_hline(y=80, line_dash="dot", line_color="#00FF88", annotation_text="Healthy (80%)", annotation_font_color="#00FF88")
     fig.add_hline(y=50, line_dash="dot", line_color="#FFB800", annotation_text="Critical (50%)", annotation_font_color="#FFB800")
-    fig.update_layout(**sc.PLOTLY_LAYOUT, height=220, title=f"{comp_name} — 30-Day Health Trend")
+    fig.update_layout(sc.PLOTLY_LAYOUT, height=220, title=f"{comp_name} — 30-Day Health Trend")
     fig.update_xaxes(showticklabels=False)
     return fig
 
