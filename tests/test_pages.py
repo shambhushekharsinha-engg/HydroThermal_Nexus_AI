@@ -37,6 +37,9 @@ def test_pages_modules_importable():
         "5_Reports.py",
         "6_Settings.py",
         "7_AI_Assistant.py",
+        "8_Sustainability_Pro.py",
+        "9_Global_Fleet.py",
+        "10_Predictive_Maintenance.py",
     ]
 
     for pf in page_files:

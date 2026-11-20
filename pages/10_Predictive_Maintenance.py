@@ -36,10 +36,11 @@ st.set_page_config(
 user_info = sc.require_auth()
 username = user_info["username"]
 role = user_info["role"]
+fac = sc.get_active_facility()
 
 sc.show_header(
-    title="🔧 AI Predictive Maintenance & RUL Forecasting",
-    subtitle="Remaining Useful Life Engine · Degradation Trends · Financial Risk Analysis"
+    title=f"🔧 Predictive Maintenance — {fac['flag']} {fac['name']}",
+    subtitle=f"Remaining Useful Life (RUL) & Degradation Trends · {fac['city']}, {fac['country']}"
 )
 sc.show_sidebar()
 

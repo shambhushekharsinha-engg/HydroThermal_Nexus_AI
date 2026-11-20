@@ -23,22 +23,30 @@ user_info: Dict[str, str] = sc.require_auth()
 username: str = user_info["username"]
 role: str = user_info["role"]
 
-sc.show_header(title="🌐 Geo-Spatial 3D Digital Twin", subtitle="Spatial Node Monitoring & Hardware Actuator Control Panel")
+fac = sc.get_active_facility()
+sc.show_header(
+    title=f"🌐 3D Digital Twin — {fac['flag']} {fac['name']}",
+    subtitle=f"Spatial Topology & Edge Actuator Controls · {fac['city']}, {fac['country']}"
+)
 sc.show_sidebar()
 
 
 def render_3d_spatial_twin() -> None:
-    """Render 3D PyDeck spatial map and telemetry nodes."""
-    st.markdown('<div class="section-title">🌐 3D Facility Spatial Topology</div>', unsafe_allow_html=True)
-    st.caption("3D Column Height = Node Temperature (°C). Color Code = Operational Health Status.")
+    """Render 3D PyDeck spatial map and telemetry nodes calibrated to the active facility."""
+    fac = sc.get_active_facility()
+    c_lat, c_lon = fac["lat"], fac["lon"]
+
+    st.markdown(f'<div class="section-title">🌐 3D Facility Spatial Topology — {fac["flag"]} {fac["name"]}</div>', unsafe_allow_html=True)
+    st.caption(f"3D Column Height = Node Temperature (°C). Color Code = Operational Health Status. Site: {fac['city']}, {fac['country']} ({c_lat:.4f}°N, {c_lon:.4f}°E).")
 
     anomaly = st.session_state.get("current_anomaly", "Nominal / Normal Operations")
 
+    base_t = fac["temp"]
     nodes: List[Dict[str, Any]] = [
-        {"node_id": "Hydro-Node-Alpha",   "lat": 28.6139, "lon": 77.2090, "status": "Normal",   "flow_rate": 120, "temp": 42.5},
-        {"node_id": "Thermal-Node-Beta",  "lat": 28.6150, "lon": 77.2110, "status": "Warning",  "flow_rate": 85,  "temp": 68.0},
-        {"node_id": "Cooling-Tower-Gamma","lat": 28.6120, "lon": 77.2070, "status": "Critical", "flow_rate": 30,  "temp": 89.2},
-        {"node_id": "Grid-Relay-Delta",   "lat": 28.6132, "lon": 77.2098, "status": "Normal",   "flow_rate": 100, "temp": 38.0},
+        {"node_id": f"{fac['name']}-Node-Alpha",   "lat": c_lat + 0.0008, "lon": c_lon - 0.0008, "status": "Normal",   "flow_rate": 120, "temp": base_t * 0.65},
+        {"node_id": f"{fac['name']}-Node-Beta",    "lat": c_lat + 0.0012, "lon": c_lon + 0.0010, "status": "Warning" if fac["status"] == "Warning" else "Normal",  "flow_rate": 85,  "temp": base_t},
+        {"node_id": f"{fac['name']}-Tower-Gamma",  "lat": c_lat - 0.0010, "lon": c_lon - 0.0012, "status": "Critical" if fac["status"] == "Critical" else "Normal", "flow_rate": 30 if fac["status"] == "Critical" else 95,  "temp": base_t * 1.3 if fac["status"] == "Critical" else base_t * 0.85},
+        {"node_id": f"{fac['name']}-Relay-Delta",  "lat": c_lat - 0.0005, "lon": c_lon + 0.0008, "status": "Normal",   "flow_rate": 100, "temp": base_t * 0.55},
     ]
 
     if anomaly == "Pipe Rupture / Flow Drop":
@@ -74,12 +82,12 @@ def render_3d_spatial_twin() -> None:
         auto_highlight=True,
     )
 
-    view = pdk.ViewState(latitude=28.6139, longitude=77.2090, zoom=15, pitch=55)
+    view = pdk.ViewState(latitude=c_lat, longitude=c_lon, zoom=15, pitch=55)
     st.pydeck_chart(pdk.Deck(
         layers=[layer],
         initial_view_state=view,
         map_style="light",
-        tooltip={"text": "📍 {node_id}\nStatus: {status}\n🌡️ {temp}°C\n💧 {flow_rate} L/m"}
+        tooltip={"text": "📍 {node_id}\nStatus: {status}\n🌡️ {temp:.1f}°C\n💧 {flow_rate} L/m"}
     ))
 
     st.markdown('<div class="section-title" style="margin-top:1rem;">📋 Node Telemetry Status Cards</div>', unsafe_allow_html=True)

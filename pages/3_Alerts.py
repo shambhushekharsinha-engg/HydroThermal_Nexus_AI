@@ -20,8 +20,12 @@ st.set_page_config(page_title="Alert Center — HydroThermal Nexus", page_icon="
 user_info: Dict[str, str] = sc.require_auth()
 username: str = user_info["username"]
 role: str = user_info["role"]
+fac = sc.get_active_facility()
 
-sc.show_header(title="🚨 Industrial Alert Center", subtitle="Real-Time Telemetry Dispatches & Severity Audits")
+sc.show_header(
+    title=f"🚨 Alert Center — {fac['flag']} {fac['name']}",
+    subtitle=f"Real-Time Telemetry Dispatches & Severity Audits · {fac['city']}, {fac['country']}"
+)
 sc.show_sidebar()
 
 

@@ -78,23 +78,55 @@ def render_telemetry_section() -> None:
         st.info("🔒 Viewer role cannot inject anomaly scenarios.")
 
     st.markdown("---")
-    st.markdown('<div class="section-title">🔄 Live Sensor Stream Metrics</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="section-title" style="margin:0;">🔄 Live Sensor Stream Metrics</div>
+      <span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:2px 8px; font-size:0.68rem; color:#94A3B8;">
+        CALIBRATED INDUSTRIAL IoT SENSORS
+      </span>
+    </div>
+    """, unsafe_allow_html=True)
 
     live_toggle = st.toggle("Enable Live Sensor Streaming", key="analytics_live_toggle")
     np.random.seed(int(datetime.datetime.now().second) if live_toggle else 42)
 
-    pressure = round(42.5 + np.random.uniform(-0.5, 0.5), 2) if live_toggle else 42.5
-    temp = round(68.4 + np.random.uniform(-0.3, 0.3), 2) if live_toggle else 68.4
-    energy = round(128.0 + np.random.uniform(-1.0, 1.0), 2) if live_toggle else 128.0
-    flow = round(120.0 + np.random.uniform(-2.0, 2.0), 2) if live_toggle else 120.0
-    humidity = round(65.0 + np.random.uniform(-1.0, 1.0), 2) if live_toggle else 65.0
-    outdoor_t = round(32.0 + np.random.uniform(-0.5, 0.5), 2) if live_toggle else 32.0
+    active_fac = sc.get_active_facility()
+    current_anom = st.session_state.get("current_anomaly", "Nominal / Normal Operations")
+
+    base_p = active_fac["pressure"]
+    base_t = active_fac["temp"]
+    base_e = active_fac["energy_kw"]
+    base_f = active_fac.get("flow", 95.0)
+
+    if current_anom == "Pipe Rupture / Flow Drop":
+        pressure = round(14.2 + (np.random.uniform(-0.4, 0.4) if live_toggle else 0), 2)
+        temp = round(base_t - 4.5 + (np.random.uniform(-0.3, 0.3) if live_toggle else 0), 2)
+        energy = round(base_e * 0.85 + (np.random.uniform(-1.0, 1.0) if live_toggle else 0), 2)
+        flow = round(32.0 + (np.random.uniform(-1.5, 1.5) if live_toggle else 0), 2)
+    elif current_anom == "HVAC Overheat / Thermal Spike":
+        pressure = round(base_p * 1.05 + (np.random.uniform(-0.3, 0.3) if live_toggle else 0), 2)
+        temp = round(104.5 + (np.random.uniform(-0.5, 0.5) if live_toggle else 0), 2)
+        energy = round(base_e * 1.42 + (np.random.uniform(-1.0, 1.0) if live_toggle else 0), 2)
+        flow = round(base_f * 0.9 + (np.random.uniform(-1.0, 1.0) if live_toggle else 0), 2)
+    else:
+        pressure = round(base_p + (np.random.uniform(-0.5, 0.5) if live_toggle else 0), 2)
+        temp = round(base_t + (np.random.uniform(-0.3, 0.3) if live_toggle else 0), 2)
+        energy = round(base_e + (np.random.uniform(-1.0, 1.0) if live_toggle else 0), 2)
+        flow = round(base_f + (np.random.uniform(-1.0, 1.0) if live_toggle else 0), 2)
+
+    humidity = round(65.0 + (np.random.uniform(-1.0, 1.0) if live_toggle else 0), 2)
+    outdoor_t = round(32.0 + (np.random.uniform(-0.5, 0.5) if live_toggle else 0), 2)
+
+    delta_p = round(((pressure - 42.5) / 42.5) * 100, 1)
+    delta_t = round(temp - 65.0, 1)
+    delta_e = round(((energy - 120.0) / 120.0) * 100, 1)
+    delta_f = round(((flow - 95.0) / 95.0) * 100, 1)
 
     m1, m2, m3, m4, m5, m6 = st.columns(6)
-    m1.metric("Pressure", f"{pressure} PSI", "+1.2%")
-    m2.metric("Thermal", f"{temp}°C", "-0.8°C")
-    m3.metric("Energy", f"{energy} kW", "+3.1%")
-    m4.metric("Flow Rate", f"{flow} L/m", "+0.4%")
+    m1.metric("Pressure", f"{pressure} PSI", f"{delta_p:+0.1f}%")
+    m2.metric("Thermal", f"{temp}°C", f"{delta_t:+0.1f}°C")
+    m3.metric("Energy", f"{energy} kW", f"{delta_e:+0.1f}%")
+    m4.metric("Flow Rate", f"{flow} L/m", f"{delta_f:+0.1f}%")
     m5.metric("Humidity", f"{humidity}%", "-0.5%")
     m6.metric("Outdoor Temp", f"{outdoor_t}°C", "+0.2°C")
 
@@ -306,17 +338,25 @@ def render_rca_section() -> None:
     # PDF Report
     if has_permission(role, "download_reports"):
         st.markdown("---")
-        if st.button("📄 Download Full PDF Incident Report", key="btn_download_pdf", use_container_width=True, type="primary"):
+        st.markdown('<div class="section-title">📄 Standardized PDF Incident Disclosure</div>', unsafe_allow_html=True)
+        col_pdf_desc, col_pdf_btn = st.columns([2.5, 1.2])
+        with col_pdf_desc:
+            st.markdown(
+                "Export an enterprise tamper-evident PDF incident report containing telemetry traces, "
+                "fault cascade classification, MTTR remediation protocols, and 30-day ESG offset validation."
+            )
+        with col_pdf_btn:
             from report_generator import EnterpriseReportEngine
             from backend.database import get_esg_history
-            import numpy as np
             esg_df = get_esg_history(days=30)
-            co2  = float(esg_df["co2_saved_kg"].sum())    if not esg_df.empty and "co2_saved_kg" in esg_df.columns else 420.0
-            water = float(esg_df["water_saved_l"].sum())   if not esg_df.empty and "water_saved_l" in esg_df.columns else 18500.0
+            co2 = float(esg_df["co2_saved_kg"].sum()) if not esg_df.empty and "co2_saved_kg" in esg_df.columns else 420.0
+            water = float(esg_df["water_saved_l"].sum()) if not esg_df.empty and "water_saved_l" in esg_df.columns else 18500.0
             energy = float(esg_df["energy_saved_kwh"].sum()) if not esg_df.empty and "energy_saved_kwh" in esg_df.columns else 3200.0
-            score  = float(esg_df["esg_score"].mean())     if not esg_df.empty and "esg_score" in esg_df.columns else 88.5
+            score = float(esg_df["esg_score"].mean()) if not esg_df.empty and "esg_score" in esg_df.columns else 88.5
+            active_facility_name = sc.get_active_facility()["name"]
+
             pdf_bytes = EnterpriseReportEngine.compile_pdf_report(
-                facility_name="HydroThermal Nexus Plant Node-01",
+                facility_name=f"HydroThermal Nexus — {active_facility_name}",
                 water_saved=f"{water:,.0f} Litres",
                 energy_saved=f"{energy:,.1f} kWh",
                 network_status="ONLINE",
@@ -330,11 +370,13 @@ def render_rca_section() -> None:
                 rca_result=analysis,
             )
             st.download_button(
-                label="📥 Download PDF Report",
+                label="📥 Download Full PDF Incident Report",
                 data=pdf_bytes,
                 file_name=f"NexusAI_Incident_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
                 mime="application/pdf",
-                use_container_width=True
+                use_container_width=True,
+                type="primary",
+                key="btn_direct_download_pdf"
             )
 
 

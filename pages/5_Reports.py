@@ -27,8 +27,12 @@ st.set_page_config(page_title="ESG Reports — HydroThermal Nexus", page_icon="�
 user_info: Dict[str, str] = sc.require_auth()
 username: str = user_info["username"]
 role: str = user_info["role"]
+fac = sc.get_active_facility()
 
-sc.show_header(title="🌱 ESG Sustainability & Regulatory Reports", subtitle="Carbon Accounting, Multi-Currency Financial Yields & Standardized Compliance Disclosures")
+sc.show_header(
+    title=f"🌱 ESG Reports — {fac['flag']} {fac['name']}",
+    subtitle=f"Carbon Accounting, Multi-Currency Yields & Compliance Disclosures · {fac['city']}, {fac['country']}"
+)
 sc.show_sidebar()
 
 

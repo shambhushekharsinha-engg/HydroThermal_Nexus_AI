@@ -23,8 +23,12 @@ st.set_page_config(page_title="Settings & Audit — HydroThermal Nexus", page_ic
 user_info: Dict[str, str] = sc.require_auth()
 username: str = user_info["username"]
 role: str = user_info["role"]
+fac = sc.get_active_facility()
 
-sc.show_header(title="⚙️ Settings, Audit Ledger & RBAC Control", subtitle="System Configurations, Immutable Audit Logs & Security Administration")
+sc.show_header(
+    title=f"⚙️ Settings & Audit — {fac['flag']} {fac['name']}",
+    subtitle=f"Immutable Ledger, 6-Role RBAC & System Administration · {fac['city']}, {fac['country']}"
+)
 sc.show_sidebar()
 
 
